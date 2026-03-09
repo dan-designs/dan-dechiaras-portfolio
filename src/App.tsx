@@ -365,6 +365,23 @@ const PROJECTS: any[] = [
 // --- MAIN APP COMPONENT ---
 const TITLES = ['/ Design Leader', '/ Founding IC', '/ Product Strategist', '/ UX Architect'];
 
+const LANGUAGES = [
+  { name: 'English', flag: '🇺🇸', code: 'en' },
+  { name: 'Français', flag: '🇫🇷', code: 'fr' },
+  { name: 'Español', flag: '🇪🇸', code: 'es' },
+  { name: '日本語', flag: '🇯🇵', code: 'ja' }
+];
+
+const getInitialLanguage = () => {
+  const match = document.cookie.match(/(?:^|; )googtrans=([^;]*)/);
+  if (match && match[1]) {
+    const code = match[1].split('/')[2];
+    const lang = LANGUAGES.find(l => l.code === code);
+    if (lang) return lang.name;
+  }
+  return 'English';
+};
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState('welcome');
   const [showA11yFeatures, setShowA11yFeatures] = useState(false);
@@ -372,33 +389,10 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileWorkOpen, setIsMobileWorkOpen] = useState(false);
   const [titleIndex, setTitleIndex] = useState(0);
-  const [language, setLanguage] = useState('English');
+  const [language, setLanguage] = useState(getInitialLanguage);
   const [isI18nOpen, setIsI18nOpen] = useState(false);
 
-  const languages = [
-    { name: 'English', flag: '🇺🇸', code: 'en' },
-    { name: 'French', flag: '🇫🇷', code: 'fr' },
-    { name: 'Spanish', flag: '🇪🇸', code: 'es' },
-    { name: 'Japanese', flag: '🇯🇵', code: 'ja' }
-  ];
-
   useEffect(() => {
-    const getCookie = (name: string) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop()?.split(';').shift();
-      return null;
-    };
-
-    const googtrans = getCookie('googtrans');
-    if (googtrans) {
-      const code = googtrans.split('/')[2];
-      const lang = languages.find(l => l.code === code);
-      if (lang) {
-        setLanguage(lang.name);
-      }
-    }
-
     const addGoogleTranslateScript = () => {
       if (document.getElementById('google-translate-script')) return;
       
@@ -419,12 +413,18 @@ export default function App() {
     addGoogleTranslateScript();
   }, []);
 
-  const handleLanguageChange = (lang: typeof languages[0]) => {
+  const handleLanguageChange = (lang: typeof LANGUAGES[0]) => {
     setLanguage(lang.name);
     setIsI18nOpen(false);
     
-    document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${window.location.hostname}`;
-    document.cookie = `googtrans=/en/${lang.code}; path=/;`;
+    if (lang.code === 'en') {
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+    } else {
+      document.cookie = `googtrans=/en/${lang.code}; path=/;`;
+      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${window.location.hostname};`;
+    }
+    
     window.location.reload();
   };
 
@@ -467,8 +467,8 @@ export default function App() {
             className="font-bold text-xl tracking-tight hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent z-10 flex items-center relative group"
           >
             <span aria-hidden="true" className="flex items-center">
-              <span className="hidden sm:inline">Dan Dechiara</span>
-              <span className="sm:hidden">Dan D</span>
+              <span className="hidden lg:inline">Dan Dechiara</span>
+              <span className="lg:hidden">Dan D</span>
               <div className="relative h-[1.2em] inline-flex text-accent text-left items-center justify-start min-w-[180px] ml-1 [perspective:1000px]">
                 <AnimatePresence mode="popLayout">
                   <motion.span
@@ -577,17 +577,17 @@ export default function App() {
             <div className="hidden md:block relative">
               <button 
                 onClick={() => setIsI18nOpen(!isI18nOpen)}
-                className="flex items-center gap-1 text-[#f5f5f5] hover:text-accent transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1 text-xl"
+                className="flex items-center gap-1 text-[#f5f5f5] hover:text-accent transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1 text-xl notranslate"
                 aria-haspopup="true"
                 aria-expanded={isI18nOpen}
                 aria-label="Select Language"
               >
-                <span>{languages.find(l => l.name === language)?.flag || '🇺🇸'}</span>
+                <span>{LANGUAGES.find(l => l.name === language)?.flag || '🇺🇸'}</span>
                 <ChevronDown size={14} className={`transition-transform ${isI18nOpen ? 'rotate-180' : ''}`} />
               </button>
               {isI18nOpen && (
-                <div className="absolute top-full right-0 mt-2 w-32 bg-[#0C0D00] border border-[#262626] rounded-xl shadow-xl flex flex-col z-50 overflow-hidden">
-                  {languages.map(lang => (
+                <div className="absolute top-full right-0 mt-2 w-32 bg-[#0C0D00] border border-[#262626] rounded-xl shadow-xl flex flex-col z-50 overflow-hidden notranslate">
+                  {LANGUAGES.map(lang => (
                     <button
                       key={lang.name}
                       onClick={() => handleLanguageChange(lang)}
