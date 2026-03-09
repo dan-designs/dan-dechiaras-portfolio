@@ -417,12 +417,17 @@ export default function App() {
     setLanguage(lang.name);
     setIsI18nOpen(false);
     
+    const domain = window.location.hostname;
+    
     if (lang.code === 'en') {
+      // Clear all possible variations of the googtrans cookie
       document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain};`;
     } else {
       document.cookie = `googtrans=/en/${lang.code}; path=/;`;
-      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${window.location.hostname};`;
+      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${domain};`;
+      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=.${domain};`;
     }
     
     window.location.reload();
