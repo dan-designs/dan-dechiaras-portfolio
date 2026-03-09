@@ -372,6 +372,61 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileWorkOpen, setIsMobileWorkOpen] = useState(false);
   const [titleIndex, setTitleIndex] = useState(0);
+  const [language, setLanguage] = useState('English');
+  const [isI18nOpen, setIsI18nOpen] = useState(false);
+
+  const languages = [
+    { name: 'English', flag: '🇺🇸', code: 'en' },
+    { name: 'French', flag: '🇫🇷', code: 'fr' },
+    { name: 'Spanish', flag: '🇪🇸', code: 'es' },
+    { name: 'Japanese', flag: '🇯🇵', code: 'ja' }
+  ];
+
+  useEffect(() => {
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+      return null;
+    };
+
+    const googtrans = getCookie('googtrans');
+    if (googtrans) {
+      const code = googtrans.split('/')[2];
+      const lang = languages.find(l => l.code === code);
+      if (lang) {
+        setLanguage(lang.name);
+      }
+    }
+
+    const addGoogleTranslateScript = () => {
+      if (document.getElementById('google-translate-script')) return;
+      
+      (window as any).googleTranslateElementInit = () => {
+        new (window as any).google.translate.TranslateElement(
+          { pageLanguage: 'en', includedLanguages: 'en,fr,es,ja', autoDisplay: false },
+          'google_translate_element'
+        );
+      };
+
+      const script = document.createElement('script');
+      script.id = 'google-translate-script';
+      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.async = true;
+      document.body.appendChild(script);
+    };
+
+    addGoogleTranslateScript();
+  }, []);
+
+  const handleLanguageChange = (lang: typeof languages[0]) => {
+    setLanguage(lang.name);
+    setIsI18nOpen(false);
+    
+    document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${lang.code}; path=/;`;
+    window.location.reload();
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -412,7 +467,8 @@ export default function App() {
             className="font-bold text-xl tracking-tight hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent z-10 flex items-center relative group"
           >
             <span aria-hidden="true" className="flex items-center">
-              Dan Dechiara
+              <span className="hidden sm:inline">Dan Dechiara</span>
+              <span className="sm:hidden">Dan D</span>
               <div className="relative h-[1.2em] inline-flex text-accent text-left items-center justify-start min-w-[180px] ml-1 [perspective:1000px]">
                 <AnimatePresence mode="popLayout">
                   <motion.span
@@ -517,6 +573,33 @@ export default function App() {
                 <span className={`inline-block h-3 w-3 transform rounded-full bg-[#111202] transition-transform ${showA11yFeatures ? 'translate-x-5' : 'translate-x-1'}`} />
               </div>
             </button>
+
+            <div className="hidden md:block relative">
+              <button 
+                onClick={() => setIsI18nOpen(!isI18nOpen)}
+                className="flex items-center gap-1 text-[#f5f5f5] hover:text-accent transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1 text-xl"
+                aria-haspopup="true"
+                aria-expanded={isI18nOpen}
+                aria-label="Select Language"
+              >
+                <span>{languages.find(l => l.name === language)?.flag || '🇺🇸'}</span>
+                <ChevronDown size={14} className={`transition-transform ${isI18nOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isI18nOpen && (
+                <div className="absolute top-full right-0 mt-2 w-32 bg-[#0C0D00] border border-[#262626] rounded-xl shadow-xl flex flex-col z-50 overflow-hidden">
+                  {languages.map(lang => (
+                    <button
+                      key={lang.name}
+                      onClick={() => handleLanguageChange(lang)}
+                      className={`text-left px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-[#1a1a1a] flex items-center gap-2 ${language === lang.name ? 'text-accent bg-[#1a1a1a]' : 'text-[#f5f5f5] hover:text-accent'}`}
+                    >
+                      <span className="text-lg">{lang.flag}</span>
+                      <span>{lang.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <button 
               className="md:hidden text-[#f5f5f5] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1"
@@ -681,8 +764,8 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Mobile A11y FAB */}
-      <div className="fixed bottom-6 right-6 z-50 md:hidden">
+      {/* Mobile A11y FAB (Hidden as requested) */}
+      <div className="hidden">
         <button 
           role="switch"
           aria-checked={showA11yFeatures}
@@ -702,6 +785,8 @@ export default function App() {
           </div>
         </button>
       </div>
+
+      <div id="google_translate_element" style={{ display: 'none' }}></div>
     </div>
   );
 }
@@ -1192,7 +1277,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
           <A11yTooltip 
             title="EN 301 549 Contrast" 
             description="Project tags use specific grays to ensure they pass the strict 4.5:1 text contrast minimums. Borders are decorative and use #262626."
-            position="top-right"
+            position="top-center"
           />
         )}
         <h1 className="heading-2 mb-4 text-[#f5f5f5]">Latest Projects</h1>
@@ -1216,7 +1301,7 @@ function ConnectPage({ showA11y }: { showA11y: boolean }) {
   return (
     <div className="w-full min-h-[calc(100svh-57px)] flex flex-col items-center justify-center animate-in fade-in duration-500 relative py-12">
       {showA11y && (
-        <div className="absolute top-4 right-4 flex flex-col gap-4 z-40">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col gap-4 z-40 w-full max-w-xs">
           <A11yTooltip 
             title="Frictionless Access" 
             description="Forms can be accessibility barriers. Providing direct links to email and phone ensures users can communicate using their preferred, accessible tools."
