@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --color-accent: #D5DB56;
+  --color-accent-dark: #B5BB46;
+}
+
+@layer components {
+  /* Headings */
+  .heading-1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight;
+  }
+  .heading-2 {
+    @apply text-3xl md:text-4xl font-bold tracking-tight leading-tight;
+  }
+  .heading-3 {
+    @apply text-2xl md:text-3xl font-bold tracking-tight leading-snug;
+  }
+  .heading-4 {
+    @apply text-xl font-bold tracking-tight leading-snug;
+  }
+  .heading-5 {
+    @apply text-lg font-bold tracking-tight leading-snug;
+  }
+
+  /* Body */
+  .body-lg {
+    @apply text-lg leading-normal;
+  }
+  .body-base {
+    @apply text-base leading-normal;
+  }
+  .body-sm {
+    @apply text-sm leading-normal;
+  }
+
+  /* Labels / Mono */
+  .label-lg {
+    @apply font-mono text-sm uppercase tracking-wider font-bold;
+  }
+  .label-base {
+    @apply font-mono text-xs uppercase tracking-wider font-bold;
+  }
+  .label-sm {
+    @apply font-mono text-[10px] uppercase tracking-wider font-bold;
+  }
+}
+
+body {
+  background-color: #111202;
+  color: #f5f5f5;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+button, 
+a, 
+[role="button"], 
+[role="switch"] {
+  cursor: pointer;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: #111202;
+}
