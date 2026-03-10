@@ -421,25 +421,25 @@ export default function App() {
     const domain = window.location.hostname;
     const domainParts = domain.split('.');
     
-    if (lang.code === 'en') {
-      // Robustly clear cookies across all possible domain and path variations
-      // Crucial: SameSite=None; Secure is required for iframes on desktop browsers
-      const paths = ['/', '/en'];
-      paths.forEach(p => {
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p};`;
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; SameSite=None; Secure`;
-        for (let i = 0; i < domainParts.length; i++) {
-          const d = domainParts.slice(i).join('.');
-          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=${d};`;
-          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=${d}; SameSite=None; Secure`;
-          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=.${d};`;
-          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=.${d}; SameSite=None; Secure`;
-        }
-      });
-      window.localStorage.removeItem('googtrans');
-      window.sessionStorage.removeItem('googtrans');
-    } else {
-      // Set cookie with SameSite=None; Secure to ensure it persists in iframes
+    // 1. ALWAYS clear existing cookies and storage first to ensure a clean slate
+    // This prevents multiple conflicting googtrans cookies from existing on different domain levels
+    const paths = ['/', '/en', '/fr', '/es', '/ja'];
+    paths.forEach(p => {
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p};`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; SameSite=None; Secure`;
+      for (let i = 0; i < domainParts.length; i++) {
+        const d = domainParts.slice(i).join('.');
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=${d};`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=${d}; SameSite=None; Secure`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=.${d};`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=.${d}; SameSite=None; Secure`;
+      }
+    });
+    window.localStorage.removeItem('googtrans');
+    window.sessionStorage.removeItem('googtrans');
+
+    // 2. If not English, set the new language cookie
+    if (lang.code !== 'en') {
       document.cookie = `googtrans=/en/${lang.code}; path=/;`;
       document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${domain};`;
       document.cookie = `googtrans=/en/${lang.code}; path=/; domain=.${domain};`;
