@@ -389,6 +389,7 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileWorkOpen, setIsMobileWorkOpen] = useState(false);
   const [titleIndex, setTitleIndex] = useState(0);
+  
   const [language, setLanguage] = useState(getInitialLanguage);
   const [isI18nOpen, setIsI18nOpen] = useState(false);
 
@@ -418,12 +419,34 @@ export default function App() {
     setIsI18nOpen(false);
     
     const domain = window.location.hostname;
+    const domainParts = domain.split('.');
     
-    // Instead of trying to delete the cookie (which fails on some domain configurations),
-    // we explicitly set it to /en/en to force Google Translate back to English.
-    document.cookie = `googtrans=/en/${lang.code}; path=/;`;
-    document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${domain};`;
-    document.cookie = `googtrans=/en/${lang.code}; path=/; domain=.${domain};`;
+    if (lang.code === 'en') {
+      // Robustly clear cookies across all possible domain and path variations
+      // Crucial: SameSite=None; Secure is required for iframes on desktop browsers
+      const paths = ['/', '/en'];
+      paths.forEach(p => {
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p};`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; SameSite=None; Secure`;
+        for (let i = 0; i < domainParts.length; i++) {
+          const d = domainParts.slice(i).join('.');
+          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=${d};`;
+          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=${d}; SameSite=None; Secure`;
+          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=.${d};`;
+          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=.${d}; SameSite=None; Secure`;
+        }
+      });
+      window.localStorage.removeItem('googtrans');
+      window.sessionStorage.removeItem('googtrans');
+    } else {
+      // Set cookie with SameSite=None; Secure to ensure it persists in iframes
+      document.cookie = `googtrans=/en/${lang.code}; path=/;`;
+      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${domain};`;
+      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=.${domain};`;
+      document.cookie = `googtrans=/en/${lang.code}; path=/; SameSite=None; Secure`;
+      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${domain}; SameSite=None; Secure`;
+      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=.${domain}; SameSite=None; Secure`;
+    }
     
     if (window.location.hash.includes('googtrans')) {
       window.history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -837,7 +860,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
                 I architect systems and growth strategies that operationalize design teams and drive organizational business goals.
               </p>
               <p>
-                With 13 years aligning IC leadership and business strategy, I drive product systems and deliver measurable impact.
+                With 13 years of design experience I align IC leadership and business strategy and drive product systems that deliver measurable impact.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
