@@ -419,15 +419,14 @@ export default function App() {
     
     const domain = window.location.hostname;
     
-    if (lang.code === 'en') {
-      // Clear all possible variations of the googtrans cookie
-      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain};`;
-    } else {
-      document.cookie = `googtrans=/en/${lang.code}; path=/;`;
-      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${domain};`;
-      document.cookie = `googtrans=/en/${lang.code}; path=/; domain=.${domain};`;
+    // Instead of trying to delete the cookie (which fails on some domain configurations),
+    // we explicitly set it to /en/en to force Google Translate back to English.
+    document.cookie = `googtrans=/en/${lang.code}; path=/;`;
+    document.cookie = `googtrans=/en/${lang.code}; path=/; domain=${domain};`;
+    document.cookie = `googtrans=/en/${lang.code}; path=/; domain=.${domain};`;
+    
+    if (window.location.hash.includes('googtrans')) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
     }
     
     window.location.reload();
@@ -813,7 +812,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
           {/* Left Column: Image */}
-          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-[72%] max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
+          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-full md:w-[72%] md:max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
             <img 
               src="https://res.cloudinary.com/datad8tms/image/upload/v1772823845/Dan-Dechiara_rdkrq2.png" 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
