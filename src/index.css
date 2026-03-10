@@ -91,9 +91,9 @@ body {
   visibility: hidden !important;
   opacity: 0 !important;
 }
-.goog-text-highlight,
-font {
-  background-color: #111202 !important;
-  color: inherit !important;
+.goog-text-highlight {
+  background-color: transparent !important;
+  background: none !important;
+  border: none !important; 
   box-shadow: none !important;
 }
