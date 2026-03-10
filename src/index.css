@@ -69,8 +69,8 @@ a,
 }
 
 ::selection {
-  background-color: var(--color-accent);
-  color: #111202;
+  background-color: #111202;
+  color: var(--color-accent);
 }
 
 /* Hide Google Translate UI Elements */
@@ -92,8 +92,14 @@ body {
   opacity: 0 !important;
 }
 .goog-text-highlight {
-  background-color: transparent !important;
-  background: none !important;
-  border: none !important; 
+  background-color: #111202 !important;
+  color: inherit !important;
   box-shadow: none !important;
+}
+font {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+font:hover {
+  background-color: #111202 !important;
 }
