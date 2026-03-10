@@ -107,7 +107,7 @@ const PROJECTS: any[] = [
     title: "AI-Driven Revenue Management", 
     metric: "Core Product • AI/ML UX • Education", 
     tags: ["AI", "Revenue Management", "Growth Strategy"],
-    problem: "Users were leaving significant revenue on the table due to static pricing, while external AI tools were too expensive or felt like a 'Black Box' they couldn't trust.",
+    problem: "Users were leaving significant revenue on the table due to static pricing, while external AI tools were too expensive.",
     solution: "A dual-interface system with a 'Strategic Dashboard' for high-literacy managers and a 'Guided Action' flow for novice owners, focusing on Explainable AI.",
     process: "Conducted intensive usability sessions focused on 'Trust Benchmarks'. Pivoted from a purely automated system to a 'Human-in-the-Loop' model based on feedback.",
     impact: "70% projected adoption rate within the first 6 months of the beta. $0 external API costs by utilizing our proprietary ML model.",
@@ -601,6 +601,8 @@ export default function App() {
               </div>
             </button>
 
+            <div className="hidden md:block w-px h-6 bg-[#262626]" aria-hidden="true"></div>
+
             <div className="hidden md:block relative">
               <button 
                 onClick={() => setIsI18nOpen(!isI18nOpen)}
@@ -765,10 +767,10 @@ export default function App() {
 
             {/* Link farm */}
             <div className="flex flex-wrap items-center justify-start md:justify-end gap-4 font-mono text-sm flex-1">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/dan-dechiara-b6131566/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
                 <Linkedin size={20} aria-hidden="true" />
               </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Github">
+              <a href="https://github.com/dan-designs" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Github">
                 <Github size={20} aria-hidden="true" />
               </a>
               <a href="https://res.cloudinary.com/datad8tms/image/upload/fl_attachment/v1772838222/Dan-Dechiara-Resume-2026_qwxw7p.pdf" download="Dan-Dechiara-Resume-2026.pdf" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Download Resume">
@@ -780,10 +782,10 @@ export default function App() {
               <a href="tel:8045131200" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Phone">
                 <Phone size={20} aria-hidden="true" />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Youtube">
+              <a href="https://www.youtube.com/@the_tangle_knots" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Youtube">
                 <Youtube size={20} aria-hidden="true" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Instagram">
+              <a href="https://www.instagram.com/dan.dech/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Instagram">
                 <Instagram size={20} aria-hidden="true" />
               </a>
             </div>
@@ -835,7 +837,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
           {/* Left Column: Image */}
-          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-full md:w-[72%] md:max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
+          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-full md:w-[85%] md:max-w-[420px] lg:w-[72%] lg:max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
             <img 
               src="https://res.cloudinary.com/datad8tms/image/upload/v1772823845/Dan-Dechiara_rdkrq2.png" 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
@@ -857,10 +859,10 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
                 I'm a designer, big wall climber, techno DJ, and maker.
               </p>
               <p>
-                I architect systems and growth strategies that operationalize design teams and drive organizational business goals.
+                I architect systems and growth strategies that operationalize design teams and unlock org-level business goals.
               </p>
               <p>
-                With 13 years of design experience I align IC leadership and business strategy and drive product systems that deliver measurable impact.
+                With 13 years of design experience, I align IC leadership and business strategy to drive product systems that deliver measurable impact.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
@@ -897,7 +899,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
             </a>
           </div>
           <p className="body-base text-[#a3a3a3] max-w-3xl text-left">
-            I drive organizational value by operationalizing the design craft across three critical domains. This framework ensures that technical governance and business scalability are integrated into every product decision.
+            I drive value by operationalizing the design craft across three critical domains. This framework ensures that technical governance and business scalability are integrated into every product decision.
           </p>
         </div>
 
@@ -983,15 +985,15 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
           </div>
           <div className="prose prose-invert max-w-none text-[#d4d4d4] space-y-4">
             <p>
-              With 13 years of experience, I am a product design lead focused on creating and scaling complex SaaS ecosystems and consumer facing marketplaces. I specialize in systems growth, and inclusive design, where I combine data-driven experimentation with hands-on user testing to deliver optimized and scale ready products.
+              With 13 years of experience, I am a product design lead. I focus on creating and scaling complex SaaS ecosystems and consumer-facing marketplaces. I specialize in systems growth and inclusive design. I combine data-driven experimentation with hands-on user testing to deliver optimized, scale-ready products.
             </p>
             <p>
-              Through my career, I’ve found that the most successful products are those that are built at the intersection of strategic business goals and high-impact design. Whether I’m leading a multi-phase, full-stack platform transformation, modernizing front-end architecture to unlock globalization and public-sector procurement, or reducing customer attrition by 77% annually through the 0-to-1 delivery of a strategic integration suites and other new features, my goal is always to translate complex data and user insights into operational, high-impact interfaces that service the great businesses goals.
+              Through my career, I’ve found that the most successful products are those that are built at the intersection of strategic business goals and high-impact design. Whether I’m leading a multi-phase, full-stack platform transformation, modernizing front-end architecture to unlock globalization and public-sector procurement, or reducing customer attrition by 77% annually through the 0-to-1 delivery of a strategic integration suite and other new features, my goal is always to translate complex data and user insights into operational, high-impact interfaces that service the org's strategic initiatives.
             </p>
             <p className="font-bold text-[#f5f5f5] pt-2">Core Areas of Expertise:</p>
             <ul className="list-disc pl-5 space-y-1">
-              <li><strong className="text-white">Growth & Revenue Strategy:</strong> Architecting automated growth levers and optimization tools that drive user engagement from 0% to 93% year-over-year.</li>
-              <li><strong className="text-white">Design Systems & Ops:</strong> Operationalizing design systems integrated with Storybook to increase velocity and reduce design-to-development handoff time by ~56%.</li>
+              <li><strong className="text-white">Growth & Revenue Strategy:</strong> Architecting automated growth levers and optimization tools that drive user engagement.</li>
+              <li><strong className="text-white">Design Systems & Ops:</strong> Operationalizing design systems integrated with Storybook to increase velocity and reduce design-to-development handoff time.</li>
               <li><strong className="text-white">Accessibility Leadership:</strong> Championing inclusive design by embedding WCAG compliance into QA processes and leading team training to achieve 508/ADA standards.</li>
               <li><strong className="text-white">Strategic Roadmapping:</strong> Partnering with leadership to translate long-term product visions into actionable, high-value features.</li>
             </ul>
@@ -1546,7 +1548,10 @@ function ProjectGridCard({ project, onClick, showA11y }: { project: any, onClick
         <p className="body-base text-[#a3a3a3] mb-6 flex-grow line-clamp-2">
           {project.problem}
         </p>
-        <ul className="flex flex-wrap gap-2 mt-auto relative z-10" aria-label="Technologies used">
+        <div className="mt-auto mb-6 flex items-center text-sm text-[#a3a3a3] group-hover:text-accent transition-colors font-mono uppercase tracking-wider">
+          Read More <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+        </div>
+        <ul className="flex flex-wrap gap-2 relative z-10" aria-label="Technologies used">
           {project.tags.map((tag: string) => (
             <li key={tag} className="text-xs font-mono border border-[#262626] px-2 py-1 text-[#d4d4d4] bg-[#111202]">
               {tag}
