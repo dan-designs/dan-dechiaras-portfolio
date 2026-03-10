@@ -601,8 +601,6 @@ export default function App() {
               </div>
             </button>
 
-            <div className="hidden md:block w-px h-6 bg-[#262626]" aria-hidden="true"></div>
-
             <div className="hidden md:block relative">
               <button 
                 onClick={() => setIsI18nOpen(!isI18nOpen)}
@@ -767,10 +765,10 @@ export default function App() {
 
             {/* Link farm */}
             <div className="flex flex-wrap items-center justify-start md:justify-end gap-4 font-mono text-sm flex-1">
-              <a href="https://www.linkedin.com/in/dan-dechiara-b6131566/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
                 <Linkedin size={20} aria-hidden="true" />
               </a>
-              <a href="https://github.com/dan-designs" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Github">
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Github">
                 <Github size={20} aria-hidden="true" />
               </a>
               <a href="https://res.cloudinary.com/datad8tms/image/upload/fl_attachment/v1772838222/Dan-Dechiara-Resume-2026_qwxw7p.pdf" download="Dan-Dechiara-Resume-2026.pdf" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Download Resume">
@@ -782,10 +780,10 @@ export default function App() {
               <a href="tel:8045131200" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Phone">
                 <Phone size={20} aria-hidden="true" />
               </a>
-              <a href="https://www.youtube.com/@the_tangle_knots" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Youtube">
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Youtube">
                 <Youtube size={20} aria-hidden="true" />
               </a>
-              <a href="https://www.instagram.com/dan.dech/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Instagram">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Instagram">
                 <Instagram size={20} aria-hidden="true" />
               </a>
             </div>
@@ -837,7 +835,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
           {/* Left Column: Image */}
-          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-full md:w-[85%] md:max-w-[420px] lg:w-[72%] lg:max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
+          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-full md:w-[72%] md:max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
             <img 
               src="https://res.cloudinary.com/datad8tms/image/upload/v1772823845/Dan-Dechiara_rdkrq2.png" 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
