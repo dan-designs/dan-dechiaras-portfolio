@@ -108,7 +108,7 @@ const PROJECTS: any[] = [
     title: "AI-Driven Revenue Management", 
     metric: "Core Product • AI/ML UX • Education", 
     tags: ["AI", "Revenue Management", "Growth Strategy"],
-    problem: "Users were leaving significant revenue on the table due to static pricing, while external AI tools were too expensive.",
+    problem: "Users were leaving significant revenue on the table due to unintelligence dynamic pricing, while existing tools were not built for campgrounds.",
     solution: "A dual-interface system with a 'Strategic Dashboard' for high-literacy managers and a 'Guided Action' flow for novice owners, focusing on Explainable AI.",
     process: "Conducted intensive usability sessions focused on 'Trust Benchmarks'. Pivoted from a purely automated system to a 'Human-in-the-Loop' model based on feedback.",
     impact: "70% projected adoption rate within the first 6 months of the beta. $0 external API costs by utilizing our proprietary ML model.",
@@ -194,7 +194,7 @@ const PROJECTS: any[] = [
     title: "The Integration Marketplace", 
     metric: "Growth Design • Platform Strategy", 
     tags: ["Marketplace", "Integrations", "Growth Strategy"],
-    problem: "Losing market share to competitors because they had more 'logos' on their integration page. 97% of lost parks cited a specific missing integration.",
+    problem: "We were losing market share to competitors because they had more integration offerings. 97% of exiting parks cited a specific missing integration as the main cause for finding a new tool.",
     solution: "A 'Marketplace & Middleware' strategy, focusing on high-volume connectors to double offerings in half the time.",
     process: "Created a 'Tiered Integration Framework'. Moved from a purely 'Internal Setup' to a 'Self-Service Install'.",
     impact: "97% 'Boomerang' rate—nearly all lost customers returned. 2x increase in total integration offerings compared to lead competitor.",
@@ -492,7 +492,7 @@ export default function App() {
           <button 
             onClick={() => navigateTo('welcome')}
             aria-label="Dan Dechiara, Design Leader, Founding IC, Product Strategist, UX Architect - Home"
-            className="font-bold text-xl tracking-tight hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent z-10 flex items-center relative group"
+            className="font-bold text-xl tracking-tight hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent z-10 flex items-center relative group notranslate"
           >
             <span aria-hidden="true" className="flex items-center">
               <span className="hidden lg:inline">Dan Dechiara</span>
@@ -860,10 +860,10 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
                 I'm a designer, big wall climber, techno DJ, and maker.
               </p>
               <p>
-                I architect systems and growth strategies that operationalize design teams and unlock org-level business goals.
+                I architect systems and growth strategies that operationalize design teams and unlock org-level goals.
               </p>
               <p>
-                With 13 years of design experience, I align IC leadership and business strategy to drive product systems that deliver measurable impact.
+                With 13 years of design experience, I align IC leadership and business strategy to drive product systems and deliver measurable impact.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
@@ -910,7 +910,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
             </div>
           </div>
           <p className="body-base text-[#a3a3a3] max-w-3xl text-left">
-            I drive value by operationalizing the design craft across three critical domains. This framework ensures that technical governance and business scalability are integrated into every product decision.
+            I drive value by operationalizing the design craft across three critical domains. This framework ensures that technical governance and scalability are built in to every product decision.
           </p>
         </div>
 
@@ -918,14 +918,14 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
           <PrincipleCard 
             icon={<BarChart3 className="text-accent" size={24} aria-hidden="true" />}
             title="Strategic Product Architecture"
-            description="I align product ecosystems with business objectives by architecting scalable frameworks that drive growth. This approach prioritizes high-level strategy and technical feasibility to ensure that every design decision serves a measurable commercial outcome."
+            description="I align product ecosystems with business objectives and architect scalable frameworks that drive growth. This approach prioritizes high-level strategy and technical feasibility to ensure that every design decision serves a measurable commercial outcome."
             showA11y={showA11y}
             a11yNote="Icons are hidden from screen readers using aria-hidden='true' to reduce noise."
           />
           <PrincipleCard 
             icon={<Layers className="text-accent" size={24} aria-hidden="true" />}
             title="Systemic Design Operations"
-            description="I scale design organizations by operationalizing the craft through robust systems and governance. By bridging the gap between execution and strategy, I increase organizational velocity and ensure cross-platform consistency across complex product suites."
+            description="I scale design organizations by operationalizing the craft through robust systems and governance. By bridging the gap between execution and strategy, I increase org velocity and ensure cross-platform consistency in complex product ecosystems."
             showA11y={showA11y}
             a11yNote="High contrast ratios (#f5f5f5 on #0C0D00) exceed WCAG AAA requirements."
           />
@@ -996,10 +996,10 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
           </div>
           <div className="prose prose-invert max-w-none text-[#d4d4d4] space-y-4">
             <p>
-              With 13 years of experience, I am a product design lead. I focus on creating and scaling complex SaaS ecosystems and consumer-facing marketplaces. I specialize in systems growth and inclusive design. I combine data-driven experimentation with hands-on user testing to deliver optimized, scale-ready products.
+              With 13 years of experience, I am a product design lead focused on creating and scaling complex SaaS ecosystems with accompanying consumer marketplaces. I specialize in systems, 0-to-1 feature delivery, growth, and inclusive design, and combine data-driven experimentation with hands-on user testing to deliver optimized, scale-ready products.
             </p>
             <p>
-              Through my career, I’ve found that the most successful products are those that are built at the intersection of strategic business goals and high-impact design. Whether I’m leading a multi-phase, full-stack platform transformation, modernizing front-end architecture to unlock globalization and public-sector procurement, or reducing customer attrition by 77% annually through the 0-to-1 delivery of a strategic integration suite and other new features, my goal is always to translate complex data and user insights into operational, high-impact interfaces that service the org's strategic initiatives.
+              Through my career, I’ve found that the most successful products are those that are built at the intersection of strategic business goals and high-impact design. Whether I’m leading a multi-phase, full-stack platform transformation, modernizing front-end architecture to unlock i18n and public-sector procurement, or reducing customer attrition by 77% annually through the 0-to-1 delivery of new features, my goal is always to translate complex data and user insights into operational, high-impact interfaces that service the org's strategic initiatives.
             </p>
             <p className="font-bold text-[#f5f5f5] pt-2">Core Areas of Expertise:</p>
             <ul className="list-disc pl-5 space-y-1">
@@ -1271,7 +1271,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
                 <div className="space-y-6">
                   {project.metrics.map((m: any, idx: number) => (
                     <div key={idx}>
-                      <div className="text-3xl font-light text-accent mb-1">{m.value}</div>
+                      <div className="text-3xl font-bold text-accent mb-1">{m.value}</div>
                       <div className="text-[#f5f5f5] font-medium mb-1">{m.label}</div>
                       <p className="text-[#a3a3a3] text-sm">{m.description}</p>
                     </div>
@@ -1279,7 +1279,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
                 </div>
               ) : (
                 <>
-                  <div className="text-3xl font-light text-accent mb-2">{project.metric.split(' ')[0]}</div>
+                  <div className="text-3xl font-bold text-accent mb-2">{project.metric.split(' ')[0]}</div>
                   <p className="text-[#a3a3a3] text-sm">{project.metric.substring(project.metric.indexOf(' ') + 1)}</p>
                 </>
               )}

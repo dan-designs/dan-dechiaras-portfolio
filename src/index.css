@@ -83,14 +83,17 @@ body {
 .goog-te-banner-frame {
   display: none !important;
 }
-.goog-tooltip {
+.goog-tooltip,
+.goog-tooltip:hover,
+#goog-gt-tt,
+.goog-te-balloon-frame {
   display: none !important;
-}
-.goog-tooltip:hover {
-  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 .goog-text-highlight {
   background-color: transparent !important;
+  background: none !important;
   border: none !important; 
   box-shadow: none !important;
 }
