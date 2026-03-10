@@ -4,7 +4,8 @@ import {
   Eye, Keyboard, Zap, ArrowRight, CheckCircle2, Code2, 
   Briefcase, Disc, Wrench, Mail, Phone, Linkedin, Globe, 
   ChevronRight, ArrowLeft, BarChart3, Layers, Accessibility,
-  Menu, X, ChevronDown, FileText, Download, Github, Instagram, Youtube
+  Menu, X, ChevronDown, FileText, Download, Github, Instagram, Youtube,
+  Minus, Plus
 } from 'lucide-react';
 
 // --- DATA ---
@@ -520,7 +521,7 @@ export default function App() {
             )}
           </button>
           
-          <nav aria-label="Main Navigation" className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none">
+          <nav aria-label="Main Navigation" className="hidden lg:flex absolute inset-0 items-center justify-center pointer-events-none">
             <ul className="flex space-x-8 text-sm pointer-events-auto">
               <li>
                 <button 
@@ -601,6 +602,8 @@ export default function App() {
               </div>
             </button>
 
+            <div className="hidden md:block w-px h-6 bg-[#262626]"></div>
+
             <div className="hidden md:block relative">
               <button 
                 onClick={() => setIsI18nOpen(!isI18nOpen)}
@@ -629,7 +632,7 @@ export default function App() {
             </div>
 
             <button 
-              className="md:hidden text-[#f5f5f5] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1"
+              className="lg:hidden text-[#f5f5f5] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-expanded={isMobileMenuOpen}
               aria-label="Toggle navigation menu"
@@ -642,7 +645,7 @@ export default function App() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-[57px] bg-[#111202] z-40 md:hidden flex flex-col px-6 py-8 border-t border-[#262626] animate-in slide-in-from-top-2 duration-200 overflow-y-auto">
+        <div className="fixed inset-0 top-[57px] bg-[#111202] z-40 lg:hidden flex flex-col px-6 py-8 border-t border-[#262626] animate-in slide-in-from-top-2 duration-200 overflow-y-auto">
           <nav aria-label="Mobile Navigation">
             <ul className="flex flex-col space-y-6 text-xl font-bold">
               <li>
@@ -765,10 +768,10 @@ export default function App() {
 
             {/* Link farm */}
             <div className="flex flex-wrap items-center justify-start md:justify-end gap-4 font-mono text-sm flex-1">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/dan-dechiara-b6131566/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
                 <Linkedin size={20} aria-hidden="true" />
               </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Github">
+              <a href="https://github.com/dan-designs" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Github">
                 <Github size={20} aria-hidden="true" />
               </a>
               <a href="https://res.cloudinary.com/datad8tms/image/upload/fl_attachment/v1772838222/Dan-Dechiara-Resume-2026_qwxw7p.pdf" download="Dan-Dechiara-Resume-2026.pdf" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Download Resume">
@@ -780,10 +783,10 @@ export default function App() {
               <a href="tel:8045131200" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Phone">
                 <Phone size={20} aria-hidden="true" />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Youtube">
+              <a href="https://www.youtube.com/@the_tangle_knots" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Youtube">
                 <Youtube size={20} aria-hidden="true" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Instagram">
+              <a href="https://www.instagram.com/dan.dech/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Instagram">
                 <Instagram size={20} aria-hidden="true" />
               </a>
             </div>
@@ -824,7 +827,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
   return (
     <div className="animate-in fade-in duration-500 flex flex-col">
       {/* Hero Section */}
-      <section className="min-h-[calc(100svh-57px)] flex flex-col justify-center relative py-12 md:py-0" aria-labelledby="hero-heading">
+      <section className="min-h-[calc(100svh-57px)] flex flex-col justify-center relative pt-6 pb-12 md:py-0" aria-labelledby="hero-heading">
         {showA11y && (
           <A11yTooltip 
             title="Semantic Structure & Nav" 
@@ -835,7 +838,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
           {/* Left Column: Image */}
-          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-full md:w-[72%] md:max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
+          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-full md:w-[85%] md:max-w-[420px] lg:w-[72%] lg:max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
             <img 
               src="https://res.cloudinary.com/datad8tms/image/upload/v1772823845/Dan-Dechiara_rdkrq2.png" 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
@@ -887,14 +890,24 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
         <div className="mb-12 flex flex-col items-start">
           <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <h2 id="ethos-heading" className="heading-3 m-0">Design & Leadership Ethos</h2>
-            <a 
-              href="https://www.w3.org/WAI/WCAG22/quickref/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:text-accent-dark font-mono text-sm font-bold flex items-center gap-1 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1 whitespace-nowrap"
-            >
-              About W3C <ExternalLink size={16} />
-            </a>
+            <div className="flex flex-row lg:flex-col items-center lg:items-end gap-4 lg:gap-2">
+              <a 
+                href="https://www.deque.com/en-301-549-compliance/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:text-accent-dark font-mono text-sm font-bold flex items-center gap-1 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1 whitespace-nowrap"
+              >
+                About EN 301 549 <ExternalLink size={16} />
+              </a>
+              <a 
+                href="https://www.w3.org/WAI/WCAG22/quickref/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:text-accent-dark font-mono text-sm font-bold flex items-center gap-1 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1 whitespace-nowrap"
+              >
+                About W3C <ExternalLink size={16} />
+              </a>
+            </div>
           </div>
           <p className="body-base text-[#a3a3a3] max-w-3xl text-left">
             I drive value by operationalizing the design craft across three critical domains. This framework ensures that technical governance and business scalability are integrated into every product decision.
@@ -1607,6 +1620,8 @@ function ExternalLink({ size, className }: { size: number, className?: string })
 }
 
 function A11yTooltip({ title, description, position = 'top-right', className = '' }: { title: string, description: string, position?: 'top-right' | 'top-left' | 'top-right-inset' | 'top-left-inset' | 'top-center' | 'bottom' | 'static', className?: string }) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   const positionClasses = {
     'top-right': 'absolute -top-4 -right-4',
     'top-left': 'absolute -top-4 -left-4',
@@ -1619,41 +1634,76 @@ function A11yTooltip({ title, description, position = 'top-right', className = '
 
   return (
     <div role="status" aria-live="polite" className={`${positionClasses[position]} ${className} max-w-xs bg-[#171717] border border-accent p-4 shadow-2xl z-40 animate-in fade-in slide-in-from-bottom-2 duration-300`}>
-      <div className="flex items-start gap-2 mb-2">
-        <CheckCircle2 className="text-accent shrink-0 mt-0.5" size={16} aria-hidden="true" />
-        <h4 className="label-lg text-accent">{title}</h4>
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-start gap-2">
+          <CheckCircle2 className="text-accent shrink-0 mt-0.5" size={16} aria-hidden="true" />
+          <h4 className="label-lg text-accent">{title}</h4>
+        </div>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsCollapsed(!isCollapsed);
+          }}
+          className="text-accent hover:text-accent-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-0.5"
+          aria-label={isCollapsed ? "Expand tooltip" : "Collapse tooltip"}
+          aria-expanded={!isCollapsed}
+        >
+          {isCollapsed ? <Plus size={16} aria-hidden="true" /> : <Minus size={16} aria-hidden="true" />}
+        </button>
       </div>
-      <p className="body-sm text-[#d4d4d4]">
-        {description}
-      </p>
+      {!isCollapsed && (
+        <p className="body-sm text-[#d4d4d4] mt-2">
+          {description}
+        </p>
+      )}
     </div>
   );
 }
 
 function A11yExplainerCard() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
     <div role="status" aria-live="polite" className="fixed top-[80px] right-6 max-w-sm bg-[#171717] border border-accent p-5 shadow-2xl z-40 animate-in fade-in slide-in-from-top-4 duration-500">
-      <div className="flex items-start gap-2 mb-3">
-        <Eye className="text-accent shrink-0 mt-0.5" size={18} aria-hidden="true" />
-        <h4 className="label-lg text-accent text-lg">What is A11Y?</h4>
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-start gap-2">
+          <Eye className="text-accent shrink-0 mt-0.5" size={18} aria-hidden="true" />
+          <h4 className="label-lg text-accent text-lg">What is A11Y?</h4>
+        </div>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsCollapsed(!isCollapsed);
+          }}
+          className="text-accent hover:text-accent-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-0.5"
+          aria-label={isCollapsed ? "Expand A11Y explainer" : "Collapse A11Y explainer"}
+          aria-expanded={!isCollapsed}
+        >
+          {isCollapsed ? <Plus size={18} aria-hidden="true" /> : <Minus size={18} aria-hidden="true" />}
+        </button>
       </div>
-      <p className="body-sm text-[#d4d4d4] mb-4">
-        "A11Y" is a numeronym for Accessibility (A, followed by 11 letters, followed by Y). It represents the practice of making digital experiences usable by everyone, regardless of disability.
-      </p>
-      <div className="flex flex-col gap-3">
-        <div className="border-l-2 border-[#262626] pl-3 hover:border-accent transition-colors">
-          <h5 className="font-bold text-accent text-sm mb-1">WCAG 2.2 AA</h5>
-          <p className="text-xs text-[#a3a3a3]">The global standard for web accessibility, ensuring content is perceivable, operable, understandable, and robust.</p>
-        </div>
-        <div className="border-l-2 border-[#262626] pl-3 hover:border-accent transition-colors">
-          <h5 className="font-bold text-accent text-sm mb-1">Section 508</h5>
-          <p className="text-xs text-[#a3a3a3]">US federal law requiring electronic and information technology to be accessible.</p>
-        </div>
-        <div className="border-l-2 border-[#262626] pl-3 hover:border-accent transition-colors">
-          <h5 className="font-bold text-accent text-sm mb-1">EN 301 549</h5>
-          <p className="text-xs text-[#a3a3a3]">The European standard specifying accessibility requirements for ICT products.</p>
-        </div>
-      </div>
+      
+      {!isCollapsed && (
+        <>
+          <p className="body-sm text-[#d4d4d4] mb-4 mt-3">
+            "A11Y" is a numeronym for Accessibility (A, followed by 11 letters, followed by Y). It represents the practice of making digital experiences usable by everyone, regardless of disability.
+          </p>
+          <div className="flex flex-col gap-3">
+            <div className="border-l-2 border-[#262626] pl-3 hover:border-accent transition-colors">
+              <h5 className="font-bold text-accent text-sm mb-1">WCAG 2.2 AA</h5>
+              <p className="text-xs text-[#a3a3a3]">The global standard for web accessibility, ensuring content is perceivable, operable, understandable, and robust.</p>
+            </div>
+            <div className="border-l-2 border-[#262626] pl-3 hover:border-accent transition-colors">
+              <h5 className="font-bold text-accent text-sm mb-1">Section 508</h5>
+              <p className="text-xs text-[#a3a3a3]">US federal law requiring electronic and information technology to be accessible.</p>
+            </div>
+            <div className="border-l-2 border-[#262626] pl-3 hover:border-accent transition-colors">
+              <h5 className="font-bold text-accent text-sm mb-1">EN 301 549</h5>
+              <p className="text-xs text-[#a3a3a3]">The European standard specifying accessibility requirements for ICT products.</p>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
