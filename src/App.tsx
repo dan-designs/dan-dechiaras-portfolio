@@ -1374,8 +1374,8 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
             rel="noopener noreferrer"
             className="flex items-center gap-2 bg-accent text-[#050505] px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(242,125,38,0.3)] hover:shadow-[0_0_30px_rgba(242,125,38,0.5)] hover:scale-105 transition-all duration-300"
           >
-            <Eye size={18} />
-            View Case Study
+            <FileText size={18} />
+            Request Case Study
           </a>
         </div>
       </div>
