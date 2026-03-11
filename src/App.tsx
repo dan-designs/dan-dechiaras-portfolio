@@ -73,8 +73,8 @@ const PROJECTS: any[] = [
         title: "5. Business Impact & Results",
         body: (
           <ul className="list-disc pl-5 space-y-2 text-[#d4d4d4]">
-            <li><strong className="text-white">Primary Metric:</strong> <strong>35% projected increase</strong> in Product Design velocity.</li>
-            <li><strong className="text-white">Secondary Metric:</strong> <strong>50% projected increase</strong> in Engineering efficiency and <strong>40%</strong> in QA speed.</li>
+            <li><strong className="text-white">Primary Metric:</strong> <strong>~56% reduction</strong> in design-to-development handoff time.</li>
+            <li><strong className="text-white">Secondary Metric:</strong> Improved QA consistency and <strong>50% projected increase</strong> in Engineering efficiency.</li>
             <li><strong className="text-white">Efficiency Metric:</strong> <strong>100% compliance</strong> with WCAG 2.1 AA and GDPR, removing legal blockers for international expansion.</li>
             <li><strong className="text-white">The Human Connection:</strong> This initiative transformed our internal culture from reactive "firefighting" to a proactive, system-first mindset that empowered the entire R&D org.</li>
           </ul>
@@ -92,7 +92,7 @@ const PROJECTS: any[] = [
       }
     ],
     metrics: [
-      { label: "Velocity Delta", value: "+35%", description: "Projected increase in Product Design velocity." },
+      { label: "Velocity Delta", value: "-56%", description: "Reduction in design-to-development handoff time." },
       { label: "Accessibility", value: "100%", description: "Compliance with WCAG 2.1 AA and GDPR." },
       { label: "Engineering Efficiency", value: "+50%", description: "Projected increase in Engineering efficiency." }
     ],
@@ -165,7 +165,8 @@ const PROJECTS: any[] = [
         title: "5. Business Impact & Results",
         body: (
           <ul className="list-disc pl-5 space-y-2 text-[#d4d4d4]">
-            <li><strong className="text-white">Primary Metric:</strong> 70% projected adoption rate within the first 6 months of the beta.</li>
+            <li><strong className="text-white">Primary Metric:</strong> 86% upsell adoption rate among enterprise clients pre-launch.</li>
+            <li><strong className="text-white">Revenue Metric:</strong> Projected 3% booking fee revenue lift per reservation booked.</li>
             <li><strong className="text-white">Efficiency Metric:</strong> $0 external API costs by utilizing our proprietary ML model instead of 3rd party services.</li>
             <li><strong className="text-white">Secondary Metric:</strong> A significant increase in user confidence scores, with 85% of testers stating they felt "more in control" of their business.</li>
             <li><strong className="text-white">The Human Connection:</strong> We moved the needle from user anxiety to user empowerment, turning a complex financial task into a competitive advantage.</li>
@@ -184,9 +185,9 @@ const PROJECTS: any[] = [
       }
     ],
     metrics: [
-      { label: "Adoption Rate", value: "70%", description: "Projected adoption rate within the first 6 months." },
-      { label: "API Costs", value: "$0", description: "Utilized proprietary ML model instead of 3rd party services." },
-      { label: "User Confidence", value: "+85%", description: "Testers felt 'more in control' of their business." }
+      { label: "Adoption Rate", value: "86%", description: "Upsell adoption rate among enterprise clients pre-launch." },
+      { label: "Revenue Lift", value: "+3%", description: "Projected booking fee revenue lift per reservation booked." },
+      { label: "API Costs", value: "$0", description: "Utilized proprietary ML model instead of 3rd party services." }
     ]
   },
   { 
@@ -251,8 +252,8 @@ const PROJECTS: any[] = [
         title: "5. Business Impact & Results",
         body: (
           <ul className="list-disc pl-5 space-y-2 text-[#d4d4d4]">
-            <li><strong className="text-white">Primary Metric:</strong> 97% "Boomerang" rate—nearly all lost customers returned once their required integration was live.</li>
-            <li><strong className="text-white">Efficiency Metric:</strong> 2x increase in total integration offerings compared to our lead competitor.</li>
+            <li><strong className="text-white">Primary Metric:</strong> Reduced churn by 77% by allowing seamless third-party connections.</li>
+            <li><strong className="text-white">Efficiency Metric:</strong> Unlocked 15+ new integrations, filling critical functional gaps.</li>
             <li><strong className="text-white">Secondary Metric:</strong> 60% reduction in manual engineering hours per integration by utilizing the middleware strategy.</li>
             <li><strong className="text-white">The Human Connection:</strong> We restored customer loyalty by listening to their operational needs and closing the "Utility Gap."</li>
           </ul>
@@ -270,8 +271,8 @@ const PROJECTS: any[] = [
       }
     ],
     metrics: [
-      { label: "Boomerang Rate", value: "97%", description: "Lost customers returned once integration was live." },
-      { label: "Integration Offerings", value: "2x", description: "Increase compared to lead competitor." },
+      { label: "Reduced Churn", value: "77%", description: "Reduction in churn by allowing seamless third-party connections." },
+      { label: "Integration Offerings", value: "15+", description: "New integrations unlocked, filling functional gaps." },
       { label: "Engineering Hours", value: "-60%", description: "Reduction in manual engineering hours per integration." }
     ]
   },
@@ -427,6 +428,9 @@ const LighthouseFooter = () => {
       <div className="w-full flex flex-col gap-6">
         <div className="flex flex-col items-center md:items-start gap-1">
           <h4 className="text-sm font-bold text-[#f5f5f5]">Audited via Google Lighthouse</h4>
+          <p className="text-sm text-[#a3a3a3] text-center md:text-left">
+            Metrics based on desktop performance. Mobile performance may vary; other categories remain consistent.
+          </p>
         </div>
         
         <div className="grid grid-cols-2 gap-y-8 gap-x-4 md:flex md:flex-row md:justify-between md:gap-4 w-full">
@@ -435,10 +439,6 @@ const LighthouseFooter = () => {
           <LighthouseGauge score={100} label="Best Practices" />
           <LighthouseGauge score={100} label="SEO" />
         </div>
-
-        <p className="text-[10px] text-[#737373] text-center md:text-left md:whitespace-nowrap mt-2">
-          Metrics based on desktop performance. Mobile performance may vary; other categories remain consistent.
-        </p>
       </div>
     </div>
   );
@@ -1073,10 +1073,12 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
             </p>
             <p className="font-bold text-[#f5f5f5] pt-2">Core Areas of Expertise:</p>
             <ul className="list-disc pl-5 space-y-1">
-              <li><strong className="text-white">Growth & Revenue Strategy:</strong> Architecting automated growth levers and optimization tools that drive user engagement.</li>
-              <li><strong className="text-white">Design Systems & Ops:</strong> Operationalizing design systems integrated with Storybook to increase velocity and reduce design-to-development handoff time.</li>
-              <li><strong className="text-white">Accessibility Leadership:</strong> Championing inclusive design by embedding WCAG compliance into QA processes and leading team training to achieve 508/ADA standards.</li>
-              <li><strong className="text-white">Strategic Roadmapping:</strong> Partnering with leadership to translate long-term product visions into actionable, high-value features.</li>
+              <li><strong className="text-white">Revenue Management System:</strong> Architected a complex dynamic pricing engine, transforming static data into an automated growth lever. Secured 86% upsell adoption rate among enterprise clients pre-launch, enabling a projected 3% booking fee revenue lift per reservation booked.</li>
+              <li><strong className="text-white">Data Analytics Platform:</strong> Designed a robust analytics dashboard to visualize critical business metrics. Optimization of these tools drove weekly user engagement from 0% at launch to 93% year-over-year.</li>
+              <li><strong className="text-white">Design Systems & Operations:</strong> Led the rollout of a comprehensive design system integrated with Storybook. Resulted in a ~56% reduction in design-to-development handoff time and improved QA consistency.</li>
+              <li><strong className="text-white">Integration Suite:</strong> Led the UX strategy for the "Integration Suite," filling functional gaps and unlocking 15+ new integrations. Reduced churn by 77% by allowing seamless third-party connections.</li>
+              <li><strong className="text-white">Strategic Roadmapping:</strong> Partnered directly with Product VP to define the long-term product vision, prioritizing features that balanced high user value with engineering feasibility.</li>
+              <li><strong className="text-white">Accessibility Leadership:</strong> Championed inclusive design standards; embedded WCAG compliance into the QA process and led team training to achieve 508/ADA standards.</li>
             </ul>
             <p className="font-bold text-[#f5f5f5] pt-2">When I’m not building design systems or mentoring teams, you can usually find me:</p>
             <ul className="list-disc pl-5 space-y-1">
