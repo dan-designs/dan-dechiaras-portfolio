@@ -34,7 +34,7 @@ const PROJECTS: any[] = [
             <li><strong className="text-white">The Role:</strong> I served as the Design Leader overseeing the architectural overhaul and front-end refactor of our core product.</li>
             <li><strong className="text-white">The Team:</strong> 1 PM, 2 Architects, 2 Designers, 4 Engineers (Contract), 2 QAs (Contract).</li>
             <li><strong className="text-white">The Timeline:</strong> Brand Refresh Aug 2023 - Dec 2023, Design System & UI Kit Build: Nov 2023 - Dev 2024, FE Refactor(Dev): Jan 2025 - Sep 2026 (Cutover)</li>
-            <li><strong className="text-white">The Mission:</strong> Execute a multi-year refresh and modernization of our CX, often described as "changing the engine while the plane is in the air." Our objective was to resolve years of technical and design debt to enable global market potential and secure public sector contracts.</li>
+            <li><strong className="text-white">The Mission:</strong> Execute a multi-year refresh and modernization effort to future-proof our CX while maintaining delivery of 0-to-1 and growth features. This is often referred to as "changing the engine while the plane is in the air." Our objective was to resolve years of technical and design debt to enable global market potential and secure public sector contracts.</li>
           </ul>
         )
       },
@@ -42,8 +42,8 @@ const PROJECTS: any[] = [
         title: "2. Identifying the Opportunity",
         body: (
           <ul className="list-disc pl-5 space-y-2 text-[#d4d4d4]">
-            <li><strong className="text-white">The "Silent" Problem:</strong> While the company grew rapidly, we were operating with a fragmented UI and significant compliance gaps (WCAG 2.1 AA, GDPR) that created a legal liability.</li>
-            <li><strong className="text-white">The Proof:</strong> I identified that our existing infrastructure was blocking a critical UK acquisition and preventing us from bidding on government contracts due to a lack of accessibility and responsiveness.</li>
+            <li><strong className="text-white">The "Silent" Problem:</strong> While the company grew rapidly, we were operating with a fragmented UI and significant compliance gaps (WCAG 2.1 AA, GDPR) that created a legal liability and blocked our business goals.</li>
+            <li><strong className="text-white">The Proof:</strong> I identified that our existing infrastructure was blocking us from migrating users into Campspot following a critical UK acquisition, while also preventing us from bidding on any major government contracts due to a lack of accessibility and responsiveness.</li>
             <li><strong className="text-white">The Gap:</strong> I discovered that the application’s lack of a unified design system and non-responsive codebase was slowing down feature delivery and creating a disjointed user experience across different regions.</li>
             <li><strong className="text-white">Selling the Vision:</strong> I pitched this as a <strong>"Global Scale Engine"</strong> to leadership, framing it not as a "reskin," but as a foundational necessity to de-risk the business and increase velocity across Design, Engineering, and QA.</li>
           </ul>
@@ -53,7 +53,7 @@ const PROJECTS: any[] = [
         title: "3. The Solution & Execution",
         body: (
           <ul className="list-disc pl-5 space-y-2 text-[#d4d4d4]">
-            <li><strong className="text-white">The Hypothesis:</strong> We believed that by moving to a <strong>token-based design system</strong> and a refactored front-end (Storybook/Chromium instance), we could standardize the experience and drastically reduce the time-to-market for new features.</li>
+            <li><strong className="text-white">The Hypothesis:</strong> We believed that by moving to a <strong>token-based design system</strong> and a refactored front-end (Storybook/Chromium instance), we could standardize the experience and drastically reduce the time-to-market for new features and unblock i18n and public sector goals.</li>
             <li><strong className="text-white">Systemic Thinking:</strong> I led the creation of a comprehensive design system from the ground up, ensuring every component was WCAG 2.1 AA compliant and fully responsive.</li>
             <li><strong className="text-white">Simplifying the Journey:</strong> I structured the project into four distinct phases—Brand Refresh, Design System Creation, Front-End Refactor, and Final Cut-Over—to maintain business continuity without downtime.</li>
           </ul>
@@ -381,6 +381,67 @@ const getInitialLanguage = () => {
     if (lang) return lang.name;
   }
   return 'English';
+};
+
+const LighthouseGauge = ({ score, label }: { score: number, label: string }) => {
+  const radius = 36;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (score / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center gap-3 w-full">
+      <div className="relative w-20 h-20 flex items-center justify-center">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+          <circle
+            className="text-[#262626]"
+            strokeWidth="8"
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx="50"
+            cy="50"
+          />
+          <circle
+            className="text-accent"
+            strokeWidth="8"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx="50"
+            cy="50"
+          />
+        </svg>
+        <span className="absolute text-accent font-bold text-xl">{score}</span>
+      </div>
+      <span className="text-xs font-mono text-[#a3a3a3] uppercase tracking-wider text-center leading-tight">{label}</span>
+    </div>
+  );
+};
+
+const LighthouseFooter = () => {
+  return (
+    <div className="flex flex-col items-center md:items-start w-full">
+      <div className="w-full flex flex-col gap-6">
+        <div className="flex flex-col items-center md:items-start gap-1">
+          <h4 className="text-sm font-bold text-[#f5f5f5]">Audited via Google Lighthouse</h4>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-y-8 gap-x-4 md:flex md:flex-row md:justify-between md:gap-4 w-full">
+          <LighthouseGauge score={96} label="Performance" />
+          <LighthouseGauge score={100} label="Accessibility" />
+          <LighthouseGauge score={100} label="Best Practices" />
+          <LighthouseGauge score={100} label="SEO" />
+        </div>
+
+        <p className="text-[10px] text-[#737373] text-center md:text-left md:whitespace-nowrap mt-2">
+          Metrics based on desktop performance. Mobile performance may vary; other categories remain consistent.
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default function App() {
@@ -737,7 +798,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col gap-12">
           <div className="flex flex-col md:flex-row justify-between items-start gap-12">
             {/* Site map vertical */}
-            <div className="flex flex-col gap-4 text-sm font-mono flex-1">
+            <div className="flex flex-col gap-4 text-sm font-mono md:w-1/3">
               <button onClick={() => navigateTo('welcome')} className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm text-left w-fit">Home</button>
               <button onClick={() => navigateTo('about')} className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm text-left w-fit">About</button>
               <div className="flex flex-col items-start gap-2">
@@ -760,35 +821,44 @@ export default function App() {
               <button onClick={() => navigateTo('connect')} className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm text-left w-fit">Connect</button>
             </div>
 
-            {/* Copyright section */}
-            <div className="flex flex-col justify-start items-center text-[#a3a3a3] text-sm text-center flex-1 order-last md:order-none w-full md:w-auto pt-8 border-t border-[#262626] md:pt-0 md:border-t-0">
-              <span>&copy; {new Date().getFullYear()} Dan Dechiara</span>
-              <span>Built with accessibility in mind.</span>
-            </div>
+            {/* Right Column: Lighthouse, Copyright, Social */}
+            <div className="flex flex-col gap-12 md:w-2/3 w-full">
+              {/* Lighthouse Scores */}
+              <LighthouseFooter />
 
-            {/* Link farm */}
-            <div className="flex flex-wrap items-center justify-start md:justify-end gap-4 font-mono text-sm flex-1">
-              <a href="https://www.linkedin.com/in/dan-dechiara-b6131566/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
-                <Linkedin size={20} aria-hidden="true" />
-              </a>
-              <a href="https://github.com/dan-designs" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Github">
-                <Github size={20} aria-hidden="true" />
-              </a>
-              <a href="https://res.cloudinary.com/datad8tms/image/upload/fl_attachment/v1772838222/Dan-Dechiara-Resume-2026_qwxw7p.pdf" download="Dan-Dechiara-Resume-2026.pdf" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Download Resume">
-                <Download size={20} aria-hidden="true" />
-              </a>
-              <a href="mailto:danpdech@gmail.com" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Email">
-                <Mail size={20} aria-hidden="true" />
-              </a>
-              <a href="tel:8045131200" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Phone">
-                <Phone size={20} aria-hidden="true" />
-              </a>
-              <a href="https://www.youtube.com/@the_tangle_knots" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Youtube">
-                <Youtube size={20} aria-hidden="true" />
-              </a>
-              <a href="https://www.instagram.com/dan.dech/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Instagram">
-                <Instagram size={20} aria-hidden="true" />
-              </a>
+              {/* Bottom row of right column: Copyright & Social */}
+              <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
+                {/* Copyright section */}
+                <div className="flex flex-col justify-start items-center md:items-start text-[#a3a3a3] text-sm text-center md:text-left order-last md:order-none w-full md:w-auto pt-8 border-t border-[#262626] md:pt-0 md:border-t-0">
+                  <span>&copy; {new Date().getFullYear()} Dan Dechiara</span>
+                  <span>Built with accessibility in mind.</span>
+                </div>
+
+                {/* Link farm */}
+                <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 font-mono text-sm">
+                  <a href="https://www.linkedin.com/in/dan-dechiara-b6131566/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
+                    <Linkedin size={20} aria-hidden="true" />
+                  </a>
+                  <a href="https://github.com/dan-designs" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Github">
+                    <Github size={20} aria-hidden="true" />
+                  </a>
+                  <a href="https://res.cloudinary.com/datad8tms/image/upload/fl_attachment/v1772838222/Dan-Dechiara-Resume-2026_qwxw7p.pdf" download="Dan-Dechiara-Resume-2026.pdf" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Download Resume">
+                    <Download size={20} aria-hidden="true" />
+                  </a>
+                  <a href="mailto:danpdech@gmail.com" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Email">
+                    <Mail size={20} aria-hidden="true" />
+                  </a>
+                  <a href="tel:8045131200" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Phone">
+                    <Phone size={20} aria-hidden="true" />
+                  </a>
+                  <a href="https://www.youtube.com/@the_tangle_knots" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Youtube">
+                    <Youtube size={20} aria-hidden="true" />
+                  </a>
+                  <a href="https://www.instagram.com/dan.dech/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Instagram">
+                    <Instagram size={20} aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
