@@ -427,14 +427,14 @@ const LighthouseFooter = () => {
     <div className="flex flex-col items-center md:items-start w-full">
       <div className="w-full flex flex-col gap-6">
         <div className="flex flex-col items-center md:items-start gap-1">
-          <h4 className="text-sm font-bold text-[#f5f5f5]">Audited via Google Lighthouse</h4>
+          <h4 className="text-sm font-bold text-[#f5f5f5]">Audited via Google Lighthouse [Report from Mar 16, 2026, 3:20:40 PM]</h4>
           <p className="text-sm text-[#a3a3a3] text-center md:text-left">
             Metrics based on desktop performance. Mobile performance may vary; other categories remain consistent.
           </p>
         </div>
         
         <div className="grid grid-cols-2 gap-y-8 gap-x-4 md:flex md:flex-row md:justify-between md:gap-4 w-full">
-          <LighthouseGauge score={96} label="Performance" />
+          <LighthouseGauge score={93} label="Performance" />
           <LighthouseGauge score={100} label="Accessibility" />
           <LighthouseGauge score={100} label="Best Practices" />
           <LighthouseGauge score={100} label="SEO" />
