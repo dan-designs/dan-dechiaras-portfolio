@@ -5,10 +5,28 @@ import {
   Briefcase, Disc, Wrench, Mail, Phone, Linkedin, Globe, 
   ChevronRight, ArrowLeft, BarChart3, Layers, Accessibility,
   Menu, X, ChevronDown, FileText, Download, Github, Instagram, Youtube,
-  Minus, Plus
+  Minus, Plus, RefreshCw
 } from 'lucide-react';
 
 // --- DATA ---
+
+const PROCESS_TOOLS = [
+  { tool: 'ChatGPT', use: 'General Assistance', step: 0, type: 'Standalone', description: 'General purpose AI assistant used for quick queries, drafting communications, and exploring broad concepts.', strengths: 'Versatility and conversational memory for ongoing tasks.' },
+  { tool: 'Claude', use: 'Deep Analysis', step: 0, type: 'Standalone', description: 'Advanced AI model used for deep technical analysis, reviewing complex architectural decisions, and synthesizing large documents.', strengths: 'Nuanced understanding and large context window for deep dives.' },
+  { tool: 'CodeRabbit', use: 'Code Review', step: 0, type: 'Add-on', description: 'AI-powered code review tool integrated into the PR process.', strengths: 'Automated, context-aware code reviews that catch bugs and suggest improvements before merging.' },
+  { tool: 'Dovetail', use: 'Research Analysis', step: 8, type: 'Standalone', description: 'A customer insight hub where all testing data, interviews, and feedback are synthesized and analyzed.', strengths: 'Powerful tagging, sentiment analysis, and the ability to turn raw user testing data into actionable product iterations.' },
+  { tool: 'Figma', use: 'Visual Direction', step: 0, type: 'Standalone', description: 'The core design environment where visual direction is established.', strengths: 'Rapid UI iteration, robust component systems, and seamless translation of visual concepts into developer-ready specs.' },
+  { tool: 'Stitch / Figma', use: 'Visual Direction', step: 2, type: 'Standalone & Add-on', description: 'The core design environment (Figma) combined with an internal tool (Stitch) that bridges the gap between design tokens and code.', strengths: 'Rapid UI iteration, robust component systems, and seamless translation of visual concepts into developer-ready specs while ensuring design system consistency directly into the codebase.' },
+  { tool: 'Gemini', use: 'Ideation & Logic', step: 1, type: 'Standalone', description: 'Google\'s most capable AI model, used for complex reasoning, brainstorming product logic, and generating initial architectural approaches.', strengths: 'Massive context window allows for analyzing entire codebases or extensive product documentation at once.' },
+  { tool: 'GitHub + Copilot', use: 'Version Control', step: 5, type: 'Standalone & Add-on', description: 'Source code management combined with AI pair programming to accelerate refinement and ensure secure versioning.', strengths: 'Inline code suggestions speed up boilerplate writing, while strict version control ensures all AI-generated code is trackable and reversible.' },
+  { tool: 'Google AI Studio', use: 'Applet Gen', step: 3, type: 'Standalone', description: 'A rapid prototyping environment used to turn prompts and logic into functional, live React applets for immediate testing.', strengths: 'Bridges the gap between idea and functional prototype in minutes, allowing for real interactive pressure testing.' },
+  { tool: 'Grammarly', use: 'Copy Refinement', step: 0, type: 'Add-on', description: 'AI writing assistant used to ensure clear, concise, and professional communication across all documentation and UI copy.', strengths: 'Real-time grammar, tone, and clarity suggestions.' },
+  { tool: 'Maze', use: 'User Testing', step: 7, type: 'Standalone', description: 'A continuous product discovery platform used to run unmoderated tests on the live prototypes or Figma designs.', strengths: 'Quantitative metrics, heatmaps, and structured user feedback at scale.' },
+  { tool: 'Rovo', use: 'Knowledge Management', step: 0, type: 'Standalone', description: 'AI-powered enterprise search and knowledge discovery tool.', strengths: 'Finding information across disparate internal systems and documentation.' },
+  { tool: 'Stitch', use: 'Design to Code', step: 0, type: 'Add-on', description: 'Internal/plugin tool that bridges the gap between design tokens and code.', strengths: 'Ensures design system consistency from Figma directly into the codebase.' },
+  { tool: 'VS Code', use: 'Code Refinement', step: 4, type: 'Standalone', description: 'The primary local development environment where AI-generated code is refined, debugged, and integrated into the broader system.', strengths: 'Extensibility, deep integration with linting and formatting tools, and a familiar environment for fine-tuning.' },
+  { tool: 'Vercel', use: 'Live Deployment', step: 6, type: 'Standalone', description: 'The deployment platform used to host live prototypes and gather real-world feedback.', strengths: 'Instant preview deployments for every branch, enabling seamless sharing of live prototypes with stakeholders and testers.' }
+];
 
 const PROJECTS: any[] = [
   { 
@@ -454,6 +472,24 @@ export default function App() {
   
   const [language, setLanguage] = useState(getInitialLanguage);
   const [isI18nOpen, setIsI18nOpen] = useState(false);
+  const [selectedTool, setSelectedTool] = useState<any>(null);
+  const [showWorkflowModal, setShowWorkflowModal] = useState(false);
+
+  useEffect(() => {
+    const handleOpenTool = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setSelectedTool(customEvent.detail);
+    };
+    const handleOpenWorkflow = () => setShowWorkflowModal(true);
+    
+    window.addEventListener('open-tool', handleOpenTool);
+    window.addEventListener('open-workflow', handleOpenWorkflow);
+    
+    return () => {
+      window.removeEventListener('open-tool', handleOpenTool);
+      window.removeEventListener('open-workflow', handleOpenWorkflow);
+    };
+  }, []);
 
   useEffect(() => {
     const addGoogleTranslateScript = () => {
@@ -647,50 +683,57 @@ export default function App() {
           </nav>
 
           <div className="flex items-center gap-4 z-10">
-            <button 
-              role="switch"
-              aria-checked={showA11yFeatures}
-              onClick={() => setShowA11yFeatures(!showA11yFeatures)}
-              className="hidden md:flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 rounded-sm p-1 -m-1 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <span className="label-base text-[#f5f5f5] cursor-pointer">
-                A11Y X-RAY
-              </span>
-              <div 
-                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showA11yFeatures ? 'bg-accent group-hover:bg-accent-dark' : 'bg-[#737373] group-hover:bg-[#a3a3a3]'}`}
-              >
-                <span className={`inline-block h-3 w-3 transform rounded-full bg-[#111202] transition-transform ${showA11yFeatures ? 'translate-x-5' : 'translate-x-1'}`} />
-              </div>
-            </button>
-
-            <div className="hidden md:block w-px h-6 bg-[#262626]"></div>
-
             <div className="hidden md:block relative">
               <button 
                 onClick={() => setIsI18nOpen(!isI18nOpen)}
                 className="flex items-center gap-1 text-[#f5f5f5] hover:text-accent transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1 text-xl notranslate"
-                aria-haspopup="true"
+                aria-haspopup="menu"
                 aria-expanded={isI18nOpen}
                 aria-label="Select Language"
+                aria-controls={isI18nOpen ? "language-menu" : undefined}
               >
                 <span>{LANGUAGES.find(l => l.name === language)?.flag || '🇺🇸'}</span>
-                <ChevronDown size={14} className={`transition-transform ${isI18nOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={14} className={`transition-transform ${isI18nOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
               </button>
               {isI18nOpen && (
-                <div className="absolute top-full right-0 mt-2 w-32 bg-[#0C0D00] border border-[#262626] rounded-xl shadow-xl flex flex-col z-50 overflow-hidden notranslate">
+                <div id="language-menu" role="menu" className="absolute top-full right-0 mt-2 w-32 bg-[#0C0D00] border border-[#262626] rounded-xl shadow-xl flex flex-col z-50 overflow-hidden notranslate">
                   {LANGUAGES.map(lang => (
                     <button
                       key={lang.name}
+                      role="menuitem"
                       onClick={() => handleLanguageChange(lang)}
                       className={`text-left px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-[#1a1a1a] flex items-center gap-2 ${language === lang.name ? 'text-accent bg-[#1a1a1a]' : 'text-[#f5f5f5] hover:text-accent'}`}
                     >
-                      <span className="text-lg">{lang.flag}</span>
+                      <span className="text-lg" aria-hidden="true">{lang.flag}</span>
                       <span>{lang.name}</span>
                     </button>
                   ))}
                 </div>
               )}
             </div>
+
+            <button 
+              role="switch"
+              aria-checked={showA11yFeatures}
+              onClick={() => setShowA11yFeatures(!showA11yFeatures)}
+              className={`hidden md:flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 rounded-full px-4 py-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border relative ${showA11yFeatures ? 'bg-accent/10 border-accent text-accent shadow-[0_0_15px_rgba(213,219,86,0.3)]' : 'bg-[#1a1a1a] border-[#333] text-[#f5f5f5] hover:border-[#555] hover:bg-[#222]'}`}
+            >
+              {!showA11yFeatures && (
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+                </span>
+              )}
+              <Accessibility size={16} className={showA11yFeatures ? 'text-accent' : 'text-[#a3a3a3] group-hover:text-[#f5f5f5]'} aria-hidden="true" />
+              <span className="label-base cursor-pointer font-bold tracking-widest">
+                A11Y X-RAY
+              </span>
+              <div 
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showA11yFeatures ? 'bg-accent group-hover:bg-accent-dark' : 'bg-[#404040] group-hover:bg-[#555]'}`}
+              >
+                <span className={`inline-block h-3 w-3 transform rounded-full bg-[#111202] transition-transform ${showA11yFeatures ? 'translate-x-5' : 'translate-x-1'}`} />
+              </div>
+            </button>
 
             <button 
               className="lg:hidden text-[#f5f5f5] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1"
@@ -864,21 +907,27 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Mobile A11y FAB (Hidden as requested) */}
-      <div className="hidden">
+      {/* Mobile A11y FAB */}
+      <div className="md:hidden fixed bottom-6 right-6 z-50">
         <button 
           role="switch"
           aria-checked={showA11yFeatures}
           onClick={() => setShowA11yFeatures(!showA11yFeatures)}
-          className="group flex items-center gap-3 bg-[#0C0D00] border border-[#a3a3a3] p-3 pr-4 rounded-full shadow-2xl cursor-pointer hover:bg-[#1a1a1a] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50"
+          className={`group flex items-center gap-3 p-3 pr-4 rounded-full shadow-2xl cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 border relative ${showA11yFeatures ? 'bg-[#0C0D00] border-accent text-accent shadow-[0_0_15px_rgba(213,219,86,0.3)]' : 'bg-[#0C0D00] border-[#333] text-[#f5f5f5] hover:border-[#555]'}`}
         >
-          <Accessibility size={20} className="text-accent" aria-hidden="true" />
+          {!showA11yFeatures && (
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+            </span>
+          )}
+          <Accessibility size={20} className={showA11yFeatures ? 'text-accent' : 'text-[#a3a3a3] group-hover:text-[#f5f5f5]'} aria-hidden="true" />
           <div className="flex items-center gap-2">
-            <span className="sr-only">
+            <span className="label-base font-bold tracking-widest">
               A11Y X-RAY
             </span>
             <div 
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showA11yFeatures ? 'bg-accent group-hover:bg-accent-dark' : 'bg-[#737373] group-hover:bg-[#a3a3a3]'}`}
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showA11yFeatures ? 'bg-accent group-hover:bg-accent-dark' : 'bg-[#404040] group-hover:bg-[#555]'}`}
             >
               <span className={`inline-block h-3 w-3 transform rounded-full bg-[#111202] transition-transform ${showA11yFeatures ? 'translate-x-5' : 'translate-x-1'}`} />
             </div>
@@ -887,6 +936,157 @@ export default function App() {
       </div>
 
       <div id="google_translate_element" style={{ display: 'none' }}></div>
+      
+      {selectedTool && (
+        <ToolModal tool={selectedTool} onClose={() => setSelectedTool(null)} />
+      )}
+      
+      {showWorkflowModal && (
+        <WorkflowModal onClose={() => setShowWorkflowModal(false)} />
+      )}
+    </div>
+  );
+}
+
+// --- MODALS ---
+
+function ToolModal({ tool, onClose }: { tool: any, onClose: () => void }) {
+  if (!tool) return null;
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300" role="dialog" aria-modal="true" aria-labelledby="tool-modal-title">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} aria-hidden="true"></div>
+      <div className="relative bg-[#0C0D00] border border-[#262626] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="sticky top-0 bg-[#0C0D00]/90 backdrop-blur-md border-b border-[#262626] p-4 sm:p-6 flex justify-between items-center z-10">
+          <div className="flex items-center gap-3">
+            {tool.step > 0 && (
+              <div className="w-8 h-8 bg-[#262626] text-accent rounded-full flex items-center justify-center font-bold text-sm" aria-hidden="true">
+                {tool.step}
+              </div>
+            )}
+            <h2 id="tool-modal-title" className="heading-4 text-[#f5f5f5]">{tool.tool}</h2>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 text-[#a3a3a3] hover:text-accent hover:bg-[#1a1a1a] rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label="Close modal"
+          >
+            <X size={24} aria-hidden="true" />
+          </button>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="flex items-center gap-3">
+            <span className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent rounded-full text-xs font-mono uppercase tracking-widest">
+              {tool.type}
+            </span>
+            <span className="text-sm text-[#a3a3a3] uppercase tracking-wider font-bold">
+              {tool.use}
+            </span>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-bold text-[#f5f5f5] mb-2">Overview</h3>
+            <p className="body-base text-[#d4d4d4]">{tool.description}</p>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-bold text-[#f5f5f5] mb-2">Strengths in Workflow</h3>
+            <p className="body-base text-[#d4d4d4]">{tool.strengths}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WorkflowModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300" role="dialog" aria-modal="true" aria-labelledby="workflow-modal-title">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} aria-hidden="true"></div>
+      <div className="relative bg-[#0C0D00] border border-[#262626] rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="sticky top-0 bg-[#0C0D00]/90 backdrop-blur-md border-b border-[#262626] p-4 sm:p-6 flex justify-between items-center z-10">
+          <div className="flex items-center gap-2 text-accent">
+            <Zap size={24} aria-hidden="true" />
+            <h2 id="workflow-modal-title" className="heading-4 text-[#f5f5f5]">AI Tooling Exposure & Workflows</h2>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 text-[#a3a3a3] hover:text-accent hover:bg-[#1a1a1a] rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label="Close modal"
+          >
+            <X size={24} aria-hidden="true" />
+          </button>
+        </div>
+        
+        <div className="p-6 space-y-8">
+          <div>
+            <p className="body-base text-[#d4d4d4] mb-4">
+              As AI adoption accelerates, I have begun to experiment with my own end-to-end workflows that focus on integrating AI at every step in the product process. 
+            </p>
+            <p className="body-base text-[#d4d4d4] mb-4">
+              My goal with these experiments is to produce live, functional prototypes for rigorous testing and validation to help avoid the constraints that typically come with tests that leverage Figma prototypes.
+            </p>
+            <p className="body-base text-[#d4d4d4] mb-4">
+              After validating prototypes with users via Maze, I transpose the prototype to Figma using MCP or code-to-Figma plugins to refine components, finalize designs, and prep files for handoff. This has empowered me to routinely deliver code snippets while ensuring developers retain full ownership of the production environment.
+            </p>
+          </div>
+          
+          <div>
+            <h3 className="heading-5 text-[#f5f5f5] mb-4 border-b border-[#262626] pb-2">Toolkit</h3>
+            <div className="flex flex-wrap gap-2">
+              {PROCESS_TOOLS.filter(t => t.tool !== 'Stitch / Figma').sort((a, b) => a.tool.localeCompare(b.tool)).map(tool => (
+                <button 
+                  key={tool.tool} 
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-tool', { detail: tool }))}
+                  className="px-3 py-1 bg-[#111202] border border-[#262626] rounded-full text-xs font-mono text-[#a3a3a3] hover:text-accent hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  {tool.tool}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="heading-5 text-[#f5f5f5] mb-4 border-b border-[#262626] pb-2">The Process Loop</h3>
+            <ol className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {[
+                PROCESS_TOOLS.find(t => t.tool === 'Gemini'),
+                PROCESS_TOOLS.find(t => t.tool === 'Stitch / Figma'),
+                PROCESS_TOOLS.find(t => t.tool === 'Google AI Studio'),
+                PROCESS_TOOLS.find(t => t.tool === 'VS Code'),
+                PROCESS_TOOLS.find(t => t.tool === 'GitHub + Copilot'),
+                PROCESS_TOOLS.find(t => t.tool === 'Vercel'),
+                PROCESS_TOOLS.find(t => t.tool === 'Maze'),
+                PROCESS_TOOLS.find(t => t.tool === 'Dovetail')
+              ].map((step) => step && (
+                <li 
+                  key={step.tool} 
+                  className="text-left bg-[#111202] border border-[#333] p-4 rounded-lg shadow-md relative"
+                >
+                  <div className="absolute -top-2 -left-2 w-5 h-5 bg-[#262626] text-[#a3a3a3] rounded-full flex items-center justify-center font-bold text-[10px]" aria-hidden="true">
+                    {step.step}
+                  </div>
+                  <h4 className="font-bold text-[#f5f5f5] text-sm mt-1">{step.tool}</h4>
+                  <p className="text-[10px] text-[#a3a3a3] mt-1 uppercase tracking-wider">{step.use}</p>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-6 flex flex-col items-center gap-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-accent/10 border border-accent/20 text-accent rounded-full text-xs font-mono uppercase tracking-widest">
+                <RefreshCw size={12} /> Loop & Refine
+              </div>
+              <div className="bg-[#111202] border border-accent/20 rounded-xl p-4 w-full max-w-2xl">
+                <h4 className="font-bold text-accent mb-2 flex items-center gap-2">
+                  <CheckCircle2 size={16} /> Security & Privacy First
+                </h4>
+                <p className="text-sm text-[#a3a3a3]">
+                  Security and privacy are foundational to my work. Most of my AI utilization is currently focused on experimentation and prototyping. Strict sign-off is always secured from the Head of Security, C-Suite, and Leadership to mitigate risk, ensure compliance, and protect proprietary data before any prompts are fed into AI tools and before AI-generated code reaches production environments.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -914,6 +1114,8 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
               className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-500 ease-in-out"
               referrerPolicy="no-referrer"
+              fetchPriority="high"
+              decoding="async"
             />
           </div>
 
@@ -945,10 +1147,10 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
                 <ArrowRight size={18} aria-hidden="true" />
               </button>
               <button 
-                onClick={() => navigateTo('connect')}
-                className="inline-flex items-center gap-2 border-2 border-[#a3a3a3] bg-transparent px-6 py-3 font-semibold hover:border-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-4 focus-visible:ring-accent/50 focus-visible:outline-none rounded-sm"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-workflow'))}
+                className="inline-flex items-center gap-2 border-2 border-accent bg-transparent px-6 py-3 font-semibold hover:bg-accent/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-4 focus-visible:ring-accent/50 focus-visible:outline-none rounded-sm"
               >
-                Get in touch
+                AI Workflows
               </button>
             </div>
           </div>
@@ -1057,7 +1259,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
           )}
           <div className="flex items-center gap-3 mb-6 border-b border-[#262626] pb-4">
             <div className="w-12 h-12 rounded-full border border-[#262626] overflow-hidden" aria-hidden="true">
-              <img src="https://res.cloudinary.com/datad8tms/image/upload/v1773070543/Circle_usgtys.png" alt="Dan Dechiara" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              <img src="https://res.cloudinary.com/datad8tms/image/upload/v1773070543/Circle_usgtys.png" alt="Dan Dechiara" className="w-full h-full object-cover" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
             </div>
             <div>
               <h2 className="heading-4">Dan Dechiara</h2>
@@ -1073,7 +1275,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
             </p>
             <p className="font-bold text-[#f5f5f5] pt-2">Core Areas of Expertise:</p>
             <ul className="list-disc pl-5 space-y-1">
-              <li><strong className="text-white">Revenue Management System:</strong> Architected a complex dynamic pricing engine, transforming static data into an automated growth lever. Secured 86% upsell adoption rate among enterprise clients pre-launch, enabling a projected 3% booking fee revenue lift per reservation booked.</li>
+              <li><strong className="text-white">Revenue Management System:</strong> Architected a complex dynamic pricing engine, transforming static data into an automated growth lever. I assisted in the training of the proprietary ML model to bolster security and ensure that we could verify its trust and accuracy. Secured 86% upsell adoption rate among enterprise clients pre-launch, enabling a projected 3% booking fee revenue lift per reservation booked.</li>
               <li><strong className="text-white">Data Analytics Platform:</strong> Designed a robust analytics dashboard to visualize critical business metrics. Optimization of these tools drove weekly user engagement from 0% at launch to 93% year-over-year.</li>
               <li><strong className="text-white">Design Systems & Operations:</strong> Led the rollout of a comprehensive design system integrated with Storybook. Resulted in a ~56% reduction in design-to-development handoff time and improved QA consistency.</li>
               <li><strong className="text-white">Integration Suite:</strong> Led the UX strategy for the "Integration Suite," filling functional gaps and unlocking 15+ new integrations. Reduced churn by 77% by allowing seamless third-party connections.</li>
@@ -1284,6 +1486,8 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
                   referrerPolicy="no-referrer" 
                   aria-label={project.ariaLabel}
                   aria-describedby={project.ariaDescribedBy ? `${project.ariaDescribedBy}-hero` : undefined}
+                  loading="lazy"
+                  decoding="async"
                 />
                 {project.ariaDescription && (
                   <p id={`${project.ariaDescribedBy}-hero`} className="sr-only">{project.ariaDescription}</p>
@@ -1429,7 +1633,7 @@ function ConnectPage({ showA11y }: { showA11y: boolean }) {
       
       <div className="w-full max-w-2xl text-center mb-10">
         <div className="w-24 h-24 rounded-full mx-auto mb-6 overflow-hidden border border-[#262626]" aria-hidden="true">
-           <img src="https://res.cloudinary.com/datad8tms/image/upload/v1773070543/Circle_usgtys.png" alt="Dan Dechiara" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+           <img src="https://res.cloudinary.com/datad8tms/image/upload/v1773070543/Circle_usgtys.png" alt="Dan Dechiara" className="w-full h-full object-cover" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
         </div>
         <h1 className="heading-3 mb-2">Dan Dechiara</h1>
       </div>
@@ -1541,6 +1745,8 @@ function PreviewCard({ project, onClick, showA11y }: { project: any, onClick: ()
               referrerPolicy="no-referrer" 
               aria-label={project.ariaLabel}
               aria-describedby={project.ariaDescribedBy ? `${project.ariaDescribedBy}-preview` : undefined}
+              loading="lazy"
+              decoding="async"
             />
             {project.ariaDescription && (
               <p id={`${project.ariaDescribedBy}-preview`} className="sr-only">{project.ariaDescription}</p>
@@ -1604,6 +1810,8 @@ function ProjectGridCard({ project, onClick, showA11y }: { project: any, onClick
               referrerPolicy="no-referrer" 
               aria-label={project.ariaLabel}
               aria-describedby={project.ariaDescribedBy ? `${project.ariaDescribedBy}-grid` : undefined}
+              loading="lazy"
+              decoding="async"
             />
             {project.ariaDescription && (
               <p id={`${project.ariaDescribedBy}-grid`} className="sr-only">{project.ariaDescription}</p>
