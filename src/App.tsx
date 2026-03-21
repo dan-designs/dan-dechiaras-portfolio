@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Eye, Keyboard, Zap, ArrowRight, CheckCircle2, Code2, 
@@ -440,23 +440,23 @@ const LighthouseGauge = ({ score, label }: { score: number, label: string }) => 
   );
 };
 
-const LighthouseFooter = () => {
+const LighthouseFooter = ({ showA11y }: { showA11y?: boolean }) => {
   return (
-    <div className="flex flex-col items-center md:items-start w-full">
+    <div className={`flex flex-col items-center ${showA11y ? 'lg:items-start' : 'md:items-start'} w-full`}>
       <div className="w-full flex flex-col gap-6">
-        <div className="flex flex-col items-center md:items-start gap-1">
+        <div className={`flex flex-col items-center ${showA11y ? 'lg:items-start' : 'md:items-start'} gap-1`}>
           <h4 className="text-sm font-bold text-[#f5f5f5]">Audited via Google Lighthouse [Report from Mar 20, 2026, 5:16:08 PM]</h4>
-          <p className="text-sm text-[#a3a3a3] text-center md:text-left">
-            <span className="hidden md:inline">Metrics based on desktop performance.</span>
-            <span className="md:hidden">Metrics based on mobile performance.</span>
+          <p className={`text-sm text-[#a3a3a3] text-center ${showA11y ? 'lg:text-left' : 'md:text-left'}`}>
+            <span className={`hidden ${showA11y ? 'lg:inline' : 'md:inline'}`}>Metrics based on desktop performance.</span>
+            <span className={showA11y ? 'lg:hidden' : 'md:hidden'}>Metrics based on mobile performance.</span>
           </p>
         </div>
         
-        <div className="grid grid-cols-2 gap-y-8 gap-x-4 md:flex md:flex-row md:justify-between md:gap-4 w-full">
-          <div className="hidden md:flex w-full">
+        <div className={`grid grid-cols-2 gap-y-8 gap-x-4 ${showA11y ? 'lg:flex lg:flex-row lg:justify-between lg:gap-4' : 'md:flex md:flex-row md:justify-between md:gap-4'} w-full`}>
+          <div className={`hidden ${showA11y ? 'lg:flex' : 'md:flex'} w-full`}>
             <LighthouseGauge score={95} label="Performance" />
           </div>
-          <div className="flex md:hidden w-full">
+          <div className={`flex ${showA11y ? 'lg:hidden' : 'md:hidden'} w-full`}>
             <LighthouseGauge score={71} label="Performance" />
           </div>
           <LighthouseGauge score={100} label="Accessibility" />
@@ -467,6 +467,213 @@ const LighthouseFooter = () => {
     </div>
   );
 };
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, [matches, query]);
+
+  return matches;
+}
+
+const XRAY_DATA = [
+  { title: "Accessible Animation", description: "Animation is hidden from screen readers using aria-hidden. A static aria-label provides the full context once." },
+  { title: "Semantic Structure & Nav", description: "Uses a logical heading hierarchy (H1 to H3) and a <section> tag with aria-labelledby. The navigation above uses aria-current='page' for state." },
+  { title: "Reading Order", description: "CSS Grid is used for visual layout, but the DOM order remains logical for screen readers, ensuring the story is read before the sidebar." },
+  { title: "Reducing Audio Clutter", description: "Decorative icons use aria-hidden='true' to prevent screen readers from announcing redundant visual information." },
+  { title: "EN 301 549 Contrast", description: "Project tags use specific grays to ensure they pass the strict 4.5:1 text contrast minimums. Borders are decorative and use #262626." },
+  { title: "Frictionless Access", description: "Forms can be accessibility barriers. Providing direct links to email and phone ensures users can communicate using their preferred, accessible tools." },
+  { title: "Interactive Focus & Contrast", description: "Focus states use a high-contrast 2px outline with an offset. Decorative borders use #262626 as they don't require 3:1 contrast." },
+  { title: "Focus Management", description: "The entire card is clickable via a pseudo-element on the link, keeping the DOM clean and avoiding nested interactive elements." },
+  { title: "Accessible Imagery", description: "Abstract image placeholders use role='img' and descriptive aria-labels so assistive technologies don't skip them as empty divs." }
+];
+
+function A11yDashboard({ isActive, onClose, isTablet, isMobile }: { isActive: boolean, onClose: () => void, isTablet: boolean, isMobile: boolean }) {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const sheetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isMobile && isSheetOpen) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setIsSheetOpen(false);
+        }
+      };
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isMobile, isSheetOpen]);
+
+  // Focus trap for bottom sheet
+  useEffect(() => {
+    if (isMobile && isSheetOpen && sheetRef.current) {
+      const focusableElements = sheetRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+      const handleTab = (e: KeyboardEvent) => {
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              lastElement.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              firstElement.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      };
+
+      document.addEventListener('keydown', handleTab);
+      firstElement?.focus();
+
+      return () => document.removeEventListener('keydown', handleTab);
+    }
+  }, [isMobile, isSheetOpen]);
+
+  if (!isActive) return null;
+
+  if (isTablet) {
+    return (
+      <aside className="fixed top-[57px] left-0 bottom-0 w-80 bg-[#0C0D00] border-r border-[#262626] overflow-y-auto z-40 p-6 animate-in slide-in-from-left duration-300 shadow-2xl">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="heading-4 text-accent flex items-center gap-2">
+            <Eye size={20} /> A11Y X-RAY
+          </h2>
+          <button onClick={onClose} className="p-2 hover:bg-[#1a1a1a] rounded-full text-[#a3a3a3] hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" aria-label="Close dashboard">
+            <X size={20} />
+          </button>
+        </div>
+        <div className="space-y-6" aria-live="polite">
+          {XRAY_DATA.map((item, idx) => (
+            <div key={idx} className="bg-[#171717] border border-[#262626] p-4 rounded-xl">
+              <h3 className="label-lg text-accent mb-2 flex items-center gap-2">
+                <CheckCircle2 size={16} /> {item.title}
+              </h3>
+              <p className="body-sm text-[#d4d4d4] mt-2">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </aside>
+    );
+  }
+
+  if (isMobile) {
+    return (
+      <>
+        {/* 60px Dashboard Bar */}
+        <div 
+          className="fixed bottom-0 left-0 right-0 h-[60px] bg-[#0C0D00] border-t border-accent z-50 flex items-center justify-between px-6 cursor-pointer w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+          onClick={() => setIsSheetOpen(true)}
+          role="button"
+          aria-expanded={isSheetOpen}
+          aria-controls="a11y-bottom-sheet"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setIsSheetOpen(true);
+            }
+          }}
+        >
+          <div className="flex items-center gap-2 text-accent font-bold">
+            <Eye size={20} /> A11Y Dashboard
+          </div>
+          <div className="flex items-center gap-4">
+            <ChevronDown size={20} className="text-accent rotate-180" />
+            <div 
+              role="button"
+              aria-label="Close A11Y Mode"
+              tabIndex={0}
+              className="p-1 hover:bg-[#1a1a1a] rounded-full text-[#a3a3a3] hover:text-accent transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.stopPropagation();
+                  onClose();
+                }
+              }}
+            >
+              <X size={20} />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Sheet */}
+        <AnimatePresence>
+          {isSheetOpen && (
+            <>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/60 z-[51]"
+                onClick={() => setIsSheetOpen(false)}
+                aria-hidden="true"
+              />
+              <motion.div 
+                id="a11y-bottom-sheet"
+                ref={sheetRef}
+                initial={{ y: '100%' }}
+                animate={{ y: 0 }}
+                exit={{ y: '100%' }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="fixed bottom-0 left-0 right-0 bg-[#0C0D00] border-t border-accent rounded-t-3xl z-[52] max-h-[80vh] overflow-y-auto p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] pb-24"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="sheet-title"
+                tabIndex={-1}
+              >
+                <div className="w-12 h-1.5 bg-[#262626] rounded-full mx-auto mb-6" />
+                <div className="flex items-center justify-between mb-6">
+                  <h2 id="sheet-title" className="heading-4 text-accent">Audit Summary</h2>
+                  <button onClick={() => setIsSheetOpen(false)} className="p-2 hover:bg-[#1a1a1a] rounded-full text-[#a3a3a3] hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" aria-label="Close dashboard">
+                    <X size={20} />
+                  </button>
+                </div>
+                
+                <div className="space-y-4" aria-live="polite">
+                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626] flex justify-between items-center">
+                    <span className="font-bold text-[#f5f5f5]">Semantic Headings</span>
+                    <span className="text-accent font-mono bg-accent/10 px-2 py-1 rounded">12</span>
+                  </div>
+                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626] flex justify-between items-center">
+                    <span className="font-bold text-[#f5f5f5]">ARIA Landmarks</span>
+                    <span className="text-accent font-mono bg-accent/10 px-2 py-1 rounded">5</span>
+                  </div>
+                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626] flex justify-between items-center">
+                    <span className="font-bold text-[#f5f5f5]">Reduced Motion</span>
+                    <span className="text-accent font-mono bg-accent/10 px-2 py-1 rounded">Supported</span>
+                  </div>
+                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626] flex justify-between items-center">
+                    <span className="font-bold text-[#f5f5f5]">Contrast Ratio</span>
+                    <span className="text-accent font-mono bg-accent/10 px-2 py-1 rounded">4.5:1+</span>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </>
+    );
+  }
+
+  return null;
+}
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('welcome');
@@ -480,6 +687,9 @@ export default function App() {
   const [isI18nOpen, setIsI18nOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<any>(null);
   const [showWorkflowModal, setShowWorkflowModal] = useState(false);
+
+  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   useEffect(() => {
     const handleOpenTool = (e: Event) => {
@@ -592,29 +802,31 @@ export default function App() {
       {/* Header */}
       <header className="h-[57px] border-b border-[#262626] sticky top-0 bg-[#111202]/90 backdrop-blur-md z-50">
         <div className="w-full px-8 h-full flex justify-between items-center relative">
-          <button 
-            onClick={() => navigateTo('welcome')}
-            aria-label="Dan Dechiara, Design Leader, Founding IC, Product Strategist, UX Architect - Home"
-            className="font-bold text-xl tracking-tight hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent z-10 flex items-center relative group notranslate"
-          >
-            <span aria-hidden="true" className="flex items-center">
-              <span className="hidden lg:inline">Dan Dechiara</span>
-              <span className="lg:hidden">Dan D</span>
-              <div className="relative h-[1.2em] inline-flex text-accent text-left items-center justify-start min-w-[180px] ml-1 [perspective:1000px]">
-                <AnimatePresence mode="popLayout">
-                  <motion.span
-                    key={titleIndex}
-                    initial={{ rotateX: 90, opacity: 0 }}
-                    animate={{ rotateX: 0, opacity: 1 }}
-                    exit={{ rotateX: -90, opacity: 0 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="absolute left-0 origin-center whitespace-nowrap"
-                  >
-                    {TITLES[titleIndex]}
-                  </motion.span>
-                </AnimatePresence>
-              </div>
-            </span>
+          <div className="relative flex items-center">
+            <button 
+              onClick={() => navigateTo('welcome')}
+              aria-label="Dan Dechiara, Design Leader, Founding IC, Product Strategist, UX Architect - Home"
+              className="font-bold text-xl tracking-tight hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent z-10 flex items-center relative group notranslate"
+            >
+              <span aria-hidden="true" className="flex items-center">
+                <span className="hidden lg:inline">Dan Dechiara</span>
+                <span className="lg:hidden">Dan D</span>
+                <div className="relative h-[1.2em] inline-flex text-accent text-left items-center justify-start min-w-[180px] ml-1 [perspective:1000px]">
+                  <AnimatePresence mode="popLayout">
+                    <motion.span
+                      key={titleIndex}
+                      initial={{ rotateX: 90, opacity: 0 }}
+                      animate={{ rotateX: 0, opacity: 1 }}
+                      exit={{ rotateX: -90, opacity: 0 }}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                      className="absolute left-0 origin-center whitespace-nowrap"
+                    >
+                      {TITLES[titleIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
+              </span>
+            </button>
             {showA11yFeatures && (
               <A11yTooltip 
                 title="Accessible Animation" 
@@ -622,7 +834,7 @@ export default function App() {
                 position="bottom"
               />
             )}
-          </button>
+          </div>
           
           <nav aria-label="Main Navigation" className="hidden lg:flex absolute inset-0 items-center justify-center pointer-events-none">
             <ul className="flex space-x-8 text-sm pointer-events-auto">
@@ -689,7 +901,7 @@ export default function App() {
           </nav>
 
           <div className="flex items-center gap-4 z-10">
-            <div className="hidden md:block relative">
+            <div className="hidden lg:block relative">
               <button 
                 onClick={() => setIsI18nOpen(!isI18nOpen)}
                 className="flex items-center gap-1 text-[#f5f5f5] hover:text-accent transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm p-1 text-xl notranslate"
@@ -829,13 +1041,48 @@ export default function App() {
                   Connect
                 </button>
               </li>
+              <li className="pt-4 border-t border-[#262626]">
+                <div className="flex flex-col">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#f5f5f5]">Language</span>
+                    <button 
+                      onClick={() => setIsI18nOpen(!isI18nOpen)}
+                      className="p-2 text-[#f5f5f5] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm flex items-center gap-2 notranslate"
+                      aria-expanded={isI18nOpen}
+                      aria-label="Select Language"
+                    >
+                      <span className="text-2xl">{LANGUAGES.find(l => l.name === language)?.flag || '🇺🇸'}</span>
+                      <ChevronDown size={24} className={`transition-transform ${isI18nOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+                    </button>
+                  </div>
+                  {isI18nOpen && (
+                    <div className="flex flex-col pl-4 mt-4 space-y-4 border-l-2 border-[#262626] animate-in slide-in-from-top-2 duration-200 notranslate">
+                      {LANGUAGES.map(lang => (
+                        <button
+                          key={lang.name}
+                          onClick={() => {
+                            handleLanguageChange(lang);
+                            setIsI18nOpen(false);
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className={`text-left text-lg font-bold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm flex items-center gap-3 ${language === lang.name ? 'text-accent' : 'text-[#f5f5f5] hover:text-accent'}`}
+                        >
+                          <span className="text-2xl" aria-hidden="true">{lang.flag}</span>
+                          <span>{lang.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </li>
             </ul>
           </nav>
         </div>
       )}
 
-      <main id="main-content" className="flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col">
+      <main id="main-content" className={`flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col transition-all duration-300 ${isTablet && showA11yFeatures ? 'pl-[352px]' : ''} ${isMobile && showA11yFeatures ? 'pb-[60px]' : ''}`}>
         {showA11yFeatures && <A11yExplainerCard />}
+        <A11yDashboard isActive={showA11yFeatures} onClose={() => setShowA11yFeatures(false)} isTablet={isTablet} isMobile={isMobile} />
         {currentPage === 'welcome' && <WelcomePage showA11y={showA11yFeatures} navigateTo={navigateTo} />}
         {currentPage === 'about' && <AboutPage showA11y={showA11yFeatures} />}
         {currentPage === 'work' && <WorkPage showA11y={showA11yFeatures} selectedProject={selectedProject} setSelectedProject={setSelectedProject} />}
@@ -843,11 +1090,11 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[#262626] bg-[#111202] py-12 mt-auto">
+      <footer className={`border-t border-[#262626] bg-[#111202] py-12 mt-auto transition-all duration-300 ${isTablet && showA11yFeatures ? 'pl-[352px]' : ''} ${isMobile && showA11yFeatures ? 'pb-[60px]' : ''}`}>
         <div className="max-w-6xl mx-auto px-6 flex flex-col gap-12">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+          <div className={`flex flex-col ${showA11yFeatures ? 'lg:flex-row' : 'md:flex-row'} justify-between items-start gap-12`}>
             {/* Site map vertical */}
-            <div className="flex flex-col gap-4 text-sm font-mono md:w-1/3">
+            <div className={`flex flex-col gap-4 text-sm font-mono ${showA11yFeatures ? 'lg:w-1/3' : 'md:w-1/3'}`}>
               <button onClick={() => navigateTo('welcome')} className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm text-left w-fit">Home</button>
               <button onClick={() => navigateTo('about')} className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm text-left w-fit">About</button>
               <div className="flex flex-col items-start gap-2">
@@ -871,20 +1118,20 @@ export default function App() {
             </div>
 
             {/* Right Column: Lighthouse, Copyright, Social */}
-            <div className="flex flex-col gap-12 md:w-2/3 w-full">
+            <div className={`flex flex-col gap-12 ${showA11yFeatures ? 'lg:w-2/3' : 'md:w-2/3'} w-full`}>
               {/* Lighthouse Scores */}
-              <LighthouseFooter />
+              <LighthouseFooter showA11y={showA11yFeatures} />
 
               {/* Bottom row of right column: Copyright & Social */}
-              <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
+              <div className={`flex flex-col ${showA11yFeatures ? 'lg:flex-row lg:items-start' : 'md:flex-row md:items-start'} justify-between items-center gap-8`}>
                 {/* Copyright section */}
-                <div className="flex flex-col justify-start items-center md:items-start text-[#a3a3a3] text-sm text-center md:text-left order-last md:order-none w-full md:w-auto pt-8 border-t border-[#262626] md:pt-0 md:border-t-0">
+                <div className={`flex flex-col justify-start items-center ${showA11yFeatures ? 'lg:items-start lg:text-left lg:order-none lg:pt-0 lg:border-t-0' : 'md:items-start md:text-left md:order-none md:pt-0 md:border-t-0'} text-[#a3a3a3] text-sm text-center order-last w-full ${showA11yFeatures ? 'lg:w-auto' : 'md:w-auto'} pt-8 border-t border-[#262626]`}>
                   <span>&copy; {new Date().getFullYear()} Dan Dechiara</span>
                   <span>Built with accessibility in mind.</span>
                 </div>
 
                 {/* Link farm */}
-                <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 font-mono text-sm">
+                <div className={`flex flex-wrap items-center justify-center ${showA11yFeatures ? 'lg:justify-end' : 'md:justify-end'} gap-4 font-mono text-sm`}>
                   <a href="https://www.linkedin.com/in/dan-dechiara-b6131566/" target="_blank" rel="noopener noreferrer" className="text-[#a3a3a3] hover:text-accent transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="LinkedIn">
                     <Linkedin size={20} aria-hidden="true" />
                   </a>
@@ -914,32 +1161,34 @@ export default function App() {
       </footer>
 
       {/* Mobile A11y FAB */}
-      <div className="md:hidden fixed bottom-6 right-6 z-50">
-        <button 
-          role="switch"
-          aria-checked={showA11yFeatures}
-          onClick={() => setShowA11yFeatures(!showA11yFeatures)}
-          className={`group flex items-center gap-3 p-3 pr-4 rounded-full shadow-2xl cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 border relative ${showA11yFeatures ? 'bg-[#0C0D00] border-accent text-accent shadow-[0_0_15px_rgba(213,219,86,0.3)]' : 'bg-[#0C0D00] border-[#333] text-[#f5f5f5] hover:border-[#555]'}`}
-        >
-          {!showA11yFeatures && (
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
-            </span>
-          )}
-          <Accessibility size={20} className={showA11yFeatures ? 'text-accent' : 'text-[#a3a3a3] group-hover:text-[#f5f5f5]'} aria-hidden="true" />
-          <div className="flex items-center gap-2">
-            <span className="label-base font-bold tracking-widest">
-              A11Y X-RAY
-            </span>
-            <div 
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showA11yFeatures ? 'bg-accent group-hover:bg-accent-dark' : 'bg-[#404040] group-hover:bg-[#555]'}`}
-            >
-              <span className={`inline-block h-3 w-3 transform rounded-full bg-[#111202] transition-transform ${showA11yFeatures ? 'translate-x-5' : 'translate-x-1'}`} />
+      {!showA11yFeatures && (
+        <div className="md:hidden fixed bottom-6 right-6 z-50 transition-all duration-300">
+          <button 
+            role="switch"
+            aria-checked={showA11yFeatures}
+            onClick={() => setShowA11yFeatures(!showA11yFeatures)}
+            className={`group flex items-center gap-3 p-3 pr-4 rounded-full shadow-2xl cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 border relative ${showA11yFeatures ? 'bg-[#0C0D00] border-accent text-accent shadow-[0_0_15px_rgba(213,219,86,0.3)]' : 'bg-[#0C0D00] border-[#333] text-[#f5f5f5] hover:border-[#555]'}`}
+          >
+            {!showA11yFeatures && (
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+              </span>
+            )}
+            <Accessibility size={20} className={showA11yFeatures ? 'text-accent' : 'text-[#a3a3a3] group-hover:text-[#f5f5f5]'} aria-hidden="true" />
+            <div className="flex items-center gap-2">
+              <span className="label-base font-bold tracking-widest">
+                A11Y X-RAY
+              </span>
+              <div 
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showA11yFeatures ? 'bg-accent group-hover:bg-accent-dark' : 'bg-[#404040] group-hover:bg-[#555]'}`}
+              >
+                <span className={`inline-block h-3 w-3 transform rounded-full bg-[#111202] transition-transform ${showA11yFeatures ? 'translate-x-5' : 'translate-x-1'}`} />
+              </div>
             </div>
-          </div>
-        </button>
-      </div>
+          </button>
+        </div>
+      )}
 
       <div id="google_translate_element" style={{ display: 'none' }}></div>
       
@@ -1103,7 +1352,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
   return (
     <div className="animate-in fade-in duration-500 flex flex-col">
       {/* Hero Section */}
-      <section className="min-h-[calc(100svh-57px)] flex flex-col justify-center relative pt-6 pb-12 md:py-0" aria-labelledby="hero-heading">
+      <section className={`min-h-[calc(100svh-57px)] flex flex-col justify-center relative pt-6 pb-12 ${showA11y ? 'lg:py-0' : 'md:py-0'}`} aria-labelledby="hero-heading">
         {showA11y && (
           <A11yTooltip 
             title="Semantic Structure & Nav" 
@@ -1112,9 +1361,9 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
           />
         )}
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
+        <div className={`grid grid-cols-1 ${showA11y ? 'lg:grid-cols-2' : 'md:grid-cols-2'} gap-8 items-center w-full`}>
           {/* Left Column: Image */}
-          <div className="relative group overflow-hidden rounded-2xl aspect-[4/5] w-full md:w-[85%] md:max-w-[420px] lg:w-[72%] lg:max-w-[378px] mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500">
+          <div className={`relative group overflow-hidden rounded-2xl aspect-[4/5] w-full ${showA11y ? 'lg:w-[72%] lg:max-w-[378px]' : 'md:w-[85%] md:max-w-[420px] lg:w-[72%] lg:max-w-[378px]'} mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500`}>
             <img 
               src="https://res.cloudinary.com/datad8tms/image/upload/v1772823845/Dan-Dechiara_rdkrq2.png" 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
@@ -1166,7 +1415,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
       {/* Ethos Section */}
       <section className="py-20 border-t border-[#262626] relative" aria-labelledby="ethos-heading">
         <div className="mb-12 flex flex-col items-start">
-          <div className="w-full flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div className={`w-full flex flex-col ${showA11y ? 'lg:flex-row lg:items-center' : 'md:flex-row md:items-center'} justify-between gap-4 mb-6`}>
             <h2 id="ethos-heading" className="heading-3 m-0">Design & Leadership Ethos</h2>
             <div className="flex flex-row lg:flex-col items-center lg:items-end gap-4 lg:gap-2">
               <a 
@@ -1192,7 +1441,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className={`grid grid-cols-1 ${showA11y ? 'lg:grid-cols-3' : 'md:grid-cols-3'} gap-8`}>
           <PrincipleCard 
             icon={<BarChart3 className="text-accent" size={24} aria-hidden="true" />}
             title="Strategic Product Architecture"
@@ -1229,7 +1478,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
           </button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className={`grid ${showA11y ? 'lg:grid-cols-2' : 'md:grid-cols-2'} gap-6`}>
           {PROJECTS.slice(0, 4).map(project => (
             <PreviewCard 
               key={project.id}
@@ -1250,12 +1499,12 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
 
 function AboutPage({ showA11y }: { showA11y: boolean }) {
   return (
-    <div className="min-h-[calc(100svh-57px)] py-8 md:py-12 animate-in fade-in duration-500">
+    <div className={`min-h-[calc(100svh-57px)] py-8 ${showA11y ? 'lg:py-12' : 'md:py-12'} animate-in fade-in duration-500`}>
       {/* Bento Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-min">
+      <div className={`grid grid-cols-1 ${showA11y ? 'lg:grid-cols-3' : 'md:grid-cols-3'} gap-6 auto-rows-min`}>
         
         {/* The Story - Spans 2 columns */}
-        <div className="md:col-span-2 bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative">
+        <div className={`${showA11y ? 'lg:col-span-2' : 'md:col-span-2'} bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative`}>
           {showA11y && (
             <A11yTooltip 
               title="Reading Order" 
@@ -1297,7 +1546,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
         </div>
 
         {/* The Resume - Spans 1 column */}
-        <div className="md:col-span-1 bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 h-fit">
+        <div className={`${showA11y ? 'lg:col-span-1' : 'md:col-span-1'} bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 h-fit`}>
           <div className="flex items-center gap-2 mb-6 text-accent">
             <Briefcase size={20} aria-hidden="true" />
             <h2 className="heading-5 text-[#f5f5f5]">Experience</h2>
@@ -1342,7 +1591,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
         </div>
 
         {/* Skills Grid - Spans 2 columns */}
-        <div className="md:col-span-2 bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative">
+        <div className={`${showA11y ? 'lg:col-span-2' : 'md:col-span-2'} bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative`}>
           {showA11y && (
             <A11yTooltip 
               title="Reducing Audio Clutter" 
@@ -1398,7 +1647,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
         </div>
 
         {/* Personal Interests - Spans 1 column */}
-        <div className="md:col-span-1 bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative overflow-hidden group">
+        <div className={`${showA11y ? 'lg:col-span-1' : 'md:col-span-1'} bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative overflow-hidden group`}>
           {/* Decorative background element */}
           <div className="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity">
             <Disc size={160} aria-hidden="true" />
@@ -1445,7 +1694,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
     if (!project) return null;
 
     return (
-      <div className="min-h-[calc(100svh-57px)] py-12 md:py-20 animate-in slide-in-from-right-8 duration-500">
+      <div className={`min-h-[calc(100svh-57px)] py-12 ${showA11y ? 'lg:py-20' : 'md:py-20'} animate-in slide-in-from-right-8 duration-500`}>
         <button 
           onClick={() => setSelectedProject(null)}
           className="flex items-center gap-2 text-[#a3a3a3] hover:text-accent font-mono text-sm mb-8 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm px-2 py-1 -ml-2"
@@ -1509,8 +1758,8 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
         </div>
 
         {/* Deep Dive Content */}
-        <div className="grid md:grid-cols-3 gap-12 border-t border-[#262626] pt-12">
-          <div className="md:col-span-2 space-y-12">
+        <div className={`grid ${showA11y ? 'lg:grid-cols-3' : 'md:grid-cols-3'} gap-12 border-t border-[#262626] pt-12`}>
+          <div className={`${showA11y ? 'lg:col-span-2' : 'md:col-span-2'} space-y-12`}>
             {project.content ? (
               project.content.map((section: any, index: number) => (
                 <section key={index}>
@@ -1546,7 +1795,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
             )}
           </div>
 
-          <div className="md:col-span-1">
+          <div className={`${showA11y ? 'lg:col-span-1' : 'md:col-span-1'}`}>
             <div className="bg-[#0C0D00] border border-[#262626] rounded-2xl p-6 sticky top-24">
               <h3 className="heading-5 mb-4 border-b border-[#262626] pb-2">Key Metrics</h3>
               {project.metrics ? (
@@ -1567,7 +1816,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
               )}
               
               {showA11y && (
-                <div className="mt-8 pt-4 border-t border-accent/20 text-sm text-accent bg-accent/5 p-4 rounded-sm">
+                <div className="mt-8 pt-4 border-t border-accent/20 text-sm text-accent bg-accent/5 p-4 rounded-sm hidden lg:block">
                   <strong className="label-base block mb-1">A11y Note:</strong>
                   Data visualization and metrics are accompanied by clear text descriptions, ensuring screen reader users get the full context without relying on visual cues alone.
                 </div>
@@ -1593,7 +1842,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
   }
 
   return (
-    <div className="min-h-[calc(100svh-57px)] py-12 md:py-20 animate-in fade-in duration-500">
+    <div className={`min-h-[calc(100svh-57px)] py-12 ${showA11y ? 'lg:py-20' : 'md:py-20'} animate-in fade-in duration-500`}>
       <div className="mb-12 relative">
         {showA11y && (
           <A11yTooltip 
@@ -1605,7 +1854,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
         <h1 className="heading-2 mb-4 text-[#f5f5f5]">Latest Projects</h1>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className={`grid ${showA11y ? 'lg:grid-cols-2' : 'md:grid-cols-2'} gap-8`}>
         {PROJECTS.map(project => (
           <ProjectGridCard 
             key={project.id} 
@@ -1623,7 +1872,7 @@ function ConnectPage({ showA11y }: { showA11y: boolean }) {
   return (
     <div className="w-full min-h-[calc(100svh-57px)] flex flex-col items-center justify-center animate-in fade-in duration-500 relative py-12">
       {showA11y && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col gap-4 z-40 w-full max-w-xs">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col gap-4 z-40 w-full max-w-xs hidden lg:flex">
           <A11yTooltip 
             title="Frictionless Access" 
             description="Forms can be accessibility barriers. Providing direct links to email and phone ensures users can communicate using their preferred, accessible tools."
@@ -1644,7 +1893,7 @@ function ConnectPage({ showA11y }: { showA11y: boolean }) {
         <h1 className="heading-3 mb-2">Dan Dechiara</h1>
       </div>
 
-      <div className="w-full max-w-2xl grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className={`w-full max-w-2xl grid grid-cols-1 ${showA11y ? 'lg:grid-cols-2' : 'md:grid-cols-2'} gap-4`}>
         <LinkTreeButton 
           icon={<Linkedin size={20} aria-hidden="true" />} 
           label="LinkedIn" 
@@ -1686,7 +1935,7 @@ function PrincipleCard({ icon, title, description, showA11y, a11yNote }: { icon:
   return (
     <div className="bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative group">
       {showA11y && (
-        <div className="label-sm absolute -top-3 -right-3 bg-accent text-[#111202] px-2 py-1 z-10 shadow-lg">
+        <div className="label-sm absolute -top-3 -right-3 bg-accent text-[#111202] px-2 py-1 z-10 shadow-lg hidden lg:block">
           A11y Note
         </div>
       )}
@@ -1699,7 +1948,7 @@ function PrincipleCard({ icon, title, description, showA11y, a11yNote }: { icon:
       </p>
       
       {showA11y && (
-        <div className="mt-6 pt-4 border-t border-accent/20 text-sm text-accent bg-accent/5 p-4 rounded-sm">
+        <div className="mt-6 pt-4 border-t border-accent/20 text-sm text-accent bg-accent/5 p-4 rounded-sm hidden lg:block">
           <strong className="label-base block mb-1">Behind the scenes:</strong>
           {a11yNote}
         </div>
@@ -1919,7 +2168,7 @@ function A11yTooltip({ title, description, position = 'top-right', className = '
   };
 
   return (
-    <div role="status" aria-live="polite" className={`${positionClasses[position]} ${className} max-w-xs bg-[#171717] border border-accent p-4 shadow-2xl z-40 animate-in fade-in slide-in-from-bottom-2 duration-300`}>
+    <div role="status" aria-live="polite" className={`${positionClasses[position]} ${className} hidden lg:block max-w-xs bg-[#171717] border border-accent p-4 shadow-2xl z-40 animate-in fade-in slide-in-from-bottom-2 duration-300`}>
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-2">
           <CheckCircle2 className="text-accent shrink-0 mt-0.5" size={16} aria-hidden="true" />
@@ -1950,7 +2199,7 @@ function A11yExplainerCard() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div role="status" aria-live="polite" className="fixed top-[80px] right-6 max-w-sm bg-[#171717] border border-accent p-5 shadow-2xl z-40 animate-in fade-in slide-in-from-top-4 duration-500">
+    <div role="status" aria-live="polite" className="fixed top-[80px] right-6 hidden lg:block max-w-sm bg-[#171717] border border-accent p-5 shadow-2xl z-40 animate-in fade-in slide-in-from-top-4 duration-500">
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-2">
           <Eye className="text-accent shrink-0 mt-0.5" size={18} aria-hidden="true" />
