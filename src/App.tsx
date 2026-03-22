@@ -4,7 +4,7 @@ import {
   Eye, Keyboard, Zap, ArrowRight, CheckCircle2, Code2, 
   Briefcase, Disc, Wrench, Mail, Phone, Linkedin, Globe, 
   ChevronRight, ArrowLeft, BarChart3, Layers, Accessibility,
-  Menu, X, ChevronDown, FileText, Download, Github, Instagram, Youtube,
+  Menu, X, ChevronDown, ChevronUp, FileText, Download, Github, Instagram, Youtube,
   Minus, Plus, RefreshCw
 } from 'lucide-react';
 
@@ -485,36 +485,116 @@ function useMediaQuery(query: string) {
 }
 
 const XRAY_DATA = [
-  { title: "Accessible Animation", description: "Animation is hidden from screen readers using aria-hidden. A static aria-label provides the full context once." },
-  { title: "Semantic Structure & Nav", description: "Uses a logical heading hierarchy (H1 to H3) and a <section> tag with aria-labelledby. The navigation above uses aria-current='page' for state." },
-  { title: "Reading Order", description: "CSS Grid is used for visual layout, but the DOM order remains logical for screen readers, ensuring the story is read before the sidebar." },
-  { title: "Reducing Audio Clutter", description: "Decorative icons use aria-hidden='true' to prevent screen readers from announcing redundant visual information." },
-  { title: "EN 301 549 Contrast", description: "Project tags use specific grays to ensure they pass the strict 4.5:1 text contrast minimums. Borders are decorative and use #262626." },
-  { title: "Frictionless Access", description: "Forms can be accessibility barriers. Providing direct links to email and phone ensures users can communicate using their preferred, accessible tools." },
-  { title: "Interactive Focus & Contrast", description: "Focus states use a high-contrast 2px outline with an offset. Decorative borders use #262626 as they don't require 3:1 contrast." },
-  { title: "Focus Management", description: "The entire card is clickable via a pseudo-element on the link, keeping the DOM clean and avoiding nested interactive elements." },
-  { title: "Accessible Imagery", description: "Abstract image placeholders use role='img' and descriptive aria-labels so assistive technologies don't skip them as empty divs." }
+  { 
+    title: "Accessible Animation", 
+    description: "Animation is hidden from screen readers using aria-hidden. A static aria-label provides the full context once.",
+    whyItMatters: "Continuous or complex animations can be distracting or cause motion sickness. Hiding them from screen readers prevents repetitive or confusing auditory output.",
+    impact: "Medium"
+  },
+  { 
+    title: "Semantic Structure & Nav", 
+    description: "Uses a logical heading hierarchy (H1 to H3) and a <section> tag with aria-labelledby. The navigation above uses aria-current='page' for state.",
+    whyItMatters: "Screen readers rely on semantic HTML to build a 'rotor' or document outline. Without it, users cannot jump to specific sections and are forced to read the page linearly.",
+    impact: "High"
+  },
+  { 
+    title: "Reading Order", 
+    description: "CSS Grid is used for visual layout, but the DOM order remains logical for screen readers, ensuring the story is read before the sidebar.",
+    whyItMatters: "Screen readers read the DOM sequentially. If the visual layout differs drastically from the DOM order, it can confuse users who rely on both visual and auditory feedback.",
+    impact: "High"
+  },
+  { 
+    title: "Reducing Audio Clutter", 
+    description: "Decorative icons use aria-hidden='true' to prevent screen readers from announcing redundant visual information.",
+    whyItMatters: "Announcing every decorative element slows down navigation and creates cognitive overload for screen reader users.",
+    impact: "Low"
+  },
+  { 
+    title: "EN 301 549 Contrast", 
+    description: "Project tags use specific grays to ensure they pass the strict 4.5:1 text contrast minimums. Borders are decorative and use #262626.",
+    whyItMatters: "Users with low vision or color blindness need sufficient contrast to read text and identify boundaries of interactive elements.",
+    impact: "High"
+  },
+  { 
+    title: "Frictionless Access", 
+    description: "Forms can be accessibility barriers. Providing direct links to email and phone ensures users can communicate using their preferred, accessible tools.",
+    whyItMatters: "Complex forms with validation errors can be significant barriers for users with cognitive disabilities or those using assistive tech.",
+    impact: "Medium"
+  },
+  { 
+    title: "Interactive Focus & Contrast", 
+    description: "Focus states use a high-contrast 2px outline with an offset. Decorative borders use #262626 as they don't require 3:1 contrast.",
+    whyItMatters: "Keyboard users need to know exactly which element has focus. A clear, high-contrast focus indicator is essential for navigation.",
+    impact: "High"
+  },
+  { 
+    title: "Focus Management", 
+    description: "The entire card is clickable via a pseudo-element on the link, keeping the DOM clean and avoiding nested interactive elements.",
+    whyItMatters: "Nested interactive elements (like a button inside a link) are invalid HTML and cause unpredictable behavior with screen readers.",
+    impact: "High"
+  },
+  { 
+    title: "Accessible Imagery", 
+    description: "Abstract image placeholders use role='img' and descriptive aria-labels so assistive technologies don't skip them as empty divs.",
+    whyItMatters: "Images that convey meaning must have text alternatives so blind users understand the visual context.",
+    impact: "Medium"
+  }
 ];
 
+function A11yFeatureItem({ item }: { item: typeof XRAY_DATA[0] }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="bg-[#171717] border border-[#262626] rounded-xl overflow-hidden">
+      <button 
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex items-center justify-between p-4 text-left hover:bg-[#1a1c05] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        aria-expanded={isExpanded}
+      >
+        <div className="flex items-center gap-2">
+          <CheckCircle2 size={16} className="text-accent shrink-0" />
+          <span className="font-mono text-sm text-accent font-semibold">{item.title}</span>
+        </div>
+        {isExpanded ? <ChevronUp size={16} className="text-accent shrink-0" /> : <ChevronDown size={16} className="text-[#a3a3a3] shrink-0" />}
+      </button>
+      
+      {isExpanded && (
+        <div className="p-4 pt-0 border-t border-[#262626] mt-2 animate-in fade-in slide-in-from-top-2 duration-300">
+          <p className="text-sm text-[#d4d4d4] mt-3 mb-4">{item.description}</p>
+          
+          <div className="bg-[#0C0D00] p-3 rounded-md border border-[#262626] mb-3">
+            <strong className="text-xs font-mono text-accent block mb-1">Why it matters:</strong>
+            <p className="text-sm text-[#a3a3a3]">{item.whyItMatters}</p>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-[#888]">Impact:</span>
+            <span className="text-xs font-mono bg-[#262626] text-[#d4d4d4] px-2 py-1 rounded-sm">{item.impact}</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function A11yDashboard({ isActive, onClose, isTablet, isMobile }: { isActive: boolean, onClose: () => void, isTablet: boolean, isMobile: boolean }) {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const sheetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isMobile && isSheetOpen) {
+    if (isMobile && isActive) {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
-          setIsSheetOpen(false);
+          onClose();
         }
       };
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isMobile, isSheetOpen]);
+  }, [isMobile, isActive, onClose]);
 
   // Focus trap for bottom sheet
   useEffect(() => {
-    if (isMobile && isSheetOpen && sheetRef.current) {
+    if (isMobile && isActive && sheetRef.current) {
       const focusableElements = sheetRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
       const firstElement = focusableElements[0] as HTMLElement;
       const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
@@ -537,14 +617,33 @@ function A11yDashboard({ isActive, onClose, isTablet, isMobile }: { isActive: bo
 
       document.addEventListener('keydown', handleTab);
       firstElement?.focus();
-
       return () => document.removeEventListener('keydown', handleTab);
     }
-  }, [isMobile, isSheetOpen]);
+  }, [isMobile, isActive]);
 
-  if (!isActive) return null;
+  const renderSummaryItems = () => (
+    <div className="grid grid-cols-2 gap-3 mb-6">
+      <div className="bg-[#171717] p-3 rounded-xl border border-[#262626] flex flex-col justify-center items-center text-center">
+        <span className="text-accent font-mono text-xl font-bold mb-1">12</span>
+        <span className="text-[#a3a3a3] text-xs">Semantic Headings</span>
+      </div>
+      <div className="bg-[#171717] p-3 rounded-xl border border-[#262626] flex flex-col justify-center items-center text-center">
+        <span className="text-accent font-mono text-xl font-bold mb-1">5</span>
+        <span className="text-[#a3a3a3] text-xs">ARIA Landmarks</span>
+      </div>
+      <div className="bg-[#171717] p-3 rounded-xl border border-[#262626] flex flex-col justify-center items-center text-center">
+        <span className="text-accent font-mono text-xl font-bold mb-1">4.5:1+</span>
+        <span className="text-[#a3a3a3] text-xs">Contrast Ratio</span>
+      </div>
+      <div className="bg-[#171717] p-3 rounded-xl border border-[#262626] flex flex-col justify-center items-center text-center">
+        <span className="text-accent font-mono text-xl font-bold mb-1">100%</span>
+        <span className="text-[#a3a3a3] text-xs">Keyboard Nav</span>
+      </div>
+    </div>
+  );
 
   if (isTablet) {
+    if (!isActive) return null;
     return (
       <aside className="fixed top-[57px] left-0 bottom-0 w-80 bg-[#0C0D00] border-r border-[#262626] overflow-y-auto z-40 p-6 animate-in slide-in-from-left duration-300 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
@@ -555,14 +654,13 @@ function A11yDashboard({ isActive, onClose, isTablet, isMobile }: { isActive: bo
             <X size={20} />
           </button>
         </div>
-        <div className="space-y-6" aria-live="polite">
+        
+        {renderSummaryItems()}
+        
+        <div className="space-y-4" aria-live="polite">
+          <h3 className="heading-5 text-[#f5f5f5] mb-2">Active Features</h3>
           {XRAY_DATA.map((item, idx) => (
-            <div key={idx} className="bg-[#171717] border border-[#262626] p-4 rounded-xl">
-              <h3 className="label-lg text-accent mb-2 flex items-center gap-2">
-                <CheckCircle2 size={16} /> {item.title}
-              </h3>
-              <p className="body-sm text-[#d4d4d4] mt-2">{item.description}</p>
-            </div>
+            <A11yFeatureItem key={idx} item={item} />
           ))}
         </div>
       </aside>
@@ -571,104 +669,48 @@ function A11yDashboard({ isActive, onClose, isTablet, isMobile }: { isActive: bo
 
   if (isMobile) {
     return (
-      <>
-        {/* 60px Dashboard Bar */}
-        <div 
-          className="fixed bottom-0 left-0 right-0 h-[60px] bg-[#0C0D00] border-t border-accent z-50 flex items-center justify-between px-6 cursor-pointer w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
-          onClick={() => setIsSheetOpen(true)}
-          role="button"
-          aria-expanded={isSheetOpen}
-          aria-controls="a11y-bottom-sheet"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              setIsSheetOpen(true);
-            }
-          }}
-        >
-          <div className="flex items-center gap-2 text-accent font-bold">
-            <Eye size={20} /> A11Y Dashboard
-          </div>
-          <div className="flex items-center gap-4">
-            <ChevronDown size={20} className="text-accent rotate-180" />
-            <div 
-              role="button"
-              aria-label="Close A11Y Mode"
-              tabIndex={0}
-              className="p-1 hover:bg-[#1a1a1a] rounded-full text-[#a3a3a3] hover:text-accent transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                onClose();
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.stopPropagation();
-                  onClose();
-                }
-              }}
+      <AnimatePresence>
+        {isActive && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/60 z-[48]"
+              onClick={onClose}
+              aria-hidden="true"
+            />
+            <motion.div 
+              id="a11y-bottom-sheet"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed bottom-[60px] left-0 right-0 bg-[#0C0D00] border-t border-accent rounded-t-3xl z-[49] max-h-[80vh] overflow-y-auto p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="sheet-title"
+              tabIndex={-1}
             >
-              <X size={20} />
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Sheet */}
-        <AnimatePresence>
-          {isSheetOpen && (
-            <>
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/60 z-[51]"
-                onClick={() => setIsSheetOpen(false)}
-                aria-hidden="true"
-              />
-              <motion.div 
-                id="a11y-bottom-sheet"
-                ref={sheetRef}
-                initial={{ y: '100%' }}
-                animate={{ y: 0 }}
-                exit={{ y: '100%' }}
-                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="fixed bottom-0 left-0 right-0 bg-[#0C0D00] border-t border-accent rounded-t-3xl z-[52] max-h-[80vh] overflow-y-auto p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] pb-24"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="sheet-title"
-                tabIndex={-1}
-              >
-                <div className="w-12 h-1.5 bg-[#262626] rounded-full mx-auto mb-6" />
-                <div className="flex items-center justify-between mb-6">
-                  <h2 id="sheet-title" className="heading-4 text-accent">Audit Summary</h2>
-                  <button onClick={() => setIsSheetOpen(false)} className="p-2 hover:bg-[#1a1a1a] rounded-full text-[#a3a3a3] hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" aria-label="Close dashboard">
-                    <X size={20} />
-                  </button>
-                </div>
-                
-                <div className="space-y-4" aria-live="polite">
-                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626] flex justify-between items-center">
-                    <span className="font-bold text-[#f5f5f5]">Semantic Headings</span>
-                    <span className="text-accent font-mono bg-accent/10 px-2 py-1 rounded">12</span>
-                  </div>
-                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626] flex justify-between items-center">
-                    <span className="font-bold text-[#f5f5f5]">ARIA Landmarks</span>
-                    <span className="text-accent font-mono bg-accent/10 px-2 py-1 rounded">5</span>
-                  </div>
-                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626] flex justify-between items-center">
-                    <span className="font-bold text-[#f5f5f5]">Reduced Motion</span>
-                    <span className="text-accent font-mono bg-accent/10 px-2 py-1 rounded">Supported</span>
-                  </div>
-                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626] flex justify-between items-center">
-                    <span className="font-bold text-[#f5f5f5]">Contrast Ratio</span>
-                    <span className="text-accent font-mono bg-accent/10 px-2 py-1 rounded">4.5:1+</span>
-                  </div>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </>
+              <div className="flex items-center justify-between mb-6">
+                <h2 id="sheet-title" className="heading-4 text-accent">A11Y X-RAY</h2>
+                <button onClick={onClose} className="p-2 hover:bg-[#1a1a1a] rounded-full text-[#a3a3a3] hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" aria-label="Close dashboard">
+                  <X size={20} />
+                </button>
+              </div>
+              
+              {renderSummaryItems()}
+              
+              <div className="space-y-4" aria-live="polite">
+                <h3 className="heading-5 text-[#f5f5f5] mb-2">Active Features</h3>
+                {XRAY_DATA.map((item, idx) => (
+                  <A11yFeatureItem key={idx} item={item} />
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     );
   }
 
@@ -1080,7 +1122,7 @@ export default function App() {
         </div>
       )}
 
-      <main id="main-content" className={`flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col transition-all duration-300 ${isTablet && showA11yFeatures ? 'pl-[352px]' : ''} ${isMobile && showA11yFeatures ? 'pb-[60px]' : ''}`}>
+      <main id="main-content" className={`flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col transition-all duration-300 ${isTablet && showA11yFeatures ? 'pl-[344px]' : ''}`}>
         {showA11yFeatures && <A11yExplainerCard />}
         <A11yDashboard isActive={showA11yFeatures} onClose={() => setShowA11yFeatures(false)} isTablet={isTablet} isMobile={isMobile} />
         {currentPage === 'welcome' && <WelcomePage showA11y={showA11yFeatures} navigateTo={navigateTo} />}
@@ -1090,7 +1132,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className={`border-t border-[#262626] bg-[#111202] py-12 mt-auto transition-all duration-300 ${isTablet && showA11yFeatures ? 'pl-[352px]' : ''} ${isMobile && showA11yFeatures ? 'pb-[60px]' : ''}`}>
+      <footer className={`border-t border-[#262626] bg-[#111202] pt-12 mt-auto transition-all duration-300 ${isTablet && showA11yFeatures ? 'pl-[344px]' : ''} ${isMobile ? 'pb-[108px]' : 'pb-12'}`}>
         <div className="max-w-6xl mx-auto px-6 flex flex-col gap-12">
           <div className={`flex flex-col ${showA11yFeatures ? 'lg:flex-row' : 'md:flex-row'} justify-between items-start gap-12`}>
             {/* Site map vertical */}
@@ -1160,35 +1202,31 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Mobile A11y FAB */}
-      {!showA11yFeatures && (
-        <div className="md:hidden fixed bottom-6 right-6 z-50 transition-all duration-300">
-          <button 
-            role="switch"
-            aria-checked={showA11yFeatures}
-            onClick={() => setShowA11yFeatures(!showA11yFeatures)}
-            className={`group flex items-center gap-3 p-3 pr-4 rounded-full shadow-2xl cursor-pointer transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 border relative ${showA11yFeatures ? 'bg-[#0C0D00] border-accent text-accent shadow-[0_0_15px_rgba(213,219,86,0.3)]' : 'bg-[#0C0D00] border-[#333] text-[#f5f5f5] hover:border-[#555]'}`}
-          >
+      {/* Mobile A11y Bottom Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-[60px] z-50 transition-all duration-300">
+        <button 
+          role="switch"
+          aria-checked={showA11yFeatures}
+          onClick={() => setShowA11yFeatures(!showA11yFeatures)}
+          className={`w-full h-full flex items-center justify-between px-6 cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 border-t ${showA11yFeatures ? 'bg-[#0C0D00] border-transparent text-accent shadow-[0_-10px_40px_rgba(213,219,86,0.15)]' : 'bg-[#0C0D00] border-[#262626] text-[#f5f5f5]'}`}
+        >
+          <div className="flex items-center gap-3">
             {!showA11yFeatures && (
-              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="relative flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
               </span>
             )}
-            <Accessibility size={20} className={showA11yFeatures ? 'text-accent' : 'text-[#a3a3a3] group-hover:text-[#f5f5f5]'} aria-hidden="true" />
-            <div className="flex items-center gap-2">
-              <span className="label-base font-bold tracking-widest">
-                A11Y X-RAY
-              </span>
-              <div 
-                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showA11yFeatures ? 'bg-accent group-hover:bg-accent-dark' : 'bg-[#404040] group-hover:bg-[#555]'}`}
-              >
-                <span className={`inline-block h-3 w-3 transform rounded-full bg-[#111202] transition-transform ${showA11yFeatures ? 'translate-x-5' : 'translate-x-1'}`} />
-              </div>
-            </div>
-          </button>
-        </div>
-      )}
+            <Accessibility size={20} className="text-current" aria-hidden="true" />
+            <span className="label-base font-bold tracking-widest">
+              A11Y X-RAY
+            </span>
+          </div>
+          <div className="flex items-center">
+            {showA11yFeatures ? <ChevronDown size={20} className="text-accent" /> : <ChevronUp size={20} className="text-accent" />}
+          </div>
+        </button>
+      </div>
 
       <div id="google_translate_element" style={{ display: 'none' }}></div>
       
