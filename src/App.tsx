@@ -7,6 +7,7 @@ import {
   Menu, X, ChevronDown, ChevronUp, FileText, Download, Github, Instagram, Youtube,
   Minus, Plus, RefreshCw
 } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 // --- DATA ---
 
@@ -1237,6 +1238,7 @@ export default function App() {
       {showWorkflowModal && (
         <WorkflowModal onClose={() => setShowWorkflowModal(false)} />
       )}
+      <Analytics />
     </div>
   );
 }
