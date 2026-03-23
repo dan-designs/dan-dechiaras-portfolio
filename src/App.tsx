@@ -7,6 +7,7 @@ import {
   Menu, X, ChevronDown, ChevronUp, FileText, Download, Github, Instagram, Youtube,
   Minus, Plus, RefreshCw
 } from 'lucide-react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 // --- DATA ---
 
@@ -1346,6 +1347,7 @@ export default function App() {
       {showWorkflowModal && (
         <WorkflowModal onClose={() => setShowWorkflowModal(false)} />
       )}
+      <SpeedInsights />
     </div>
   );
 }
