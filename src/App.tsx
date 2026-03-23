@@ -543,6 +543,7 @@ const XRAY_DATA = [
 
 function A11yFeatureItem({ item }: { item: typeof XRAY_DATA[0] }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const contentId = `a11y-feature-${item.title.replace(/\s+/g, '-').toLowerCase()}`;
 
   return (
     <div className="bg-[#171717] border border-[#262626] rounded-xl overflow-hidden">
@@ -550,16 +551,17 @@ function A11yFeatureItem({ item }: { item: typeof XRAY_DATA[0] }) {
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between p-4 text-left hover:bg-[#1a1c05] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         aria-expanded={isExpanded}
+        aria-controls={contentId}
       >
         <div className="flex items-center gap-2">
-          <CheckCircle2 size={16} className="text-accent shrink-0" />
+          <CheckCircle2 size={16} className="text-accent shrink-0" aria-hidden="true" />
           <span className="font-mono text-sm text-accent font-semibold">{item.title}</span>
         </div>
-        {isExpanded ? <ChevronUp size={16} className="text-accent shrink-0" /> : <ChevronDown size={16} className="text-[#a3a3a3] shrink-0" />}
+        {isExpanded ? <ChevronUp size={16} className="text-accent shrink-0" aria-hidden="true" /> : <ChevronDown size={16} className="text-[#a3a3a3] shrink-0" aria-hidden="true" />}
       </button>
       
       {isExpanded && (
-        <div className="p-4 pt-0 border-t border-[#262626] mt-2 animate-in fade-in slide-in-from-top-2 duration-300">
+        <div id={contentId} className="p-4 pt-0 border-t border-[#262626] mt-2 animate-in fade-in slide-in-from-top-2 duration-300">
           <p className="text-sm text-[#d4d4d4] mt-3 mb-4">{item.description}</p>
           
           <div className="bg-[#0C0D00] p-3 rounded-md border border-[#262626] mb-3">
@@ -645,7 +647,7 @@ function A11yDashboard({ isActive, onClose, isTablet, isMobile }: { isActive: bo
   if (isTablet) {
     if (!isActive) return null;
     return (
-      <aside className="fixed top-[57px] left-0 bottom-0 w-80 bg-[#0C0D00] border-r border-[#262626] overflow-y-auto z-40 p-6 animate-in slide-in-from-left duration-300 shadow-2xl">
+      <aside aria-label="Accessibility Dashboard" className="fixed top-[57px] left-0 bottom-0 w-80 bg-[#0C0D00] border-r border-[#262626] overflow-y-auto z-40 p-6 animate-in slide-in-from-left duration-300 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
           <h2 className="heading-4 text-accent flex items-center gap-2">
             <Eye size={20} /> A11Y X-RAY
@@ -681,12 +683,13 @@ function A11yDashboard({ isActive, onClose, isTablet, isMobile }: { isActive: bo
               aria-hidden="true"
             />
             <motion.div 
+              ref={sheetRef}
               id="a11y-bottom-sheet"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed bottom-[60px] left-0 right-0 bg-[#0C0D00] border-t border-accent rounded-t-3xl z-[49] max-h-[80vh] overflow-y-auto p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+              className="fixed bottom-[60px] left-0 right-0 bg-[#0C0D00] border-t border-accent rounded-t-3xl z-[49] max-h-[80vh] overflow-y-auto p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] focus:outline-none"
               role="dialog"
               aria-modal="true"
               aria-labelledby="sheet-title"
@@ -717,6 +720,68 @@ function A11yDashboard({ isActive, onClose, isTablet, isMobile }: { isActive: bo
   return null;
 }
 
+function OptimizedImage({
+  src,
+  alt,
+  className,
+  width,
+  height,
+  priority = false,
+  ...props
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  width?: number;
+  height?: number;
+  priority?: boolean;
+  [key: string]: any;
+}) {
+  const isCloudinary = src.includes('cloudinary.com');
+  
+  if (!isCloudinary) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        width={width}
+        height={height}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        decoding={priority ? "sync" : "async"}
+        {...props}
+      />
+    );
+  }
+
+  const urlParts = src.split('/upload/');
+  const baseUrl = urlParts[0] + '/upload/';
+  const imagePath = urlParts[1];
+
+  const avifUrl = `${baseUrl}f_avif,q_auto/${imagePath}`;
+  const webpUrl = `${baseUrl}f_webp,q_auto/${imagePath}`;
+  const fallbackUrl = `${baseUrl}f_auto,q_auto/${imagePath}`;
+
+  return (
+    <picture>
+      <source srcSet={avifUrl} type="image/avif" />
+      <source srcSet={webpUrl} type="image/webp" />
+      <img
+        src={fallbackUrl}
+        alt={alt}
+        className={className}
+        width={width}
+        height={height}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        decoding={priority ? "sync" : "async"}
+        {...props}
+      />
+    </picture>
+  );
+}
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState('welcome');
   const [showA11yFeatures, setShowA11yFeatures] = useState(false);
@@ -732,6 +797,41 @@ export default function App() {
 
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
   const isMobile = useMediaQuery('(max-width: 767px)');
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsMobileMenuOpen(false);
+        
+        if (e.key === 'Tab') {
+          const menu = document.getElementById('mobile-menu');
+          if (!menu) return;
+          
+          const focusableElements = menu.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          const firstElement = focusableElements[0] as HTMLElement;
+          const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              lastElement.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              firstElement.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+      const menu = document.getElementById('mobile-menu');
+      if (menu) menu.focus();
+      
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     const handleOpenTool = (e: Event) => {
@@ -764,6 +864,7 @@ export default function App() {
       script.id = 'google-translate-script';
       script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       script.async = true;
+      script.defer = true;
       document.body.appendChild(script);
     };
 
@@ -1009,7 +1110,14 @@ export default function App() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-[57px] bg-[#111202] z-40 lg:hidden flex flex-col px-6 py-8 border-t border-[#262626] animate-in slide-in-from-top-2 duration-200 overflow-y-auto">
+        <div 
+          id="mobile-menu"
+          tabIndex={-1}
+          role="dialog" 
+          aria-modal="true" 
+          aria-label="Mobile Menu"
+          className="fixed inset-0 top-[57px] bg-[#111202] z-40 lg:hidden flex flex-col px-6 py-8 border-t border-[#262626] animate-in slide-in-from-top-2 duration-200 overflow-y-auto focus:outline-none"
+        >
           <nav aria-label="Mobile Navigation">
             <ul className="flex flex-col space-y-6 text-xl font-bold">
               <li>
@@ -1122,9 +1230,10 @@ export default function App() {
         </div>
       )}
 
+      <A11yDashboard isActive={showA11yFeatures} onClose={() => setShowA11yFeatures(false)} isTablet={isTablet} isMobile={isMobile} />
+
       <main id="main-content" className={`flex-grow w-full max-w-6xl mx-auto px-6 flex flex-col transition-all duration-300 ${isTablet && showA11yFeatures ? 'pl-[344px]' : ''}`}>
         {showA11yFeatures && <A11yExplainerCard />}
-        <A11yDashboard isActive={showA11yFeatures} onClose={() => setShowA11yFeatures(false)} isTablet={isTablet} isMobile={isMobile} />
         {currentPage === 'welcome' && <WelcomePage showA11y={showA11yFeatures} navigateTo={navigateTo} />}
         {currentPage === 'about' && <AboutPage showA11y={showA11yFeatures} />}
         {currentPage === 'work' && <WorkPage showA11y={showA11yFeatures} selectedProject={selectedProject} setSelectedProject={setSelectedProject} />}
@@ -1203,7 +1312,7 @@ export default function App() {
       </footer>
 
       {/* Mobile A11y Bottom Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 h-[60px] z-50 transition-all duration-300">
+      <aside aria-label="Mobile Accessibility Controls" className="md:hidden fixed bottom-0 left-0 right-0 h-[60px] z-50 transition-all duration-300">
         <button 
           role="switch"
           aria-checked={showA11yFeatures}
@@ -1226,9 +1335,9 @@ export default function App() {
             {showA11yFeatures ? <ChevronDown size={20} className="text-accent" /> : <ChevronUp size={20} className="text-accent" />}
           </div>
         </button>
-      </div>
+      </aside>
 
-      <div id="google_translate_element" style={{ display: 'none' }}></div>
+      <div id="google_translate_element" aria-hidden="true" style={{ display: 'none' }}></div>
       
       {selectedTool && (
         <ToolModal tool={selectedTool} onClose={() => setSelectedTool(null)} />
@@ -1244,11 +1353,48 @@ export default function App() {
 // --- MODALS ---
 
 function ToolModal({ tool, onClose }: { tool: any, onClose: () => void }) {
+  useEffect(() => {
+    if (!tool) return;
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      
+      if (e.key === 'Tab') {
+        const modal = document.getElementById('tool-modal');
+        if (!modal) return;
+        
+        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    
+    // Focus the modal when it opens
+    const modal = document.getElementById('tool-modal');
+    if (modal) modal.focus();
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [tool, onClose]);
+
   if (!tool) return null;
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300" role="dialog" aria-modal="true" aria-labelledby="tool-modal-title">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} aria-hidden="true"></div>
-      <div className="relative bg-[#0C0D00] border border-[#262626] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300">
+      <div id="tool-modal" tabIndex={-1} className="relative bg-[#0C0D00] border border-[#262626] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300 focus:outline-none">
         <div className="sticky top-0 bg-[#0C0D00]/90 backdrop-blur-md border-b border-[#262626] p-4 sm:p-6 flex justify-between items-center z-10">
           <div className="flex items-center gap-3">
             {tool.step > 0 && (
@@ -1293,10 +1439,45 @@ function ToolModal({ tool, onClose }: { tool: any, onClose: () => void }) {
 }
 
 function WorkflowModal({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      
+      if (e.key === 'Tab') {
+        const modal = document.getElementById('workflow-modal');
+        if (!modal) return;
+        
+        const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    
+    // Focus the modal when it opens
+    const modal = document.getElementById('workflow-modal');
+    if (modal) modal.focus();
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300" role="dialog" aria-modal="true" aria-labelledby="workflow-modal-title">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} aria-hidden="true"></div>
-      <div className="relative bg-[#0C0D00] border border-[#262626] rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300">
+      <div id="workflow-modal" tabIndex={-1} className="relative bg-[#0C0D00] border border-[#262626] rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300 focus:outline-none">
         <div className="sticky top-0 bg-[#0C0D00]/90 backdrop-blur-md border-b border-[#262626] p-4 sm:p-6 flex justify-between items-center z-10">
           <div className="flex items-center gap-2 text-accent">
             <Zap size={24} aria-hidden="true" />
@@ -1402,13 +1583,14 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
         <div className={`grid grid-cols-1 ${showA11y ? 'lg:grid-cols-2' : 'md:grid-cols-2'} gap-8 items-center w-full`}>
           {/* Left Column: Image */}
           <div className={`relative group overflow-hidden rounded-2xl aspect-[4/5] w-full ${showA11y ? 'lg:w-[72%] lg:max-w-[378px]' : 'md:w-[85%] md:max-w-[420px] lg:w-[72%] lg:max-w-[378px]'} mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500`}>
-            <img 
+            <OptimizedImage 
               src="https://res.cloudinary.com/datad8tms/image/upload/v1772823845/Dan-Dechiara_rdkrq2.png" 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
               className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-500 ease-in-out"
               referrerPolicy="no-referrer"
-              fetchPriority="high"
-              decoding="async"
+              priority={true}
+              width={378}
+              height={472}
             />
           </div>
 
@@ -1552,7 +1734,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
           )}
           <div className="flex items-center gap-3 mb-6 border-b border-[#262626] pb-4">
             <div className="w-12 h-12 rounded-full border border-[#262626] overflow-hidden" aria-hidden="true">
-              <img src="https://res.cloudinary.com/datad8tms/image/upload/v1773070543/Circle_usgtys.png" alt="Dan Dechiara" className="w-full h-full object-cover" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
+              <OptimizedImage src="https://res.cloudinary.com/datad8tms/image/upload/v1773070543/Circle_usgtys.png" alt="Dan Dechiara" className="w-full h-full object-cover" referrerPolicy="no-referrer" width={48} height={48} />
             </div>
             <div>
               <h2 className="heading-4">Dan Dechiara</h2>
@@ -1772,15 +1954,16 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
               </>
             ) : project.imageUrl ? (
               <>
-                <img 
+                <OptimizedImage 
                   src={project.imageUrl} 
                   alt={project.altText || `${project.title} hero`} 
                   className="w-full h-full object-cover" 
                   referrerPolicy="no-referrer" 
                   aria-label={project.ariaLabel}
                   aria-describedby={project.ariaDescribedBy ? `${project.ariaDescribedBy}-hero` : undefined}
-                  loading="lazy"
-                  decoding="async"
+                  priority={true}
+                  width={1200}
+                  height={514}
                 />
                 {project.ariaDescription && (
                   <p id={`${project.ariaDescribedBy}-hero`} className="sr-only">{project.ariaDescription}</p>
@@ -1926,7 +2109,7 @@ function ConnectPage({ showA11y }: { showA11y: boolean }) {
       
       <div className="w-full max-w-2xl text-center mb-10">
         <div className="w-24 h-24 rounded-full mx-auto mb-6 overflow-hidden border border-[#262626]" aria-hidden="true">
-           <img src="https://res.cloudinary.com/datad8tms/image/upload/v1773070543/Circle_usgtys.png" alt="Dan Dechiara" className="w-full h-full object-cover" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
+           <OptimizedImage src="https://res.cloudinary.com/datad8tms/image/upload/v1773070543/Circle_usgtys.png" alt="Dan Dechiara" className="w-full h-full object-cover" referrerPolicy="no-referrer" width={96} height={96} />
         </div>
         <h1 className="heading-3 mb-2">Dan Dechiara</h1>
       </div>
@@ -2031,15 +2214,15 @@ function PreviewCard({ project, onClick, showA11y }: { project: any, onClick: ()
           </>
         ) : project.imageUrl ? (
           <>
-            <img 
+            <OptimizedImage 
               src={project.imageUrl} 
               alt={project.altText || `${project.title} preview`} 
               className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" 
               referrerPolicy="no-referrer" 
               aria-label={project.ariaLabel}
               aria-describedby={project.ariaDescribedBy ? `${project.ariaDescribedBy}-preview` : undefined}
-              loading="lazy"
-              decoding="async"
+              width={800}
+              height={450}
             />
             {project.ariaDescription && (
               <p id={`${project.ariaDescribedBy}-preview`} className="sr-only">{project.ariaDescription}</p>
@@ -2096,15 +2279,15 @@ function ProjectGridCard({ project, onClick, showA11y }: { project: any, onClick
           </>
         ) : project.imageUrl ? (
           <>
-            <img 
+            <OptimizedImage 
               src={project.imageUrl} 
               alt={project.altText || `${project.title} preview`} 
               className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" 
               referrerPolicy="no-referrer" 
               aria-label={project.ariaLabel}
               aria-describedby={project.ariaDescribedBy ? `${project.ariaDescribedBy}-grid` : undefined}
-              loading="lazy"
-              decoding="async"
+              width={800}
+              height={450}
             />
             {project.ariaDescription && (
               <p id={`${project.ariaDescribedBy}-grid`} className="sr-only">{project.ariaDescription}</p>
