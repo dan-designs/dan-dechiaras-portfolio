@@ -8,6 +8,7 @@ import {
   Minus, Plus, RefreshCw
 } from 'lucide-react';
 
+import { Analytics } from '@vercel/analytics/react';
 // --- DATA ---
 
 const PROCESS_TOOLS = [
@@ -1346,6 +1347,7 @@ export default function App() {
       {showWorkflowModal && (
         <WorkflowModal onClose={() => setShowWorkflowModal(false)} />
       )}
+      <Analytics />
     </div>
   );
 }
