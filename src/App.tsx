@@ -1584,7 +1584,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
           {/* Left Column: Image */}
           <div className={`relative group overflow-hidden rounded-2xl aspect-[4/5] w-full ${showA11y ? 'lg:w-[72%] lg:max-w-[378px]' : 'md:w-[85%] md:max-w-[420px] lg:w-[72%] lg:max-w-[378px]'} mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500`}>
             <OptimizedImage 
-              src="https://res.cloudinary.com/datad8tms/image/upload/v1772823845/Dan-Dechiara_rdkrq2.png" 
+              src="https://ik.imagekit.io/danknots/portfolio/Dan-Dechiara_rdkrq2.png" 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
               className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-500 ease-in-out"
               referrerPolicy="no-referrer"
@@ -1773,7 +1773,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
           </div>
           <div className="space-y-6">
             <ResumeItem 
-              role="Senior Product Designer" 
+              role="Staff Product Designer" 
               company="Campspot" 
               period="Aug 2022 - Current" 
             />
