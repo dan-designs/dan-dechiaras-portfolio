@@ -2043,7 +2043,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
       <div className={`grid grid-cols-1 ${showA11y ? 'lg:grid-cols-3' : 'md:grid-cols-3'} gap-6 auto-rows-min`}>
         
         {/* The Story - Spans 2 columns */}
-        <div className={`${showA11y ? 'lg:col-span-2' : 'md:col-span-2'} bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative`}>
+        <div className={`${showA11y ? 'lg:col-span-2' : 'md:col-span-2'} bg-[#0C0D00] border border-[#262626] rounded-2xl p-8 relative min-w-0`}>
           {showA11y && (
             <A11yTooltip 
               title="Reading Order" 
@@ -2299,7 +2299,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
 
         {/* Deep Dive Content */}
         <div className={`grid ${showA11y ? 'lg:grid-cols-3' : 'md:grid-cols-3'} gap-12 border-t border-[#262626] pt-12`}>
-          <div className={`${showA11y ? 'lg:col-span-2' : 'md:col-span-2'} space-y-12`}>
+          <div className={`${showA11y ? 'lg:col-span-2' : 'md:col-span-2'} space-y-12 min-w-0`}>
             {project.content ? (
               project.content.map((section: any, index: number) => (
                 <section key={index}>
