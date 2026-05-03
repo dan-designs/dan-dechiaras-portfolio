@@ -29,6 +29,325 @@ const PROCESS_TOOLS = [
 ];
 
 const PROJECTS: any[] = [
+  {
+    id: 0,
+    title: "INFOLINES",
+    metric: "Design Architecture · AI Prototyping",
+    metrics: [
+      {
+        value: "95%",
+        label: "Logic Coverage via Gemini",
+        description: "Percentage of backend and state management code authored correctly by Gemini Pro upon first translation."
+      },
+      {
+        value: "4 weeks",
+        label: "Sprint Duration",
+        description: "From blank design canvas to full Apple TestFlight integration."
+      },
+      {
+        value: "100%",
+        label: "Fidelity Match",
+        description: "Visual parity between Figma designs and deployed React Native components via AI Studio bridge."
+      }
+    ],
+    tags: ["React Native", "Expo", "Vite", "Supabase", "Gemini Pro", "AI Studio"],
+    problem: "How a single Design Leader leveraged AI-assisted engineering, deep domain knowledge, and a 4-week sprint to ship a fully functional B2B2C event discovery platform - from a blank canvas to the Apple App Store.",
+    solution: "A dual-interface system...",
+    process: "Utilized Google AI Studio as a visual translation bridge to overcome UI bottlenecks and Gemini Pro for logic wiring.",
+    impact: "V1 shipped to the Apple App Store in 4 weeks.",
+    imageUrl: "https://res.cloudinary.com/datad8tms/image/upload/v1777847231/Main-Hero_on_home_and_top_kdcrn1.png",
+    altText: "Infolines Case Study Hero",
+    ariaLabel: "Infolines - Engineering Trust in an Algorithmic Age",
+    ariaDescribedBy: "infolines-desc",
+    ariaDescription: "The Infolines application showing the feed and event discovery platform.",
+    figmaLink: "https://www.infolines.io",
+    content: [
+      {
+        title: "01. Origin & Thesis: The Experiment Behind the Product",
+        body: (
+          <div className="space-y-6">
+            <p className="text-[#d4d4d4]">
+              The concept for Infolines had been brewing for over <strong>two years</strong>. But the act of building it was born from a more urgent question: <span className="text-accent">What is the ceiling for a single designer, armed with AI and domain knowledge, no engineering team, no agency, no shortcuts?</span>
+            </p>
+            <p className="text-[#d4d4d4]">
+              The constraints were deliberate. The toolkit was fixed: <strong>Figma, VS Code, AI, and a decade of intimate knowledge</strong> of underground music scenes and event culture. No dev handoff. No sprint teams. No QA. Just one person stress-testing the edge of what modern AI tooling and product thinking can produce - in real time, in production.
+            </p>
+            <p className="text-[#d4d4d4]">
+              The product itself was equally real. Independent event culture is being suffocated. Local promoters are fighting losing battles against algorithmic feeds that bury chronological, hyper-local content beneath engagement bait. Communities are scattered across group chats and noisy platforms. The signal-to-noise ratio for finding a genuine local show has never been worse.
+            </p>
+            <div className="border-l-2 border-accent pl-6 py-4 my-8 bg-accent/5 rounded-r-md">
+              <p className="text-lg italic text-[#ccc] m-0">Infolines is a direct homage to the 1990s telephone information lines used in rave culture - clandestine, high-trust, noise-free. You called the line, you got what you came for. No algorithm. No ads. Just the information.</p>
+            </div>
+            <p className="text-[#d4d4d4]">
+              The vision: a <strong>two-sided marketplace</strong> that gives independent promoters frictionless publishing tools and gives attendees a curated, chronological, location-aware discovery feed - rebuilt for the modern era, with the same intentionality as the original.
+            </p>
+            <img src="https://res.cloudinary.com/datad8tms/image/upload/v1777847231/Splitscreen-left_and_right_ux8kce.png" alt="Vintage flyer versus modern app interface" className="w-full rounded-lg my-8 border border-white/10" />
+          </div>
+        )
+      },
+      {
+        title: "02. Technology: The Full Stack",
+        body: (
+          <div className="space-y-6">
+            <p className="text-[#d4d4d4]">Every technology choice was a <strong>business decision</strong>, not a personal preference. The goal was maximum reach, minimum overhead, and zero reliance on a second engineer.</p>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 my-6">
+              {['Expo / React Native', 'Vite + React (PWA)', 'Supabase Postgres', 'Supabase Auth', 'Vercel', 'Resend', 'Namecheap DNS', 'GitHub', 'Gemini Pro', 'Google AI Studio', 'Figma', 'VS Code'].map(tech => (
+                <div key={tech} className="bg-[#1e1e1e] border border-accent/15 rounded-md py-2 px-3 font-mono text-xs text-accent text-center">{tech}</div>
+              ))}
+            </div>
+
+            <h3 className="heading-4 mt-8 text-white">Architecture: Two Sides, One Backbone</h3>
+            
+            <div className="flex flex-col md:flex-row items-stretch gap-4 my-8">
+              <div className="flex-1 bg-[#1e1e1e] border border-accent/10 rounded-lg p-6">
+                <div className="font-mono text-xs text-accent tracking-wider mb-2">Promoter Side</div>
+                <div className="text-base font-medium text-white mb-3">Vite + React PWA</div>
+                <ul className="list-disc pl-4 space-y-1 text-sm text-[#a3a3a3]">
+                  <li>Web-native, no app store required</li>
+                  <li>Zero install friction for organizers</li>
+                  <li>Deployed via Vercel</li>
+                  <li>Event creation & management dashboard</li>
+                  <li>Instant updates, instant publishing</li>
+                </ul>
+              </div>
+              
+              <div className="flex flex-col items-center justify-center gap-2 px-2 shrink-0 self-center">
+                <div className="bg-accent/10 border border-accent rounded-lg p-4 w-32 text-center">
+                  <div className="font-mono text-[10px] uppercase text-accent mb-1">Backbone</div>
+                  <div className="text-sm font-medium text-white mb-2">Supabase</div>
+                  <div className="text-xs text-[#888] leading-tight space-y-1 mt-2">
+                    <div>Postgres</div>
+                    <div>Auth</div>
+                    <div>Real-time</div>
+                    <div>Storage</div>
+                  </div>
+                </div>
+                <div className="text-xs text-[#888] font-mono whitespace-pre-wrap text-center mt-1">
+                  {'+ Resend\n+ Namecheap'}
+                </div>
+              </div>
+              
+              <div className="flex-1 bg-[#1e1e1e] border border-accent/10 rounded-lg p-6">
+                <div className="font-mono text-xs text-accent tracking-wider mb-2">Attendee Side</div>
+                <div className="text-base font-medium text-white mb-3">Expo / React Native</div>
+                <ul className="list-disc pl-4 space-y-1 text-sm text-[#a3a3a3]">
+                  <li>Single codebase → iOS + Android</li>
+                  <li>Native performance, location-aware</li>
+                  <li>Chronological, algorithm-free feed</li>
+                  <li>High-fidelity discovery experience</li>
+                  <li>TestFlight + Play Store pipeline</li>
+                </ul>
+              </div>
+            </div>
+
+            <p className="text-[#d4d4d4]">
+              The decision to use <strong>Expo</strong> over separate native codebases was explicitly a market inclusion decision. Building Swift + Kotlin in parallel as a solo developer would have been unsustainable. Expo allowed a single codebase to reach both iOS and Android users simultaneously - ensuring the platform didn't fragment its audience along device lines before it even launched.
+            </p>
+            <p className="text-[#d4d4d4]">
+              Similarly, the <strong>Vite + React</strong> stack for the Promoter PWA was a deliberate pivot away from the initially planned Next.js. After early testing, Next.js introduced routing overhead that created unnecessary friction for a lightweight promoter dashboard. Vite delivered a leaner, faster build with lower cognitive load for deployment.
+            </p>
+
+            <img src="https://res.cloudinary.com/datad8tms/image/upload/v1777847231/infolines_architecture_diagram_1_ajgi2k.png" alt="Infolines Architecture Map" className="w-full rounded-lg my-8 border border-white/10" />
+          </div>
+        )
+      },
+      {
+        title: "03. AI Methodology: Vibe Coding As A Systems Discipline",
+        body: (
+          <div className="space-y-6">
+            <p className="text-[#d4d4d4]">
+              The phrase "AI built this" misrepresents what actually happened. AI was the engine - but the Design Leader was the architect, the reviewer, and the quality gate. The real story is about <strong>learning to orchestrate AI tools with surgical precision</strong>, and knowing exactly where each tool breaks.
+            </p>
+            
+            <h3 className="heading-4 mt-8 text-white">The Primary Tool: Gemini Pro</h3>
+            <p className="text-[#d4d4d4]">
+              Gemini Pro, operating within VS Code, served as the main logic workhorse. Backend architecture, Supabase schema definition, authentication flows, data modeling, state management - all routed through Gemini. It worked exceptionally well for structured, systems-level tasks where clear constraints could be defined.
+            </p>
+            
+            <h3 className="heading-4 mt-8 text-white">The Bottleneck: UI Translation</h3>
+            <p className="text-[#d4d4d4]">
+              The breakdown came when the work shifted from logic to layout. Gemini Pro consistently failed to translate the high-fidelity Figma designs into accurate front-end code. Screenshots of design goals produced broken layouts. Descriptive prompts produced generic components. The back-and-forth was consuming hours without convergence.
+            </p>
+
+            <div className="border-l-2 border-accent pl-6 py-4 my-8 bg-accent/5 rounded-r-md">
+              <p className="text-lg italic text-[#ccc] m-0">The AI could build the engine. It could not build the body. That gap required a bridge - not a workaround.</p>
+            </div>
+
+            <h3 className="heading-4 mt-8 text-white">The Bridge: Google AI Studio as a Translation Layer</h3>
+            <p className="text-[#d4d4d4]">
+              The solution wasn't to keep pushing Gemini harder - it was to route the visual work through a different model entirely. <strong>Google AI Studio was deployed specifically and exclusively as a Figma-to-code translator.</strong> Figma screens were fed in. Raw, layout-accurate code came out. That code was then ported back into Gemini Pro, giving it a visual source of truth it could reason against rather than hallucinate from.
+            </p>
+            <p className="text-[#d4d4d4]">
+              This was the turning point in the build. Once this loop was established, the UI bottleneck dissolved.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 my-8 border border-accent/15 rounded-lg overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-accent/10">
+              {[
+                { step: 1, who: 'Human', title: 'System definition', body: 'DB schemas, user flows, UI constraints defined in Figma. Design intent locked before any code is written.', bg: 'bg-accent/5' },
+                { step: 2, who: 'AI Studio', title: 'Visual translation', body: 'Figma screens fed into AI Studio. Output: layout-accurate component code matching the design exactly.', bg: 'bg-transparent' },
+                { step: 3, who: 'Gemini Pro', title: 'Logic integration', body: 'AI Studio code ported into Gemini. Backend wiring, auth, data binding, and state management applied against a known visual target.', bg: 'bg-transparent' },
+                { step: 4, who: 'Human + AI', title: 'Validation loop', body: 'Live testing in Expo simulator. Human audits the output, corrects context drift, enforces architectural integrity.', bg: 'bg-accent/5' },
+              ].map((item) => (
+                <div key={item.step} className={'p-6 relative ' + item.bg}>
+                  <div className="font-sans font-bold text-5xl text-accent/20 leading-none mb-3">0{item.step}</div>
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-accent mb-2">{item.who}</div>
+                  <div className="text-sm font-medium text-white mb-2">{item.title}</div>
+                  <div className="text-xs text-[#888] leading-relaxed">{item.body}</div>
+                </div>
+              ))}
+            </div>
+
+            <img src="https://res.cloudinary.com/datad8tms/image/upload/v1777847231/design_vs_live_bi3wuc.png" alt="Figma design vs Expo live simulator" className="w-full rounded-lg my-6 border border-white/10" />
+
+            <img src="https://res.cloudinary.com/datad8tms/image/upload/v1777847231/Prompt_workflow_oc26p7.png" alt="Prompt workflow visualization" className="w-full rounded-lg my-6 border border-white/10" />
+          </div>
+        )
+      },
+      {
+        title: "04. Timeline: The 4-Week Sprint",
+        body: (
+          <div className="space-y-6">
+            <p className="text-[#d4d4d4]">From first commit to App Store submission in under a month. Every milestone below was earned through iteration, not inherited from a template.</p>
+            
+            <div className="relative border-l border-accent/30 ml-3 md:ml-4 my-10 space-y-12">
+              {[
+                { date: 'MARCH 2026 - WEEK 1', title: 'Foundation & Architecture', body: 'Supabase Postgres backend initialized. Auth flows designed and wired. Dual-platform architecture defined - Vite + React for the Promoter PWA, Expo for the attendee native app. First test event successfully routed from the web dashboard into the mobile simulator. The data pipeline was live.', flagLabel: 'KEY WIN', flagBody: 'End-to-end data flow confirmed in week one. Both interfaces talking to the same Postgres instance from day one validated the dual-sided architecture before a single user-facing component was built.', success: true },
+                { date: 'MARCH 2026 - WEEKS 2–3', title: 'The AI Velocity Sprint', body: 'The core build phase. The Gemini Pro / AI Studio workflow was fully established after the UI bottleneck was cracked. Core attendee feed, location-based filtering, promoter event creation, and secure auth across both platforms were built in parallel. The Figma → AI Studio → Gemini loop ran continuously, collapsing what would have been months of traditional development into days.', flagLabel: 'KEY WIN', flagBody: 'Feature-complete MVP achieved at the end of week 3. Both platforms functional, auth live, events routing end-to-end. The AI translation bridge solved what days of direct prompting could not.', success: true },
+                { date: 'LATE MARCH / EARLY APRIL 2026', title: 'Domain & Security Friction', body: 'Custom domain configuration and email infrastructure integration through Resend triggered automated phishing flags. DNS routing through Namecheap required careful alignment to prevent transactional emails from being blocked. Significant time was spent in the security and deliverability layer before the communication stack was clean.', flagLabel: 'BLOCKER', flagBody: 'A reminder that production infrastructure is an entirely different problem domain from application development. Domain reputation, SPF/DKIM records, and phishing prevention systems require their own expertise and patience.', success: false },
+                { date: 'APRIL 2026', title: 'Android: The Mandatory Beta Wall', body: "Google Play's mandatory closed beta requirement for new personal developer accounts - requiring 20 testers over a minimum period before open release eligibility - created an unavoidable distribution ceiling on the Android side. This was not a code problem. It was a platform policy reality that no amount of engineering could accelerate.", flagLabel: 'STRATEGIC RESPONSE', flagBody: 'Rather than treating this as a launch failure, the decision was made to decouple the iOS and Android releases entirely. iOS validation proceeded independently while the Android beta track runs in parallel. The blocker became a forcing function for a sequenced go-to-market strategy - not a stall.', success: false },
+                { date: 'APRIL 7, 2026', title: 'TestFlight Submission & Approval', body: "The Expo build was successfully packaged, passed Apple's review pipeline, and deployed to TestFlight. The iOS validation loop opened. Real users. Real devices. Real feedback. The product that started as a blank Figma file was now in someone's pocket.", flagLabel: 'MILESTONE', flagBody: 'Version 1 shipped to the Apple App Store. Development did not pause. The second version of the native app has already rolled out, expanding the feature set. Meanwhile, we are now on version 4 of the promoter PWA. Once the foundation was established and I could begin testing, I was able to make rapid, progressive improvements.', success: true }
+              ].map((item, i) => (
+                <div key={i} className="relative pl-8 md:pl-10">
+                  <div className={'absolute top-1.5 -left-[9px] w-4 h-4 rounded-full border-2 bg-[#111202] ' + (item.success ? 'border-accent bg-accent' : 'border-red-500 bg-red-500')}></div>
+                  <div className={'font-mono text-[10px] uppercase tracking-widest mb-2 ' + (item.success ? 'text-accent' : 'text-red-400')}>{item.date}</div>
+                  <div className="text-xl font-sans font-bold text-white tracking-[0.01em] mb-2">{item.title}</div>
+                  <div className="text-[14px] text-[#999] leading-relaxed mb-4">{item.body}</div>
+                  <div className={'p-4 rounded border ' + (item.success ? 'bg-accent/5 border-accent/15' : 'bg-red-500/5 border-red-500/20')}>
+                    <div className={'font-mono text-[10px] uppercase tracking-widest mb-1 ' + (item.success ? 'text-accent' : 'text-red-400')}>{item.flagLabel}</div>
+                    <div className="text-[13px] text-[#bbb]">{item.flagBody}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <img src="https://res.cloudinary.com/datad8tms/image/upload/v1777847230/Timeline_aupcwn.png" alt="Visual 4-week sprint timeline" className="w-full rounded-lg my-10 border border-white/10" />
+          </div>
+        )
+      },
+      {
+        title: "05. Product Vision: What Infolines Is Actually Building",
+        body: (
+          <div className="space-y-6">
+            <p className="text-[#d4d4d4]">The V1 launch was a proof of architecture. The larger vision is a <strong>high-trust, community-native discovery network</strong> - one that scales with the density of its organizers, not the spend of its advertisers.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+              <div className="bg-[#1e1e1e] border border-accent/10 rounded-lg p-6">
+                <div className="font-mono text-[10px] text-accent tracking-widest uppercase mb-2">For Promoters</div>
+                <div className="text-lg font-medium text-white mb-2">Zero friction broadcasting</div>
+                <p className="text-[13px] text-[#888] leading-relaxed">A web-native dashboard means a promoter can list an event from any device, in any browser, without downloading an app. Events populate the attendee feed instantly. No gatekeeping. No algorithm deciding who sees it.</p>
+              </div>
+              <div className="bg-[#1e1e1e] border border-accent/10 rounded-lg p-6">
+                <div className="font-mono text-[10px] text-accent tracking-widest uppercase mb-2">For Attendees</div>
+                <div className="text-lg font-medium text-white mb-2">Curated, local, chronological</div>
+                <p className="text-[13px] text-[#888] leading-relaxed">A native app feed that surfaces what's happening near you, when it's happening - ordered by time, filtered by taste, not manipulated by engagement metrics. The original info line, rebuilt for a phone.</p>
+              </div>
+            </div>
+
+            <h3 className="heading-4 mt-8 text-white">The Scale Roadmap</h3>
+            <p className="text-[#d4d4d4]">The immediate strategy is deliberate localization. Anchor deeply in <strong>Richmond, VA</strong> - build real density, real trust, real usage before expanding the geographic footprint. A platform with 200 active users in one city is more valuable than 2,000 passive installs spread across 20 cities.</p>
+
+            <div className="overflow-x-auto my-8 border border-white/10 rounded-lg">
+              <table className="w-full min-w-[600px] border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-white/10 bg-[#1e1e1e]">
+                    <th className="font-mono text-[10px] tracking-widest uppercase text-[#888] p-4 text-left">Phase</th>
+                    <th className="font-mono text-[10px] tracking-widest uppercase text-[#888] p-4 text-left">Focus</th>
+                    <th className="font-mono text-[10px] tracking-widest uppercase text-[#888] p-4 text-left">Target Outcome</th>
+                    <th className="font-mono text-[10px] tracking-widest uppercase text-[#888] p-4 text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { phase: 'V1 Foundation', focus: 'Core loop: promoter posts, attendee discovers', target: 'Validated end-to-end flow in production', status: 'LIVE', active: true },
+                    { phase: 'Android Release', focus: 'Fulfill Google Play beta requirements', target: 'Full cross-platform parity', status: 'IN PROGRESS', active: false },
+                    { phase: 'V2 Feature Set', focus: 'Enhanced discovery, social sharing, deep links', target: 'Increased session depth + organic growth', status: 'IN REVIEW', active: false },
+                    { phase: 'Community Layer', focus: 'Invite-only events, handshake features, trust signals', target: 'Reinforce high-trust brand promise', status: 'ROADMAP', active: false },
+                    { phase: 'Geographic Scale', focus: 'Expand to adjacent markets with established scenes', target: 'Multi-city network with replicable local playbook', status: 'ROADMAP', active: false }
+                  ].map((row, i) => (
+                    <tr key={i} className="border-b border-white/5 last:border-b-0">
+                      <td className="font-medium text-[13px] text-white p-4 align-top">{row.phase}</td>
+                      <td className="text-[13px] text-[#999] p-4 align-top">{row.focus}</td>
+                      <td className="text-[13px] text-[#999] p-4 align-top">{row.target}</td>
+                      <td className="p-4 align-top text-right w-[120px]">
+                        <span className={'inline-block font-mono text-[10px] px-2 py-1 rounded-[3px] ' + (row.active ? 'bg-accent/10 text-accent' : row.status.includes('PROGRESS') || row.status.includes('REVIEW') ? 'bg-[#ffaa00]/10 text-[#ffaa00]' : 'bg-white/5 text-[#888]')}>{row.status}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <img src="https://res.cloudinary.com/datad8tms/image/upload/v1777847231/side_by_side_mphhvj.png" alt="Infolines dual interfaces" className="w-full rounded-lg my-6 border border-white/10" />
+
+            
+          </div>
+        )
+      },
+      {
+        title: "06. Outcomes: Two Stories, One Build",
+        body: (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+              <div className="bg-[#1e1e1e] border border-accent/10 rounded-lg p-6 sm:p-8">
+                <div className="font-sans font-bold text-5xl text-accent/15 leading-none mb-3">01</div>
+                <div className="text-xl font-bold tracking-tight text-accent mb-3">The Product Journey</div>
+                <p className="text-[13px] text-[#888] mb-6">What shipping a B2B2C marketplace solo actually teaches you.</p>
+                <ul className="space-y-4">
+                  {[
+                    'Technical decisions are business decisions. Expo over native = cross-platform inclusion. Vite over Next.js = eliminating friction at the deployment layer. Every choice had downstream product consequences.',
+                    'Platform distribution is its own discipline. The Android beta wall was not a code problem - it was a policy reality. The response to it (decoupled releases, iOS-first validation) was a product strategy, not a consolation prize.',
+                    'Two-sided marketplaces require two completely different UX philosophies living in the same backend. The promoter experience and the attendee experience share a Supabase database and almost nothing else - intentionally.',
+                    'Speed is a product feature. Launching in 4 weeks meant real users, real feedback, real iteration cycles began before any competitor hypothetically could have even finished planning.',
+                    'A localized network with real density beats a national launch with shallow adoption. The Richmond-first strategy is not a constraint - it is the growth model.'
+                  ].map((item, i) => (
+                    <li key={i} className="flex gap-3 items-start border-b border-white/5 pb-4 font-sans text-[13px] text-[#999] last:border-b-0 last:pb-0">
+                      <span className="text-accent text-[11px] mt-1 shrink-0">→</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-[#1e1e1e] border border-accent/10 rounded-lg p-6 sm:p-8">
+                <div className="font-sans font-bold text-5xl text-accent/15 leading-none mb-3">02</div>
+                <div className="text-xl font-bold tracking-tight text-accent mb-3">The AI Methodology</div>
+                <p className="text-[13px] text-[#888] mb-6">What this experiment proved about AI-assisted development at scale.</p>
+                <ul className="space-y-4">
+                  {[
+                    'AI does not lower the bar for technical knowledge. It raises the ceiling for what one technical person can ship. The gap between what AI can generate and what a live product needs to do is bridged by architectural judgment - not prompting skill.',
+                    'Tool selection is a strategy. Gemini Pro for logic. AI Studio for visual translation. These are not interchangeable. Knowing when to switch tools - and when to stop trusting the output - is the core competency.',
+                    'Context degradation is the hidden cost of AI velocity. Over long sprint sessions, the AI loses the thread of global state. A bug fix in one component breaks another because the model lacks the persistent, holistic view that only the architect holds. Human review cannot be optional.',
+                    'The Figma-to-AI-Studio-to-Gemini loop is a replicable pattern for any designer with strong systems thinking. The visual design serves as the contract. The AI respects a contract better than a description.',
+                    'AI-generated app store marketing assets are a legitimate part of the pipeline. Unblocking the submission process end-to-end - not just the code - is where velocity compounds.'
+                  ].map((item, i) => (
+                    <li key={i} className="flex gap-3 items-start border-b border-white/5 pb-4 font-sans text-[13px] text-[#999] last:border-b-0 last:pb-0">
+                      <span className="text-accent text-[11px] mt-1 shrink-0">→</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="border-l-2 border-accent pl-6 py-4 my-8 bg-accent/5 rounded-r-md">
+              <p className="text-lg italic text-[#ccc] m-0">The AI was the engine. I was the architect. The product was the proof. A single designer with domain knowledge, the right tools, and a clear design system can build what used to require a team - if they're willing to become the most demanding code reviewer in the room.</p>
+            </div>
+          </div>
+        )
+      }
+    ]
+  },
   { 
     id: 1, 
     title: "The Global Scale Engine", 
@@ -73,7 +392,7 @@ const PROJECTS: any[] = [
           <ul className="list-disc pl-5 space-y-2 text-[#d4d4d4]">
             <li><strong className="text-white">The Hypothesis:</strong> We believed that by moving to a <strong>token-based design system</strong> and a refactored front-end (Storybook/Chromium instance), we could standardize the experience and drastically reduce the time-to-market for new features and unblock i18n and public sector goals.</li>
             <li><strong className="text-white">Systemic Thinking:</strong> I led the creation of a comprehensive design system from the ground up, ensuring every component was WCAG 2.1 AA compliant and fully responsive.</li>
-            <li><strong className="text-white">Simplifying the Journey:</strong> I structured the project into four distinct phases—Brand Refresh, Design System Creation, Front-End Refactor, and Final Cut-Over—to maintain business continuity without downtime.</li>
+            <li><strong className="text-white">Simplifying the Journey:</strong> I structured the project into four distinct phases-Brand Refresh, Design System Creation, Front-End Refactor, and Final Cut-Over-to maintain business continuity without downtime.</li>
           </ul>
         )
       },
@@ -173,7 +492,7 @@ const PROJECTS: any[] = [
         title: "4. Validation & Iteration",
         body: (
           <ul className="list-disc pl-5 space-y-2 text-[#d4d4d4]">
-            <li><strong className="text-white">The Testing:</strong> We conducted intensive usability sessions focused on "Trust Benchmarks"—measuring how much information was required before a user felt safe clicking "Apply."</li>
+            <li><strong className="text-white">The Testing:</strong> We conducted intensive usability sessions focused on "Trust Benchmarks"-measuring how much information was required before a user felt safe clicking "Apply."</li>
             <li><strong className="text-white">The Feedback:</strong> Users initially felt overwhelmed by the data density. I led a pivot to "Progressive Disclosure," hiding the math unless the user explicitly asked to see the "Why."</li>
             <li><strong className="text-white">The Pivot:</strong> We shifted from a purely automated system to a "Human-in-the-Loop" model, allowing users to set guardrails that the AI had to respect.</li>
           </ul>
@@ -216,7 +535,7 @@ const PROJECTS: any[] = [
     problem: "We were losing market share to competitors because they had more integration offerings. 97% of exiting parks cited a specific missing integration as the main cause for finding a new tool.",
     solution: "A 'Marketplace & Middleware' strategy, focusing on high-volume connectors to double offerings in half the time.",
     process: "Created a 'Tiered Integration Framework'. Moved from a purely 'Internal Setup' to a 'Self-Service Install'.",
-    impact: "97% 'Boomerang' rate—nearly all lost customers returned. 2x increase in total integration offerings compared to lead competitor.",
+    impact: "97% 'Boomerang' rate-nearly all lost customers returned. 2x increase in total integration offerings compared to lead competitor.",
     imageUrl: "https://res.cloudinary.com/datad8tms/image/upload/v1773079971/IntegrationsHub_fi3bnp.png",
     altText: "A high-fidelity mockup of a laptop screen displaying the Campspot Integrations Hub. The interface highlights active third-party connections like Mailchimp and RemoteLock, alongside a marketplace section for discovering new app integrations such as Lattice and Rippling.",
     ariaLabel: "Campspot Integrations Hub interface on a laptop mockup.",
@@ -1584,7 +1903,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
           {/* Left Column: Image */}
           <div className={`relative group overflow-hidden rounded-2xl aspect-[4/5] w-full ${showA11y ? 'lg:w-[72%] lg:max-w-[378px]' : 'md:w-[85%] md:max-w-[420px] lg:w-[72%] lg:max-w-[378px]'} mx-auto border-2 border-transparent group-hover:border-accent transition-colors duration-500`}>
             <OptimizedImage 
-              src="https://ik.imagekit.io/danknots/portfolio/Dan-Dechiara_rdkrq2.png" 
+              src="https://res.cloudinary.com/datad8tms/image/upload/v1772823845/Dan-Dechiara_rdkrq2.png" 
               alt="A portrait of Dan Dechiara, a smiling man with light skin, outdoors amongst large grey boulders. He is wearing a black Patagonia zip-up hoodie over a purple shirt, a tan and orange baseball cap, and climbing gear including a harness and chalk bag. He is positioned between two rocks, looking directly at the camera."
               className="w-full h-full object-cover group-hover:scale-[1.03] transition-all duration-500 ease-in-out"
               referrerPolicy="no-referrer"
@@ -1699,7 +2018,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
         </div>
 
         <div className={`grid ${showA11y ? 'lg:grid-cols-2' : 'md:grid-cols-2'} gap-6`}>
-          {PROJECTS.slice(0, 4).map(project => (
+          {PROJECTS.map(project => (
             <PreviewCard 
               key={project.id}
               project={project}
@@ -1773,7 +2092,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
           </div>
           <div className="space-y-6">
             <ResumeItem 
-              role="Staff Product Designer" 
+              role="Senior Product Designer" 
               company="Campspot" 
               period="Aug 2022 - Current" 
             />
@@ -2054,9 +2373,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
             rel="noopener noreferrer"
             className="flex items-center gap-2 bg-accent text-[#050505] px-6 py-3 rounded-full font-bold shadow-[0_0_20px_rgba(242,125,38,0.3)] hover:shadow-[0_0_30px_rgba(242,125,38,0.5)] hover:scale-105 transition-all duration-300"
           >
-            <FileText size={18} />
-            Request Case Study
-          </a>
+            <Globe size={18} />Visit Website</a>
         </div>
       </div>
     );
