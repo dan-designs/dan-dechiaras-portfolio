@@ -1102,7 +1102,11 @@ function OptimizedImage({
 }
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('welcome');
+  const [currentPage, setCurrentPage] = useState(() => {
+    const path = window.location.pathname.replace(/^\/+/g, '').replace(/\/$/, '');
+    if (['about', 'work', 'connect'].includes(path)) return path;
+    return 'welcome';
+  });
   const [showA11yFeatures, setShowA11yFeatures] = useState(false);
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -1116,6 +1120,15 @@ export default function App() {
 
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
   const isMobile = useMediaQuery('(max-width: 767px)');
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.replace(/^\/+/g, '').replace(/\/$/, '');
+      setCurrentPage(['about', 'work', 'connect'].includes(path) ? path : 'welcome');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -1249,6 +1262,8 @@ export default function App() {
     setCurrentPage(page);
     setSelectedProject(null);
     setIsMobileMenuOpen(false);
+    const route = page === 'welcome' ? '/' : `/${page}`;
+    window.history.pushState(null, '', route);
   };
 
   return (
@@ -1822,6 +1837,17 @@ function WorkflowModal({ onClose }: { onClose: () => void }) {
             <p className="body-base text-[#d4d4d4] mb-4">
               After validating prototypes with users via Maze, I transpose the prototype to Figma using MCP or code-to-Figma plugins to refine components, finalize designs, and prep files for handoff. This has empowered me to routinely deliver code snippets while ensuring developers retain full ownership of the production environment.
             </p>
+            <p className="body-base text-[#d4d4d4] mb-4">
+              I have been experimenting and utilizing the MCP workflow defined at my 9-5. I successfully implemented design-to-code and <a href="https://blog.bytebytego.com/p/figma-design-to-code-code-to-design?utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">code-to-design workflows</a>, prepping the setup in a way that almost anyone can spin up an instance.
+            </p>
+            <img 
+              src="https://res.cloudinary.com/datad8tms/image/upload/v1777920710/Screenshot_2026-05-04_at_2.50.36_PM_byv8vw.png"
+              alt="Multi-agent AI workflow routing and configuration using MCP" 
+              className="w-full rounded-xl border border-[#262626] shadow-md my-6"
+            />
+            <p className="body-base text-[#d4d4d4] mb-6">
+              While adapting to these workflows, I am shifting design strategies to best integrate AI tools while respecting compliance, security, and privacy when doing sensitive work. This paradigm shift was a driving factor behind the <span className="text-accent font-bold">INFOLINES</span> project, which was a 1-month sprint utilizing purely Gemini and Google AI Studio to achieve an efficient generation and prototyping flow.
+            </p>
           </div>
           
           <div>
@@ -1846,6 +1872,7 @@ function WorkflowModal({ onClose }: { onClose: () => void }) {
                 PROCESS_TOOLS.find(t => t.tool === 'Gemini'),
                 PROCESS_TOOLS.find(t => t.tool === 'Stitch / Figma'),
                 PROCESS_TOOLS.find(t => t.tool === 'Google AI Studio'),
+                PROCESS_TOOLS.find(t => t.tool === 'Claude'),
                 PROCESS_TOOLS.find(t => t.tool === 'VS Code'),
                 PROCESS_TOOLS.find(t => t.tool === 'GitHub + Copilot'),
                 PROCESS_TOOLS.find(t => t.tool === 'Vercel'),
@@ -2092,7 +2119,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
           </div>
           <div className="space-y-6">
             <ResumeItem 
-              role="Senior Product Designer" 
+              role="Staff Product Designer" 
               company="Campspot" 
               period="Aug 2022 - Current" 
             />
