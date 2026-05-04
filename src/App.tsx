@@ -2366,7 +2366,7 @@ function WorkPage({ showA11y, selectedProject, setSelectedProject }: { showA11y:
         </div>
 
         {/* FAB Button */}
-        <div className="fixed bottom-8 right-8 z-50 animate-in slide-in-from-bottom-8 duration-500">
+        <div className="fixed bottom-[84px] md:bottom-8 right-6 md:right-8 z-50 animate-in slide-in-from-bottom-8 duration-500">
           <a 
             href={project.figmaLink}
             target="_blank"
