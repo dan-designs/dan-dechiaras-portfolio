@@ -32,7 +32,7 @@ const PROJECTS: any[] = [
   {
     id: 0,
     title: "INFOLINES",
-    metric: "Design Architecture · AI Prototyping",
+    metric: "Design Architecture · Product Strategy · AI Methodology",
     metrics: [
       {
         value: "95%",
@@ -42,7 +42,7 @@ const PROJECTS: any[] = [
       {
         value: "4 weeks",
         label: "Sprint Duration",
-        description: "From blank design canvas to full Apple TestFlight integration."
+        description: "From blank design canvas to operational 2 sided marketplace comprised of a Platform|PWA and Downloadable iOS app."
       },
       {
         value: "100%",
@@ -76,7 +76,7 @@ const PROJECTS: any[] = [
               The product itself was equally real. Independent event culture is being suffocated. Local promoters are fighting losing battles against algorithmic feeds that bury chronological, hyper-local content beneath engagement bait. Communities are scattered across group chats and noisy platforms. The signal-to-noise ratio for finding a genuine local show has never been worse.
             </p>
             <div className="border-l-2 border-accent pl-6 py-4 my-8 bg-accent/5 rounded-r-md">
-              <p className="text-lg italic text-[#ccc] m-0">Infolines is a direct homage to the 1990s telephone information lines used in rave culture - clandestine, high-trust, noise-free. You called the line, you got what you came for. No algorithm. No ads. Just the information.</p>
+              <p className="text-lg italic text-[#ccc] m-0">The name Infolines pays direct homage to the 1990s telephone information lines used in rave culture - clandestine, high-trust, noise-free. You called the line, you got what you came for. No algorithm. No ads. Just the information.</p>
             </div>
             <p className="text-[#d4d4d4]">
               The vision: a <strong>two-sided marketplace</strong> that gives independent promoters frictionless publishing tools and gives attendees a curated, chronological, location-aware discovery feed - rebuilt for the modern era, with the same intentionality as the original.
@@ -216,7 +216,7 @@ const PROJECTS: any[] = [
                 { date: 'MARCH 2026 - WEEKS 2–3', title: 'The AI Velocity Sprint', body: 'The core build phase. The Gemini Pro / AI Studio workflow was fully established after the UI bottleneck was cracked. Core attendee feed, location-based filtering, promoter event creation, and secure auth across both platforms were built in parallel. The Figma → AI Studio → Gemini loop ran continuously, collapsing what would have been months of traditional development into days.', flagLabel: 'KEY WIN', flagBody: 'Feature-complete MVP achieved at the end of week 3. Both platforms functional, auth live, events routing end-to-end. The AI translation bridge solved what days of direct prompting could not.', success: true },
                 { date: 'LATE MARCH / EARLY APRIL 2026', title: 'Domain & Security Friction', body: 'Custom domain configuration and email infrastructure integration through Resend triggered automated phishing flags. DNS routing through Namecheap required careful alignment to prevent transactional emails from being blocked. Significant time was spent in the security and deliverability layer before the communication stack was clean.', flagLabel: 'BLOCKER', flagBody: 'A reminder that production infrastructure is an entirely different problem domain from application development. Domain reputation, SPF/DKIM records, and phishing prevention systems require their own expertise and patience.', success: false },
                 { date: 'APRIL 2026', title: 'Android: The Mandatory Beta Wall', body: "Google Play's mandatory closed beta requirement for new personal developer accounts - requiring 20 testers over a minimum period before open release eligibility - created an unavoidable distribution ceiling on the Android side. This was not a code problem. It was a platform policy reality that no amount of engineering could accelerate.", flagLabel: 'STRATEGIC RESPONSE', flagBody: 'Rather than treating this as a launch failure, the decision was made to decouple the iOS and Android releases entirely. iOS validation proceeded independently while the Android beta track runs in parallel. The blocker became a forcing function for a sequenced go-to-market strategy - not a stall.', success: false },
-                { date: 'APRIL 7, 2026', title: 'TestFlight Submission & Approval', body: "The Expo build was successfully packaged, passed Apple's review pipeline, and deployed to TestFlight. The iOS validation loop opened. Real users. Real devices. Real feedback. The product that started as a blank Figma file was now in someone's pocket.", flagLabel: 'MILESTONE', flagBody: 'Version 1 shipped to the Apple App Store. Development did not pause. The second version of the native app has already rolled out, expanding the feature set. Meanwhile, we are now on version 4 of the promoter PWA. Once the foundation was established and I could begin testing, I was able to make rapid, progressive improvements.', success: true }
+                { date: 'APRIL 7, 2026', title: 'TestFlight Submission & Approval', body: "The Expo build was successfully packaged, passed Apple's review pipeline, and deployed publically for download on the Apple App Store. The iOS validation loop opened. Real users. Real devices. Real feedback. The product that started as a blank Figma file was now in someone's pocket.", flagLabel: 'MILESTONE', flagBody: 'Version 1 shipped to the Apple App Store. Development did not pause. The second version of the native app has already rolled out, expanding the feature set. Meanwhile, we are now on version 4 of the promoter PWA. Once the foundation was established and I could begin testing, I was able to make rapid, progressive improvements.', success: true }
               ].map((item, i) => (
                 <div key={i} className="relative pl-8 md:pl-10">
                   <div className={'absolute top-1.5 -left-[9px] w-4 h-4 rounded-full border-2 bg-[#111202] ' + (item.success ? 'border-accent bg-accent' : 'border-red-500 bg-red-500')}></div>
@@ -250,7 +250,7 @@ const PROJECTS: any[] = [
               <div className="bg-[#1e1e1e] border border-accent/10 rounded-lg p-6">
                 <div className="font-mono text-[10px] text-accent tracking-widest uppercase mb-2">For Attendees</div>
                 <div className="text-lg font-medium text-white mb-2">Curated, local, chronological</div>
-                <p className="text-[13px] text-[#888] leading-relaxed">A native app feed that surfaces what's happening near you, when it's happening - ordered by time, filtered by taste, not manipulated by engagement metrics. The original info line, rebuilt for a phone.</p>
+                <p className="text-[13px] text-[#888] leading-relaxed">A native app feed that surfaces what's happening near you, when it's happening - ordered by time, filtered by taste, not manipulated by engagement metrics. The original infoline, rebuilt for the mordern age.</p>
               </div>
             </div>
 
