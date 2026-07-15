@@ -16,14 +16,14 @@ const PROCESS_TOOLS = [
   { tool: 'CodeRabbit', use: 'Code Review', step: 0, type: 'Add-on', description: 'AI-powered code review tool integrated into the PR process.', strengths: 'Automated, context-aware code reviews that catch bugs and suggest improvements before merging.' },
   { tool: 'Dovetail', use: 'Research Analysis', step: 8, type: 'Standalone', description: 'A customer insight hub where all testing data, interviews, and feedback are synthesized and analyzed.', strengths: 'Powerful tagging, sentiment analysis, and the ability to turn raw user testing data into actionable product iterations.' },
   { tool: 'Figma', use: 'Visual Direction', step: 0, type: 'Standalone', description: 'The core design environment where visual direction is established.', strengths: 'Rapid UI iteration, robust component systems, and seamless translation of visual concepts into developer-ready specs.' },
-  { tool: 'Stitch / Figma', use: 'Visual Direction', step: 2, type: 'Standalone & Add-on', description: 'The core design environment (Figma) combined with an internal tool (Stitch) that bridges the gap between design tokens and code.', strengths: 'Rapid UI iteration, robust component systems, and seamless translation of visual concepts into developer-ready specs while ensuring design system consistency directly into the codebase.' },
+  { tool: 'Claude Design / Figma', use: 'Visual Direction', step: 2, type: 'Standalone & Add-on', description: 'The core design environment (Figma) combined with Claude Design to bridge the gap between design tokens and code.', strengths: 'Rapid UI iteration, robust component systems, and seamless translation of visual concepts into developer-ready specs.' },
   { tool: 'Gemini', use: 'Ideation & Logic', step: 1, type: 'Standalone', description: 'Google\'s most capable AI model, used for complex reasoning, brainstorming product logic, and generating initial architectural approaches.', strengths: 'Massive context window allows for analyzing entire codebases or extensive product documentation at once.' },
-  { tool: 'GitHub + Copilot', use: 'Version Control', step: 5, type: 'Standalone & Add-on', description: 'Source code management combined with AI pair programming to accelerate refinement and ensure secure versioning.', strengths: 'Inline code suggestions speed up boilerplate writing, while strict version control ensures all AI-generated code is trackable and reversible.' },
+  { tool: 'GitHub', use: 'Version Control', step: 5, type: 'Standalone', description: 'Source code management to ensure secure versioning.', strengths: 'Strict version control ensures all AI-generated code is trackable and reversible.' },
   { tool: 'Google AI Studio', use: 'Applet Gen', step: 3, type: 'Standalone', description: 'A rapid prototyping environment used to turn prompts and logic into functional, live React applets for immediate testing.', strengths: 'Bridges the gap between idea and functional prototype in minutes, allowing for real interactive pressure testing.' },
   { tool: 'Grammarly', use: 'Copy Refinement', step: 0, type: 'Add-on', description: 'AI writing assistant used to ensure clear, concise, and professional communication across all documentation and UI copy.', strengths: 'Real-time grammar, tone, and clarity suggestions.' },
   { tool: 'Maze', use: 'User Testing', step: 7, type: 'Standalone', description: 'A continuous product discovery platform used to run unmoderated tests on the live prototypes or Figma designs.', strengths: 'Quantitative metrics, heatmaps, and structured user feedback at scale.' },
   { tool: 'Rovo', use: 'Knowledge Management', step: 0, type: 'Standalone', description: 'AI-powered enterprise search and knowledge discovery tool.', strengths: 'Finding information across disparate internal systems and documentation.' },
-  { tool: 'Stitch', use: 'Design to Code', step: 0, type: 'Add-on', description: 'Internal/plugin tool that bridges the gap between design tokens and code.', strengths: 'Ensures design system consistency from Figma directly into the codebase.' },
+  { tool: 'Claude Code', use: 'Applet Gen & Code Refinement', step: 3, type: 'Standalone', description: 'AI agent used to generate functional applets and refine codebase architecture.', strengths: 'Bridges the gap between idea and functional code, allowing for rapid iteration.' },
   { tool: 'VS Code', use: 'Code Refinement', step: 4, type: 'Standalone', description: 'The primary local development environment where AI-generated code is refined, debugged, and integrated into the broader system.', strengths: 'Extensibility, deep integration with linting and formatting tools, and a familiar environment for fine-tuning.' },
   { tool: 'Vercel', use: 'Live Deployment', step: 6, type: 'Standalone', description: 'The deployment platform used to host live prototypes and gather real-world feedback.', strengths: 'Instant preview deployments for every branch, enabling seamless sharing of live prototypes with stakeholders and testers.' }
 ];
@@ -32,7 +32,7 @@ const PROJECTS: any[] = [
   {
     id: 0,
     title: "INFOLINES",
-    metric: "Design Architecture · Product Strategy · AI Methodology",
+    metric: "Design Architecture · AI Prototyping",
     metrics: [
       {
         value: "95%",
@@ -42,7 +42,7 @@ const PROJECTS: any[] = [
       {
         value: "4 weeks",
         label: "Sprint Duration",
-        description: "From blank design canvas to operational 2 sided marketplace comprised of a Platform|PWA and Downloadable iOS app."
+        description: "From blank design canvas to full Apple TestFlight integration."
       },
       {
         value: "100%",
@@ -76,7 +76,7 @@ const PROJECTS: any[] = [
               The product itself was equally real. Independent event culture is being suffocated. Local promoters are fighting losing battles against algorithmic feeds that bury chronological, hyper-local content beneath engagement bait. Communities are scattered across group chats and noisy platforms. The signal-to-noise ratio for finding a genuine local show has never been worse.
             </p>
             <div className="border-l-2 border-accent pl-6 py-4 my-8 bg-accent/5 rounded-r-md">
-              <p className="text-lg italic text-[#ccc] m-0">The name Infolines pays direct homage to the 1990s telephone information lines used in rave culture - clandestine, high-trust, noise-free. You called the line, you got what you came for. No algorithm. No ads. Just the information.</p>
+              <p className="text-lg italic text-[#ccc] m-0">Infolines is a direct homage to the 1990s telephone information lines used in rave culture - clandestine, high-trust, noise-free. You called the line, you got what you came for. No algorithm. No ads. Just the information.</p>
             </div>
             <p className="text-[#d4d4d4]">
               The vision: a <strong>two-sided marketplace</strong> that gives independent promoters frictionless publishing tools and gives attendees a curated, chronological, location-aware discovery feed - rebuilt for the modern era, with the same intentionality as the original.
@@ -216,7 +216,7 @@ const PROJECTS: any[] = [
                 { date: 'MARCH 2026 - WEEKS 2–3', title: 'The AI Velocity Sprint', body: 'The core build phase. The Gemini Pro / AI Studio workflow was fully established after the UI bottleneck was cracked. Core attendee feed, location-based filtering, promoter event creation, and secure auth across both platforms were built in parallel. The Figma → AI Studio → Gemini loop ran continuously, collapsing what would have been months of traditional development into days.', flagLabel: 'KEY WIN', flagBody: 'Feature-complete MVP achieved at the end of week 3. Both platforms functional, auth live, events routing end-to-end. The AI translation bridge solved what days of direct prompting could not.', success: true },
                 { date: 'LATE MARCH / EARLY APRIL 2026', title: 'Domain & Security Friction', body: 'Custom domain configuration and email infrastructure integration through Resend triggered automated phishing flags. DNS routing through Namecheap required careful alignment to prevent transactional emails from being blocked. Significant time was spent in the security and deliverability layer before the communication stack was clean.', flagLabel: 'BLOCKER', flagBody: 'A reminder that production infrastructure is an entirely different problem domain from application development. Domain reputation, SPF/DKIM records, and phishing prevention systems require their own expertise and patience.', success: false },
                 { date: 'APRIL 2026', title: 'Android: The Mandatory Beta Wall', body: "Google Play's mandatory closed beta requirement for new personal developer accounts - requiring 20 testers over a minimum period before open release eligibility - created an unavoidable distribution ceiling on the Android side. This was not a code problem. It was a platform policy reality that no amount of engineering could accelerate.", flagLabel: 'STRATEGIC RESPONSE', flagBody: 'Rather than treating this as a launch failure, the decision was made to decouple the iOS and Android releases entirely. iOS validation proceeded independently while the Android beta track runs in parallel. The blocker became a forcing function for a sequenced go-to-market strategy - not a stall.', success: false },
-                { date: 'APRIL 7, 2026', title: 'TestFlight Submission & Approval', body: "The Expo build was successfully packaged, passed Apple's review pipeline, and deployed publically for download on the Apple App Store. The iOS validation loop opened. Real users. Real devices. Real feedback. The product that started as a blank Figma file was now in someone's pocket.", flagLabel: 'MILESTONE', flagBody: 'Version 1 shipped to the Apple App Store. Development did not pause. The second version of the native app has already rolled out, expanding the feature set. Meanwhile, we are now on version 4 of the promoter PWA. Once the foundation was established and I could begin testing, I was able to make rapid, progressive improvements.', success: true }
+                { date: 'APRIL 7, 2026', title: 'TestFlight Submission & Approval', body: "The Expo build was successfully packaged, passed Apple's review pipeline, and deployed to TestFlight. The iOS validation loop opened. Real users. Real devices. Real feedback. The product that started as a blank Figma file was now in someone's pocket.", flagLabel: 'MILESTONE', flagBody: 'Version 1 shipped to the Apple App Store. Development did not pause. The second version of the native app has already rolled out, expanding the feature set. Meanwhile, we are now on version 4 of the promoter PWA. Once the foundation was established and I could begin testing, I was able to make rapid, progressive improvements.', success: true }
               ].map((item, i) => (
                 <div key={i} className="relative pl-8 md:pl-10">
                   <div className={'absolute top-1.5 -left-[9px] w-4 h-4 rounded-full border-2 bg-[#111202] ' + (item.success ? 'border-accent bg-accent' : 'border-red-500 bg-red-500')}></div>
@@ -250,7 +250,7 @@ const PROJECTS: any[] = [
               <div className="bg-[#1e1e1e] border border-accent/10 rounded-lg p-6">
                 <div className="font-mono text-[10px] text-accent tracking-widest uppercase mb-2">For Attendees</div>
                 <div className="text-lg font-medium text-white mb-2">Curated, local, chronological</div>
-                <p className="text-[13px] text-[#888] leading-relaxed">A native app feed that surfaces what's happening near you, when it's happening - ordered by time, filtered by taste, not manipulated by engagement metrics. The original infoline, rebuilt for the mordern age.</p>
+                <p className="text-[13px] text-[#888] leading-relaxed">A native app feed that surfaces what's happening near you, when it's happening - ordered by time, filtered by taste, not manipulated by engagement metrics. The original info line, rebuilt for a phone.</p>
               </div>
             </div>
 
@@ -633,7 +633,7 @@ const PROJECTS: any[] = [
         title: "1. The Strategic Context",
         body: (
           <ul className="list-disc pl-5 space-y-2 text-[#d4d4d4]">
-            <li><strong className="text-white">The Role:</strong> I served as the Principal UX Architect for our "Power User" tools.</li>
+            <li><strong className="text-white">The Role:</strong> I served as the design lead for our "Power User" tools.</li>
             <li><strong className="text-white">The Team:</strong> I worked with front-end engineers to implement high-performance, keyboard-first UI patterns.</li>
             <li><strong className="text-white">The Timeline:</strong> A 6-month overhaul of legacy "Wizard" architectures.</li>
             <li><strong className="text-white">The Mission:</strong> To eliminate the "Click-Tax" on repetitive, high-density professional workflows.</li>
@@ -702,7 +702,7 @@ const PROJECTS: any[] = [
 ];
 
 // --- MAIN APP COMPONENT ---
-const TITLES = ['/ Design Leader', '/ Founding IC', '/ Product Strategist', '/ UX Architect'];
+const TITLES = ['/ Founding Designer', '/ Design Leader', '/ Product Strategist', '/ Design Engineer'];
 
 const LANGUAGES = [
   { name: 'English', flag: '🇺🇸', code: 'en' },
@@ -1282,7 +1282,7 @@ export default function App() {
           <div className="relative flex items-center">
             <button 
               onClick={() => navigateTo('welcome')}
-              aria-label="Dan Dechiara, Design Leader, Founding IC, Product Strategist, UX Architect - Home"
+              aria-label="Dan Dechiara, Founding Designer, Design Leader, Product Strategist, Design Engineer - Home"
               className="font-bold text-xl tracking-tight hover:text-accent transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent z-10 flex items-center relative group notranslate"
             >
               <span aria-hidden="true" className="flex items-center">
@@ -1815,7 +1815,7 @@ function WorkflowModal({ onClose }: { onClose: () => void }) {
         <div className="sticky top-0 bg-[#0C0D00]/90 backdrop-blur-md border-b border-[#262626] p-4 sm:p-6 flex justify-between items-center z-10">
           <div className="flex items-center gap-2 text-accent">
             <Zap size={24} aria-hidden="true" />
-            <h2 id="workflow-modal-title" className="heading-4 text-[#f5f5f5]">AI Tooling Exposure & Workflows</h2>
+            <h2 id="workflow-modal-title" className="heading-4 text-[#f5f5f5]">AI Tooling & Workflows</h2>
           </div>
           <button 
             onClick={onClose}
@@ -1829,16 +1829,16 @@ function WorkflowModal({ onClose }: { onClose: () => void }) {
         <div className="p-6 space-y-8">
           <div>
             <p className="body-base text-[#d4d4d4] mb-4">
-              As AI adoption accelerates, I have begun to experiment with my own end-to-end workflows that focus on integrating AI at every step in the product process. 
+              I run AI across the entire product process, from ideation through prototyping, code refinement, and research synthesis. AI is the engine. The designer is still the architect, the reviewer, and the quality gate.
             </p>
             <p className="body-base text-[#d4d4d4] mb-4">
-              My goal with these experiments is to produce live, functional prototypes for rigorous testing and validation to help avoid the constraints that typically come with tests that leverage Figma prototypes.
+              The point of these workflows is to produce live, functional prototypes for rigorous testing and validation, sidestepping the constraints that come with testing on Figma prototypes. I have shipped production products this way, and what I bring is the methodology, not the tool list.
             </p>
             <p className="body-base text-[#d4d4d4] mb-4">
               After validating prototypes with users via Maze, I transpose the prototype to Figma using MCP or code-to-Figma plugins to refine components, finalize designs, and prep files for handoff. This has empowered me to routinely deliver code snippets while ensuring developers retain full ownership of the production environment.
             </p>
             <p className="body-base text-[#d4d4d4] mb-4">
-              Lately, my favorite experiments have been focused on the use of MCP connections to bring an agent-driven, end-to-end product flow to life. Through this exploration, not only have I successfully implemented design-to-code and <a href="https://blog.bytebytego.com/p/figma-design-to-code-code-to-design?utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">code-to-design workflows </a>  powered by Figma and Claude Code MCP connections, but I have also built an entire product team comprised of AI agents that work in parallel to me, leveraging connectors to Jira, Confluence, Miro, Dovetail, and Pendo. My approach to this solution has been template-focused, which means that at any point, I could help a coworker configure and spin up an instance for their own use.
+              I have been experimenting and utilizing the MCP workflow defined at my 9-5. I successfully implemented design-to-code and <a href="https://blog.bytebytego.com/p/figma-design-to-code-code-to-design?utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">code-to-design workflows</a>, prepping the setup in a way that almost anyone can spin up an instance.
             </p>
             <img 
               src="https://res.cloudinary.com/datad8tms/image/upload/v1777920710/Screenshot_2026-05-04_at_2.50.36_PM_byv8vw.png"
@@ -1853,7 +1853,7 @@ function WorkflowModal({ onClose }: { onClose: () => void }) {
           <div>
             <h3 className="heading-5 text-[#f5f5f5] mb-4 border-b border-[#262626] pb-2">Toolkit</h3>
             <div className="flex flex-wrap gap-2">
-              {PROCESS_TOOLS.filter(t => t.tool !== 'Stitch / Figma').sort((a, b) => a.tool.localeCompare(b.tool)).map(tool => (
+              {PROCESS_TOOLS.filter(t => t.tool !== 'Claude Design / Figma').sort((a, b) => a.tool.localeCompare(b.tool)).map(tool => (
                 <button 
                   key={tool.tool} 
                   onClick={() => window.dispatchEvent(new CustomEvent('open-tool', { detail: tool }))}
@@ -1870,11 +1870,11 @@ function WorkflowModal({ onClose }: { onClose: () => void }) {
             <ol className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
                 PROCESS_TOOLS.find(t => t.tool === 'Gemini'),
-                PROCESS_TOOLS.find(t => t.tool === 'Stitch / Figma'),
-                PROCESS_TOOLS.find(t => t.tool === 'Google AI Studio'),
-                PROCESS_TOOLS.find(t => t.tool === 'Claude'),
+                PROCESS_TOOLS.find(t => t.tool === 'Claude Design / Figma'),
+                PROCESS_TOOLS.find(t => t.tool === 'Grammarly'),
+                PROCESS_TOOLS.find(t => t.tool === 'Claude Code'),
                 PROCESS_TOOLS.find(t => t.tool === 'VS Code'),
-                PROCESS_TOOLS.find(t => t.tool === 'GitHub + Copilot'),
+                PROCESS_TOOLS.find(t => t.tool === 'GitHub'),
                 PROCESS_TOOLS.find(t => t.tool === 'Vercel'),
                 PROCESS_TOOLS.find(t => t.tool === 'Maze'),
                 PROCESS_TOOLS.find(t => t.tool === 'Dovetail')
@@ -1943,7 +1943,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
           {/* Right Column: Content */}
           <div className="flex flex-col justify-center">
             <h1 id="hero-heading" className="sr-only">
-              Design Leader, Growth Strategist, & IC Architecting High-Impact Systems.
+              Founding Product Designer and Design Leader building 0-to-1 products, design systems, and growth strategy.
             </h1>
             <h2 className="heading-2 mb-6 text-[#f5f5f5]">
               Hey 👋 I'm <span className="text-accent">Dan!</span>
@@ -1953,10 +1953,10 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
                 I'm a designer, big wall climber, techno DJ, and maker.
               </p>
               <p>
-                I architect systems and growth strategies that operationalize design teams and unlock org-level goals.
+                I take products from a blank canvas to launch, then build the systems, growth levers, and team practices that scale them.
               </p>
               <p>
-                With 13 years of design experience, I align IC leadership and business strategy to drive product systems and deliver measurable impact.
+                Thirteen years in, across SaaS platforms, consumer marketplaces, healthcare, and defense research. Which is why I am equally comfortable in a Figma file, a revenue model, and a board deck.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
@@ -2003,29 +2003,29 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
             </div>
           </div>
           <p className="body-base text-[#a3a3a3] max-w-3xl text-left">
-            I drive value by operationalizing the design craft across three critical domains. This framework ensures that technical governance and scalability are built in to every product decision.
+            I work across three areas. Each one is about making design a driver of the business rather than a service to it.
           </p>
         </div>
 
         <div className={`grid grid-cols-1 ${showA11y ? 'lg:grid-cols-3' : 'md:grid-cols-3'} gap-8`}>
           <PrincipleCard 
             icon={<BarChart3 className="text-accent" size={24} aria-hidden="true" />}
-            title="Strategic Product Architecture"
-            description="I align product ecosystems with business objectives and architect scalable frameworks that drive growth. This approach prioritizes high-level strategy and technical feasibility to ensure that every design decision serves a measurable commercial outcome."
+            title="Product & Growth Strategy"
+            description="I align products with the business behind them and build the frameworks that let them grow. Every design decision should trace back to a commercial outcome someone can measure."
             showA11y={showA11y}
             a11yNote="Icons are hidden from screen readers using aria-hidden='true' to reduce noise."
           />
           <PrincipleCard 
             icon={<Layers className="text-accent" size={24} aria-hidden="true" />}
-            title="Systemic Design Operations"
-            description="I scale design organizations by operationalizing the craft through robust systems and governance. By bridging the gap between execution and strategy, I increase org velocity and ensure cross-platform consistency in complex product ecosystems."
+            title="Design Systems & Operations"
+            description="I scale design teams by turning craft into systems. A design system is not a library. It is an operating model, and it sets the velocity, the consistency, and the standard everything else is held to."
             showA11y={showA11y}
             a11yNote="High contrast ratios (#f5f5f5 on #0C0D00) exceed WCAG AAA requirements."
           />
           <PrincipleCard 
             icon={<Accessibility className="text-accent" size={24} aria-hidden="true" />}
-            title="Inclusive Design Governance"
-            description="I integrate global accessibility standards by injecting WCAG AA, Section 508, and EN 301 549 directly into the product DNA. This approach treats inclusive design as a baseline of quality and technical governance, mitigating risk while ensuring universal usability."
+            title="Inclusive Design"
+            description="I build WCAG AA, Section 508, and EN 301 549 into the product itself instead of auditing for them later. Accessibility is a quality standard, not a checkbox. It removes legal risk and makes the product work for everyone."
             showA11y={showA11y}
             a11yNote="Semantic markup ensures this grid is read as a list of principles by assistive tech."
           />
@@ -2089,7 +2089,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
           </div>
           <div className="prose prose-invert max-w-none text-[#d4d4d4] space-y-4">
             <p>
-              With 13 years of experience, I am a product design lead focused on creating and scaling complex SaaS ecosystems with accompanying consumer marketplaces. I specialize in systems, 0-to-1 feature delivery, growth, and inclusive design, and combine data-driven experimentation with hands-on user testing to deliver optimized, scale-ready products.
+              With 13 years of experience, I am a founding and staff-level product designer focused on creating and scaling complex SaaS ecosystems and consumer marketplaces. I take products from blank canvas to launch, then build the design systems, growth levers, and design-org practices that scale them. My roots are in industrial design and self-taught engineering (A+, CCNA, early iOS jailbreaking and custom development): the throughline behind a designer who thinks in systems and ships in code.
             </p>
             <p>
               Through my career, I’ve found that the most successful products are those that are built at the intersection of strategic business goals and high-impact design. Whether I’m leading a multi-phase, full-stack platform transformation, modernizing front-end architecture to unlock i18n and public-sector procurement, or reducing customer attrition by 77% annually through the 0-to-1 delivery of new features, my goal is always to translate complex data and user insights into operational, high-impact interfaces that service the org's strategic initiatives.
@@ -2121,10 +2121,20 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
             <ResumeItem 
               role="Staff Product Designer" 
               company="Campspot" 
-              period="Aug 2022 - Current" 
+              period="Mar 2026 - Present" 
             />
             <ResumeItem 
-              role="Principal Product Designer" 
+              role="Founder & Lead Design Engineer" 
+              company="Infolines" 
+              period="Mar 2026 - Present" 
+            />
+            <ResumeItem 
+              role="Senior Product Designer" 
+              company="Campspot" 
+              period="Aug 2022 - Mar 2026" 
+            />
+            <ResumeItem 
+              role="Founding Product Designer" 
               company="Practimind Health" 
               period="Nov 2021 - Dec 2022" 
             />
@@ -2134,12 +2144,12 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
               period="Feb 2022 - Aug 2022" 
             />
             <ResumeItem 
-              role="Senior UX/UI Designer" 
+              role="Senior Product Designer" 
               company="Teacup Tech Systems" 
               period="Aug 2019 - Aug 2021" 
             />
             <ResumeItem 
-              role="Owner, Operator, Sole Designer" 
+              role="Founder & Principal Designer" 
               company="Dan_Designs" 
               period="Apr 2017 - Jul 2019" 
             />
@@ -2173,7 +2183,9 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
             <div>
               <h3 className="label-lg text-[#a3a3a3] mb-3 border-b border-[#262626] pb-2">Design & Strategy</h3>
               <ul className="space-y-2 text-sm text-[#d4d4d4]">
+                <li>0-to-1 Product Design</li>
                 <li>Accessibility (WCAG 2.1 AA)</li>
+                <li>Design Systems (Tokens & Governance)</li>
                 <li>Dovetail</li>
                 <li>FigJam / Miro</li>
                 <li>Figma (Advanced / Systems)</li>
@@ -2193,6 +2205,7 @@ function AboutPage({ showA11y }: { showA11y: boolean }) {
                 <li>JavaScript / TypeScript</li>
                 <li>React (Component Level)</li>
                 <li>Storybook Integration</li>
+                <li>Vite / Build Tooling</li>
               </ul>
             </div>
             <div>
