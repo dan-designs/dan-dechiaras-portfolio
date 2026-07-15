@@ -1956,7 +1956,7 @@ function WelcomePage({ showA11y, navigateTo }: { showA11y: boolean, navigateTo: 
                 I take products from a blank canvas to launch, then build the systems, growth levers, and team practices that scale them.
               </p>
               <p>
-                Thirteen years in, across SaaS platforms, consumer marketplaces, healthcare, and defense research. Which is why I am equally comfortable in a Figma file, a revenue model, and a board deck.
+                With 13 years of design experience, I align IC leadership and business strategy to drive product systems that deliver measurable impact.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
